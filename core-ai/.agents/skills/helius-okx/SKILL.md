@@ -1,16 +1,21 @@
-<!-- Generated from helius-skills/helius-okx/SKILL.md — do not edit -->
-
 ---
 name: helius-okx
-version: "1.0.1"
-description: >
-  Build Solana trading and intelligence applications combining OKX DEX aggregation
-  with Helius infrastructure. Use this skill when: executing swaps via OKX's 500+
-  liquidity source aggregator, discovering trending tokens, tracking smart money
-  signals, analyzing meme tokens (pump.fun scanning, dev reputation, bundle
-  detection), fetching market data and charts, submitting transactions via Helius
-  Sender, or building trading bots with LaserStream signals. Requires helius-mcp
-  MCP server and onchainos CLI.
+description: Build Solana trading and intelligence applications combining OKX DEX aggregation with Helius infrastructure. Integration-only layer — describes when and how to compose OKX tools with Helius tools for swaps, token discovery, smart money signals, meme token analysis, and portfolio intelligence.
+license: MIT
+metadata:
+  author: Helius Labs
+  version: "1.0.1"
+  tags:
+    - solana
+    - trading
+    - dex
+    - token-discovery
+    - smart-money
+    - meme-tokens
+    - market-data
+    - laserstream
+  mcp-server: helius-mcp
+  mintlify-proj: okx
 ---
 
 # Helius x OKX — Build Trading & Intelligence Apps on Solana
@@ -30,8 +35,9 @@ Before doing anything, verify these:
 **CRITICAL**: Check if Helius MCP tools are available (e.g., `getBalance`, `getAssetsByOwner`, `getPriorityFeeEstimate`). If they are NOT available, **STOP**. Do NOT attempt to call Helius APIs via curl or any other workaround. Tell the user:
 
 ```
-Configure the Helius MCP server in .clawd/settings.json or your MCP client: npx helius-mcp@latest
-Then restart Clawd Code Code so the tools become available.
+You need to install the Helius MCP server first:
+npx helius-mcp@latest  # configure in .clawd/settings.json or your MCP client
+Then restart Clawd so the tools become available.
 ```
 
 ### 2. OKX Skill Library (Required)
@@ -170,7 +176,7 @@ Follow these rules when composing OKX + Helius:
 - LLM-Optimized Docs: `https://www.helius.dev/docs/llms.txt`
 - API Reference: `https://www.helius.dev/docs/api-reference`
 - Dashboard: `https://dashboard.helius.dev`
-- Helius MCP Server: `npx helius-mcp@latest` (configure in `.clawd/settings.json` or your MCP client)
+- Helius MCP Server: `npx helius-mcp@latest  # configure in .clawd/settings.json or your MCP client`
 - LaserStream SDK: `open-clawd.local/helius-labs/laserstream-sdk`
 
 ### OKX
