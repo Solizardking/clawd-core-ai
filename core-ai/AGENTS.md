@@ -59,7 +59,9 @@ npx skills add Lightprotocol/skills
 
 ## Skills
 
-Skills are in `.agents/skills/`. Each provides expert routing, rules, and reference docs:
+Skills live under `.agents/skills/` (primary discovery) and are mirrored in `clawd-skills/`. Each provides expert routing, rules, and reference docs.
+
+The vendored Solana / Clawd suite (Cheshire Terminal, Imperial, Vulcan, Pump, DFlow, Light compressed accounts, zkrouter, and related packs) is under those trees as flat skill directories — read the matching `SKILL.md` before implementing.
 
 | Skill | Directory | When to use |
 |---|---|---|
@@ -70,7 +72,7 @@ Skills are in `.agents/skills/`. Each provides expert routing, rules, and refere
 | **Helius OKX** | `.agents/skills/helius-okx/` | Trading/intelligence apps with OKX and Helius |
 | **SVM** | `.agents/skills/svm/` | Solana protocol internals |
 
-For compressed PDAs, compressed tokens, nullifiers, validity proofs, or custom ZK apps, also load the Light Protocol skills installed via `npx skills add Lightprotocol/skills`.
+For compressed PDAs, compressed tokens, nullifiers, validity proofs, or custom ZK apps, also load the Light Protocol skills installed via `npx skills add Lightprotocol/skills` (also vendored as `compressed-pda`, `compressed-token`, etc. under `.agents/skills/` / `clawd-skills/`).
 
 Read the relevant `SKILL.md` before implementing. It tells you which reference files to read and which MCP tools to use.
 
