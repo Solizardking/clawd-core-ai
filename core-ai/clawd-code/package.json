@@ -1,5 +1,5 @@
 {
-  "name": "clawd-code",
+  "name": "@onchainai/clawd-code",
   "version": "1.0.0",
   "description": "Curl-installable Solana-native AI coding CLI with wallet creation and paper-gated perps workflows",
   "type": "module",

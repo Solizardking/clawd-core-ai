@@ -4,9 +4,9 @@
   "description": "Clawd Code — Solana-native headless AI coding agent CLI. Multi-model, MCP-powered, onchain-ready.",
   "license": "MIT",
   "type": "module",
-  "main": "src/entrypoints/cli.tsx",
+  "main": "dist/cli.js",
   "bin": {
-    "clawd": "src/entrypoints/cli.tsx"
+    "clawd": "dist/cli.js"
   },
   "scripts": {
     "build": "bun scripts/build-bundle.ts",
@@ -15,13 +15,37 @@
     "build:web": "bun scripts/build-web.ts",
     "build:web:watch": "bun scripts/build-web.ts --watch",
     "build:web:prod": "bun scripts/build-web.ts --minify",
-    "prepublish:npm": "bun scripts/package-npm.ts",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src/",
     "lint:fix": "biome check --write src/",
     "format": "biome format --write src/",
     "check": "biome check src/ && tsc --noEmit"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "SKILL.md",
+    "AGENT.md",
+    "CLAWD.md",
+    "SOUL.md",
+    "IDENTITY.md",
+    "MIGRATE.md",
+    "clawd.json",
+    ".agents/",
+    ".clawd-plugin/",
+    "agentwallet/",
+    "character/",
+    "clawdrouter/",
+    "docker/",
+    "docs/",
+    "knowledge/",
+    "mcp-server/",
+    "prompts/",
+    "scripts/",
+    "spinners/",
+    "web/"
+  ],
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
     "@commander-js/extra-typings": "^13.1.0",
@@ -88,21 +112,8 @@
     "typescript": "^5.7.0"
   },
   "engines": {
-    "bun": ">=1.1.0"
+    "node": ">=20.0.0"
   },
-  "packageManager": "bun@1.1.0",
-  "files": [
-    "dist/npm/**",
-    "README.md",
-    "LICENSE",
-    "SKILL.md",
-    "AGENT.md",
-    "character/**",
-    "knowledge/**",
-    "prompts/**",
-    "spinners/**",
-    "mcp-server/**"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Solizardking/clawd-core-ai.git",
@@ -117,10 +128,20 @@
     "mcp",
     "onchain",
     "web3",
+    "xai",
+    "grok",
     "anthropic",
-    "claude-code"
+    "deepseek",
+    "phoenix",
+    "vulcan",
+    "perpetuals",
+    "trading"
   ],
   "publishConfig": {
     "access": "public"
+  },
+  "author": "Solizardking",
+  "bugs": {
+    "url": "https://github.com/Solizardking/clawd-core-ai/issues"
   }
 }
