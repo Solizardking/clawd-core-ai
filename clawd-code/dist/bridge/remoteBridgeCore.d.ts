@@ -26,12 +26,11 @@
  * Gated by `tengu_bridge_repl_v2` GrowthBook flag in initReplBridge.ts.
  * REPL-only — daemon/print stay on env-based.
  */
-import type { SDKMessage } from '../../../core-ai/clawd-code/src/entrypoints/agentSdkTypes.js';
-import type { Message } from '../../../core-ai/clawd-code/src/types/message.js';
-import type { PermissionMode } from '../../../core-ai/clawd-code/src/utils/permissions/PermissionMode.js';
+import type { ReplBridgeHandle, BridgeState } from './replBridge.js';
+import type { Message } from '../types/message.js';
+import type { SDKMessage } from '../entrypoints/agentSdkTypes.js';
 import type { SDKControlResponse } from '../entrypoints/sdk/controlTypes.js';
-import { type RemoteCredentials } from './codeSessionApi.js';
-import type { BridgeState, ReplBridgeHandle } from './replBridge.js';
+import type { PermissionMode } from '../utils/permissions/PermissionMode.js';
 export type EnvLessBridgeParams = {
     baseUrl: string;
     orgUUID: string;
@@ -86,6 +85,7 @@ export type EnvLessBridgeParams = {
  * as a generic "initialization failed" state.
  */
 export declare function initEnvLessBridgeCore(params: EnvLessBridgeParams): Promise<ReplBridgeHandle | null>;
-export { createCodeSession, type RemoteCredentials } from './codeSessionApi.js';
+export { createCodeSession, type RemoteCredentials, } from './codeSessionApi.js';
+import { type RemoteCredentials } from './codeSessionApi.js';
 export declare function fetchRemoteCredentials(sessionId: string, baseUrl: string, accessToken: string, timeoutMs: number): Promise<RemoteCredentials | null>;
 //# sourceMappingURL=remoteBridgeCore.d.ts.map

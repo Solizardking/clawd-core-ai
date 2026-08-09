@@ -1,4 +1,4 @@
-import { updateSessionBridgeId, } from '../../../core-ai/clawd-code/src/utils/concurrentSessions.js';
+import { updateSessionBridgeId } from '../utils/concurrentSessions.js';
 import { toCompatSessionId } from './sessionIdCompat.js';
 /**
  * Global pointer to the active REPL bridge handle, so callers outside

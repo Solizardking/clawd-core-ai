@@ -1,4 +1,4 @@
-import type { SDKMessage } from '../../../core-ai/clawd-code/src/entrypoints/agentSdkTypes.js';
+import type { SDKMessage } from '../entrypoints/agentSdkTypes.js';
 type SessionEvent = {
     type: 'event';
     data: SDKMessage;

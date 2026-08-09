@@ -1,11 +1,11 @@
-import type { SDKMessage } from '../../../core-ai/clawd-code/src/entrypoints/agentSdkTypes.js';
-import type { Message } from '../../../core-ai/clawd-code/src/types/message.js';
-import type { PermissionMode } from '../../../core-ai/clawd-code/src/utils/permissions/PermissionMode.js';
-import type { SDKControlRequest, SDKControlResponse } from '../entrypoints/sdk/controlTypes.js';
 import { BridgeFatalError } from './bridgeApi.js';
+import type { BridgeApiClient } from './types.js';
+import type { Message } from '../types/message.js';
+import type { SDKMessage } from '../entrypoints/agentSdkTypes.js';
+import type { PermissionMode } from '../utils/permissions/PermissionMode.js';
+import type { SDKControlRequest, SDKControlResponse } from '../entrypoints/sdk/controlTypes.js';
 import { type CapacitySignal } from './capacityWake.js';
 import { type PollIntervalConfig } from './pollConfigDefaults.js';
-import type { BridgeApiClient } from './types.js';
 export type ReplBridgeHandle = {
     bridgeSessionId: string;
     environmentId: string;
@@ -254,5 +254,5 @@ declare function startWorkPollLoop({ api, getCredentials, signal, onStateChange,
      */
     onHeartbeatFatal?: (err: BridgeFatalError) => void;
 }): Promise<void>;
-export { POLL_ERROR_GIVE_UP_MS as _POLL_ERROR_GIVE_UP_MS_ForTesting, POLL_ERROR_INITIAL_DELAY_MS as _POLL_ERROR_INITIAL_DELAY_MS_ForTesting, POLL_ERROR_MAX_DELAY_MS as _POLL_ERROR_MAX_DELAY_MS_ForTesting, startWorkPollLoop as _startWorkPollLoopForTesting, };
+export { startWorkPollLoop as _startWorkPollLoopForTesting, POLL_ERROR_INITIAL_DELAY_MS as _POLL_ERROR_INITIAL_DELAY_MS_ForTesting, POLL_ERROR_MAX_DELAY_MS as _POLL_ERROR_MAX_DELAY_MS_ForTesting, POLL_ERROR_GIVE_UP_MS as _POLL_ERROR_GIVE_UP_MS_ForTesting, };
 //# sourceMappingURL=replBridge.d.ts.map

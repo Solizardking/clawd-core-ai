@@ -1,7 +1,7 @@
 import { z } from 'zod/v4';
-import { getFeatureValue_DEPRECATED, } from '../../../core-ai/clawd-code/src/services/analytics/growthbook.js';
-import { lazySchema, } from '../../../core-ai/clawd-code/src/utils/lazySchema.js';
-import { lt } from '../../../core-ai/clawd-code/src/utils/semver.js';
+import { getFeatureValue_DEPRECATED } from '../services/analytics/growthbook.js';
+import { lazySchema } from '../utils/lazySchema.js';
+import { lt } from '../utils/semver.js';
 import { isEnvLessBridgeEnabled } from './bridgeEnabled.js';
 export const DEFAULT_ENV_LESS_BRIDGE_CONFIG = {
     init_retry_max_attempts: 3,

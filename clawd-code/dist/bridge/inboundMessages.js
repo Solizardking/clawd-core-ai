@@ -1,4 +1,4 @@
-import { detectImageFormatFromBase64, } from '../../../core-ai/clawd-code/src/utils/imageResizer.js';
+import { detectImageFormatFromBase64 } from '../utils/imageResizer.js';
 /**
  * Process an inbound user message from the bridge, extracting content
  * and UUID for enqueueing. Supports both string content and

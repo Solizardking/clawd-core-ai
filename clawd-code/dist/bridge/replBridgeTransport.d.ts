@@ -1,6 +1,6 @@
 import type { StdoutMessage } from 'src/entrypoints/sdk/controlTypes.js';
-import type { HybridTransport } from '../../../core-ai/clawd-code/src/cli/transports/HybridTransport.js';
-import type { SessionState } from '../../../core-ai/clawd-code/src/utils/sessionState.js';
+import type { HybridTransport } from '../cli/transports/HybridTransport.js';
+import type { SessionState } from '../utils/sessionState.js';
 /**
  * Transport abstraction for replBridge. Covers exactly the surface that
  * replBridge.ts uses against HybridTransport so the v1/v2 choice is

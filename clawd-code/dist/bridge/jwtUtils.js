@@ -1,8 +1,8 @@
-import { logEvent, } from '../../../core-ai/clawd-code/src/services/analytics/index.js';
-import { logForDebugging, } from '../../../core-ai/clawd-code/src/utils/debug.js';
-import { logForDiagnosticsNoPII, } from '../../../core-ai/clawd-code/src/utils/diagLogs.js';
-import { errorMessage } from '../../../core-ai/clawd-code/src/utils/errors.js';
-import { jsonParse, } from '../../../core-ai/clawd-code/src/utils/slowOperations.js';
+import { logEvent } from '../services/analytics/index.js';
+import { logForDebugging } from '../utils/debug.js';
+import { logForDiagnosticsNoPII } from '../utils/diagLogs.js';
+import { errorMessage } from '../utils/errors.js';
+import { jsonParse } from '../utils/slowOperations.js';
 /** Format a millisecond duration as a human-readable string (e.g. "5m 30s"). */
 function formatDuration(ms) {
     if (ms < 60_000)

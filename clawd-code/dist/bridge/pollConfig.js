@@ -1,6 +1,6 @@
 import { z } from 'zod/v4';
-import { getFeatureValue_CACHED_WITH_REFRESH, } from '../../../core-ai/clawd-code/src/services/analytics/growthbook.js';
-import { lazySchema, } from '../../../core-ai/clawd-code/src/utils/lazySchema.js';
+import { getFeatureValue_CACHED_WITH_REFRESH } from '../services/analytics/growthbook.js';
+import { lazySchema } from '../utils/lazySchema.js';
 import { DEFAULT_POLL_CONFIG, } from './pollConfigDefaults.js';
 // .min(100) on the seek-work intervals restores the old Math.max(..., 100)
 // defense-in-depth floor against fat-fingered GrowthBook values. Unlike a

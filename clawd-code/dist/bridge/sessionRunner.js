@@ -1,9 +1,9 @@
-import { spawn, } from 'child_process';
-import { createWriteStream, } from 'fs';
+import { spawn } from 'child_process';
+import { createWriteStream } from 'fs';
 import { tmpdir } from 'os';
-import { dirname, join, } from 'path';
+import { dirname, join } from 'path';
 import { createInterface } from 'readline';
-import { jsonParse, jsonStringify, } from '../../../core-ai/clawd-code/src/utils/slowOperations.js';
+import { jsonParse, jsonStringify } from '../utils/slowOperations.js';
 import { debugTruncate } from './debugUtils.js';
 const MAX_ACTIVITIES = 10;
 const MAX_STDERR_LINES = 10;

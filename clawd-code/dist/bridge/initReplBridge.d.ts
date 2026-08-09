@@ -12,10 +12,10 @@
  * Called via dynamic import by useReplBridge (auto-start) and print.ts
  * (SDK -p mode via query.enableRemoteControl).
  */
-import type { SDKMessage } from '../../../core-ai/clawd-code/src/entrypoints/agentSdkTypes.js';
-import type { Message } from '../../../core-ai/clawd-code/src/types/message.js';
-import type { PermissionMode } from '../../../core-ai/clawd-code/src/utils/permissions/PermissionMode.js';
+import type { SDKMessage } from '../entrypoints/agentSdkTypes.js';
 import type { SDKControlResponse } from '../entrypoints/sdk/controlTypes.js';
+import type { Message } from '../types/message.js';
+import type { PermissionMode } from '../utils/permissions/PermissionMode.js';
 import type { BridgeState, ReplBridgeHandle } from './replBridge.js';
 export type InitBridgeOptions = {
     onInboundMessage?: (msg: SDKMessage) => void | Promise<void>;
