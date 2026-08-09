@@ -1,6 +1,6 @@
 {
-  "name": "@openclawd/clawd-core",
-  "version": "1.0.0",
+  "name": "@onchainai/clawd-core",
+  "version": "1.0.1",
   "description": "Clawd Core — Solana-native agent toolkit: typed tools, plugins, and wallet clients with reflect-metadata tool discovery",
   "sideEffects": false,
   "files": ["dist/**/*", "constitution/**/*", "README.md", "package.json"],

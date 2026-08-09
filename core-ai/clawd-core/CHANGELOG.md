@@ -1,4 +1,11 @@
-# @openclawd/clawd-core
+# @onchainai/clawd-core
+
+## 1.0.1
+
+### Minor Changes
+
+- Republished under the `@onchainai` npm scope as `@onchainai/clawd-core` (previously `@openclawd/clawd-core`)
+- No API changes — this is a scope/publish move only
 
 ## 1.0.0
 
