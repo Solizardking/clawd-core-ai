@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Clawd Code Plugin — CLI entry
- * clawd-plugin
+ * Clawd Skills — CLI entry
+ * clawd-skills
  */
 import { runCli } from './index.js';
 

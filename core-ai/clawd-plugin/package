@@ -1,0 +1,52 @@
+{
+  "name": "clawd-plugin",
+  "version": "1.0.0",
+  "description": "Clawd Code Plugin — bundles 80+ Solana skills and auto-starts Helius, Pump, Phoenix Rise, DFlow, ZK Compression, and Clawd Code MCP servers",
+  "type": "module",
+  "main": "./index.js",
+  "files": [
+    "skills/**/*",
+    "README.md",
+    "LICENSE",
+    ".mcp.json",
+    "index.js",
+    "cli.js"
+  ],
+  "scripts": {
+    "doctor": "node cli.js doctor"
+  },
+  "bin": {
+    "clawd-plugin": "./cli.js"
+  },
+  "keywords": [
+    "solana",
+    "clawd",
+    "plugin",
+    "mcp",
+    "skills",
+    "helius",
+    "pump",
+    "phoenix",
+    "dflow",
+    "trading",
+    "ai",
+    "agents"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Solizardking",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Solizardking/clawd-core-ai.git",
+    "directory": "core-ai/clawd-plugin"
+  },
+  "homepage": "https://github.com/Solizardking/clawd-core-ai/tree/main/core-ai/clawd-plugin#readme",
+  "bugs": {
+    "url": "https://github.com/Solizardking/clawd-core-ai/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
