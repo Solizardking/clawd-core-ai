@@ -15,7 +15,7 @@
         "strict": true,
         "strictNullChecks": true,
         "noUnusedLocals": true,
-        "noUnusedParameters": true,
+        "noUnusedParameters": false,
         "noFallthroughCasesInSwitch": true,
         "skipLibCheck": true,
         "lib": ["ES2022"],

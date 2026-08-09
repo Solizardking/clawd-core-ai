@@ -3,9 +3,12 @@
 FROM node:22-slim AS base
 WORKDIR /app
 
-# Install deps
+# Install production deps.
+# Use `npm install` (not `npm ci`) so platform-specific optional deps
+# (bufferutil / utf-8-validate for ws) resolve from the registry even when
+# the lockfile was generated on a different platform (e.g. macOS arm64).
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev && npm cache clean --force
+RUN npm install --omit=dev --no-audit --no-fund && npm cache clean --force
 
 # Copy prebuilt dist only (src excluded by .dockerignore)
 COPY dist/ dist/
