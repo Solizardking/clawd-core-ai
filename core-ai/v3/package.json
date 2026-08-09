@@ -1,5 +1,5 @@
 {
-  "name": "open-clawd",
+  "name": "@onchainai/v3",
   "version": "3.0.0",
   "description": "Open Clawd v3: unified Grok-first AI coding, trading, research, image, and voice CLI — integrates clawd-code modes, clawd-grok storage/scheduler, and v2 agent architecture.",
   "type": "module",
@@ -39,6 +39,9 @@
   ],
   "license": "MIT",
   "author": "Open Clawd",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "src/index.mjs",
   "dependencies": {
     "ink": "^5.2.1",
