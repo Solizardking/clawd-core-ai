@@ -35,6 +35,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "allowScripts": {
+    "esbuild": ["postinstall"]
+  },
+  "allowGit": ["*"],
   "author": "Solizardking",
   "license": "MIT",
   "repository": {
