@@ -1,77 +1,170 @@
 <div align="center">
 
-# Claude Code — Leaked Source
+# Clawd Cloud — Monorepo
 
-**The full source code of Anthropic's Claude Code CLI, leaked on March 31, 2026**
+**Solana-native AI agent stack · Clawd Code CLI · Claude Code leaked source archive**
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-512K%2B_lines-3178C6?logo=typescript&logoColor=white)](#tech-stack)
-[![Bun](https://img.shields.io/badge/Runtime-Bun-f472b6?logo=bun&logoColor=white)](#tech-stack)
-[![React + Ink](https://img.shields.io/badge/UI-React_%2B_Ink-61DAFB?logo=react&logoColor=black)](#tech-stack)
-[![Files](https://img.shields.io/badge/~1,900_files-source_only-grey)](#directory-structure)
-[![MCP Server](https://img.shields.io/badge/MCP-Explorer_Server-blueviolet)](#-explore-with-mcp-server)
-[![npm](https://img.shields.io/npm/v/warrioraashuu-codemaster?label=npm&color=cb3837&logo=npm)](https://www.npmjs.com/package/warrioraashuu-codemaster)
-[![Twitter Follow](https://img.shields.io/twitter/follow/warrioraashuu?style=social)](https://twitter.com/intent/follow?screen_name=warrioraashuu)
+[![TypeScript](https://img.shields.io/badge/TypeScript-512K%2B_lines-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Bun](https://img.shields.io/badge/Runtime-Bun-f472b6?logo=bun&logoColor=white)](https://bun.sh)
+[![React + Ink](https://img.shields.io/badge/UI-React_%2B_Ink-61DAFB?logo=react&logoColor=black)](https://github.com/vadimdemedes/ink)
+[![Solana](https://img.shields.io/badge/Solana-14F195?logo=solana&logoColor=black)](https://solana.com)
+[![MCP](https://img.shields.io/badge/MCP-Model_Context_Protocol-blueviolet)](https://modelcontextprotocol.io)
+[![Buy $CLAWD](https://img.shields.io/badge/Buy_%24CLAWD-Phantom-blueviolet?style=flat-square)](https://phantom.com/tokens/solana/8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump)
+[![Dexscreener](https://img.shields.io/badge/Chart-Dexscreener-green?style=flat-square)](https://dexscreener.com/solana/8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump)
 
-> The original unmodified leaked source is preserved in the [`backup` branch](https://github.com/codeaashu/claude-code/tree/backup).
+> `$CLAWD` · `8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump`
 
 </div>
 
 ---
-<!-- <div align="center">
-<table>
-<tr>
-  
-`Spend less time reading code, more time building.`
-  
-<td width="120" align="center">
-<img src="https://repoxray.devdisplay.org/logo.png" width="80" height="80" alt="RepoXray Logo"/>
-</td>
-<td>
-<h2 align="center">Understand Any Codebase<br>X-Ray Any Repo, in Seconds.<br>
-<a href="https://repoxray.devdisplay.org/"><strong>repoxray.devdisplay.org</strong></a></h2>
-</td>
-</tr>
-</table>
-</div>
 
---- -->
+## What Is This?
 
-## Table of Contents
+This monorepo bundles the **Clawd Cloud** ecosystem — Solana-native AI agents built on top of the Claude Code source archive:
 
-- [How It Leaked](#how-it-leaked)
-- [What Is Claude Code?](#what-is-claude-code)
-- [Documentation](#-documentation)
-- [Explore with MCP Server](#-explore-with-mcp-server)
-- [Directory Structure](#directory-structure)
-- [Architecture](#architecture)
-  - [Tool System](#1-tool-system)
-  - [Command System](#2-command-system)
-  - [Service Layer](#3-service-layer)
-  - [Bridge System](#4-bridge-system)
-  - [Permission System](#5-permission-system)
-  - [Feature Flags](#6-feature-flags)
-- [Key Files](#key-files)
-- [Tech Stack](#tech-stack)
-- [Design Patterns](#design-patterns)
-- [GitPretty Setup](#gitpretty-setup)
-- [Contributing](#contributing)
-- [Disclaimer](#disclaimer)
+| Layer | What it is |
+|-------|-----------|
+| **Clawd Code** (`clawd-code/`) | Solana-native AI coding agent CLI — code, trade, research, image, and voice modes with paper-gated perpetuals workflows. Its `src/` merges the Claude Code leaked source with Clawd-native agents (perps, arena, x402, wallet) |
+| **Clawd Core AI** (`core-ai/`) | Clawd-wrapped Helius AI tooling — Solana infrastructure, skills, MCP servers, perps agents, Grok runtime |
+| **Leaked source archive & docs** | Root `package.json` (the leaked `@anthropic-ai/claude-code` manifest), `docs/` architecture guides, and `mcp-server/` explorer |
+| **Docs & MCP** (`docs/`, `mcp-server/`) | Architecture guides and MCP explorer server for the leaked source |
 
 ---
 
-## How It Leaked
+## Directory Layout
 
-[Chaofan Shou (@Fried_rice)](https://x.com/Fried_rice) discovered that the published npm package for Claude Code included a `.map` file referencing the full, unobfuscated TypeScript source — downloadable as a zip from Anthropic's R2 storage bucket.
-
-> **"Claude code source code has been leaked via a map file in their npm registry!"**
->
-> — [@Fried_rice, March 31, 2026](https://x.com/Fried_rice/status/2038894956459290963)
+```
+.
+├── clawd-code/                  # Clawd Code CLI + plugin + skills + router
+│   ├── src/                     # CLI source — Claude Code leak foundation + Clawd-native agents
+│   │   ├── main.tsx             # Entrypoint — CLI parser + React/Ink renderer
+│   │   ├── QueryEngine.ts       # Core LLM API caller (~46K lines)
+│   │   ├── Tool.ts              # Tool type definitions (~29K lines)
+│   │   ├── commands.ts          # Command registry (~25K lines)
+│   │   ├── arena.ts             # Cheshire Terminal agent arena (on-chain identity)
+│   │   ├── x402.ts / wallet.ts  # x402 payments + wallet operations
+│   │   ├── xai.ts / deepseek.ts / openrouter.ts / grok-models.ts   # Multi-model providers
+│   │   ├── tools/               # ~40 agent tool implementations
+│   │   ├── commands/            # ~50 slash command implementations
+│   │   ├── components/          # ~140 Ink UI components
+│   │   ├── services/            # External service integrations
+│   │   ├── bridge/              # IDE integration (VS Code, JetBrains)
+│   │   ├── coordinator/         # Multi-agent orchestration
+│   │   └── plugins/ · skills/ · tasks/ · state/ · voice/ · vim/ · mcp/ · payments/
+│   ├── dist/                    # Built CLI output
+│   ├── clawd-plugin/            # Plugin — bundles skills + auto-starts MCP servers
+│   ├── clawd-skills/            # Solana/Pump/Imperial/Vulcan/DFlow skill suite
+│   ├── clawdrouter/             # LLM routing service (multi-model tiered routing)
+│   ├── mcp-server/              # Clawd MCP server
+│   ├── web/                     # Web tooling
+│   └── docs/ · knowledge/ · prompts/ · spinners/
+│
+├── core-ai/                     # Clawd Core AI
+│   ├── clawd-code/              # Clawd Code build
+│   ├── clawd-grok/              # Bun-native Clawd/Grok agent runtime
+│   ├── clawd-perps-agent/       # Perps agent (Phoenix Rise, Vulcan, Imperial WS, TWAMM)
+│   ├── clawd-mcp/ · mcp-server/ # MCP servers
+│   ├── clawd-plugin/ · clawd-skills/   # Plugins + skills
+│   ├── clawd-agents/            # Agent definitions/catalog
+│   ├── clawdrouter/             # Router
+│   ├── v3/                      # Next-gen Clawd runtime scaffolding
+│   ├── tailclawd/               # Local UI + Tailscale proxy for session monitoring
+│   ├── knowledge/               # Knowledge base (facts, gotchas, patterns)
+│   └── zk-primitives/           # ZK primitives
+│
+├── docs/                        # Architecture guides for the leaked source
+│   ├── architecture.md          # Core pipeline, startup, state, rendering
+│   ├── tools.md                 # Complete tool catalog + permission model
+│   ├── commands.md              # All slash commands by category
+│   ├── subsystems.md            # Bridge, MCP, Permissions, Plugins, Skills
+│   ├── exploration-guide.md     # How to navigate the codebase
+│   └── ADR-001-open-clawd-v2.md # Open-clawd v2 architecture decision record
+│
+├── mcp-server/                  # MCP explorer server for the leaked source
+├── agent.md                    # Agent operating guide
+├── Skill.md                    # Repository skill (development conventions)
+├── gitpretty-apply.sh          # Per-file emoji commit helper
+└── package.json                # Leaked package manifest (@anthropic-ai/claude-code)
+```
 
 ---
 
-## What Is Claude Code?
+## Clawd Code
 
-Claude Code is Anthropic's official CLI tool for interacting with Claude directly from the terminal — editing files, running commands, searching codebases, managing git workflows, and more. This repository contains the leaked `src/` directory.
+Clawd Code is a Solana-native AI coding agent CLI with code generation, trading, research, image, and voice modes. It ships with a plugin that auto-starts MCP servers for live blockchain access:
+
+```bash
+clawd --plugin-dir ./clawd-plugin
+```
+
+Configured MCP servers:
+
+- **Helius** — 10 routed tools for Solana blockchain access
+- **Clawd Code** — the CLI itself exposed as an MCP server
+- **Pump MCP** — 55 tools for Pump.fun: token creation, AMM swaps, analytics, wallet ops
+- **Phoenix Rise** — real-time perpetuals market data
+- **DFlow** — trading API details and code examples
+- **ZK Compression** — ZK compressed token and account tools
+
+### Agent Arena (Cheshire Terminal)
+
+Native on-chain agent identity via Metaplex Core NFTs:
+
+```bash
+clawd-code arena status                     # Show stored on-chain identity
+clawd-code arena mint --wallet <PUBKEY>     # Mint agent NFT (~0.01 SOL tx fee)
+clawd-code arena register                   # Register capabilities + A2A/MCP cards
+clawd-code arena fetch <addr>               # Fetch any agent's profile
+clawd-code arena review <addr> --tx <sig>   # Submit verified review
+```
+
+### API Keys
+
+Set in `~/.clawd-code/.env` or project `.env`:
+
+| Variable | Description |
+| --- | --- |
+| `ANTHROPIC_API_KEY` | Anthropic API key for Claude models (streaming) |
+| `MOONSHOT_API_KEY` | Moonshot API key for Kimi models |
+| `DEEPSEEK_API_KEY` | DeepSeek API key |
+| `OPENROUTER_API_KEY` | OpenRouter API key (free models available) |
+| `HELIUS_API_KEY` | Helius API key for DAS/RPC |
+| `SOLANA_RPC_URL` | Solana RPC endpoint |
+| `VULCAN_MCP_URL` | Vulcan MCP server URL |
+| `LIVE_TRADING` | Enable live trading (default: false) |
+
+> **Trading defaults to PAPER mode** — live execution requires explicit confirmation.
+
+---
+
+## Clawd Core AI
+
+The Clawd-wrapped Helius AI tooling — Solana infrastructure, skills, MCP servers, and agent runtimes.
+
+### Packages
+
+| Package | Description |
+|---|---|
+| `clawd-code/` | Clawd Code build |
+| `clawd-grok/` | Bun-native Clawd/Grok agent runtime — REPL, audio, LSP, MCP, payments |
+| `clawd-perps-agent/` | Perps agent — Phoenix Rise, Vulcan, Imperial WS, on-chain MM, TWAMM |
+| `clawd-mcp/` · `mcp-server/` | MCP servers |
+| `clawd-plugin/` | Plugin bundling skills + auto-starting MCP servers |
+| `clawd-skills/` | Solana/Pump/DFlow skill suite |
+| `clawd-agents/` | Agent definitions and catalog |
+| `clawdrouter/` | LLM routing service |
+| `v3/` | Next-gen Clawd runtime scaffolding |
+| `tailclawd/` | Local UI + Tailscale proxy for Clawd/Claude session monitoring |
+| `knowledge/` | Knowledge base — facts, gotchas, patterns |
+| `zk-primitives/` | ZK primitives |
+
+See [`core-ai/README.md`](core-ai/README.md) for the Helius tooling surface (helius-cli, helius-mcp, helius-skills, helius-plugin).
+
+---
+
+## Claude Code Leaked Source (Archive)
+
+This repo preserves the leaked source of Anthropic's Claude Code CLI, leaked on **2026-03-31** via a `.map` file in Anthropic's npm registry. The original source now lives inside `clawd-code/src/`, merged with Clawd-native agents.
 
 | | |
 |---|---|
@@ -81,397 +174,110 @@ Claude Code is Anthropic's official CLI tool for interacting with Claude directl
 | **Terminal UI** | [React](https://react.dev) + [Ink](https://github.com/vadimdemedes/ink) |
 | **Scale** | ~1,900 files · 512,000+ lines of code |
 
----
+> The root `package.json` is the original leaked manifest (`@anthropic-ai/claude-code`).
 
-## � Documentation
+### Explore with the MCP Server
 
-For in-depth guides, see the [`docs/`](docs/) directory:
-
-| Guide | Description |
-|-------|-------------|
-| **[Architecture](docs/architecture.md)** | Core pipeline, startup sequence, state management, rendering, data flow |
-| **[Tools Reference](docs/tools.md)** | Complete catalog of all ~40 agent tools with categories and permission model |
-| **[Commands Reference](docs/commands.md)** | All ~85 slash commands organized by category |
-| **[Subsystems Guide](docs/subsystems.md)** | Deep dives into Bridge, MCP, Permissions, Plugins, Skills, Tasks, Memory, Voice |
-| **[Exploration Guide](docs/exploration-guide.md)** | How to navigate the codebase — study paths, grep patterns, key files |
-
-Also see: [CONTRIBUTING.md](CONTRIBUTING.md) · [MCP Server README](mcp-server/README.md)
-
----
-
-## �🔍 Explore with MCP Server
-
-This repo ships an [MCP server](https://modelcontextprotocol.io/) that lets any MCP-compatible client (Claude Code, Claude Desktop, VS Code Copilot, Cursor) explore the full source interactively.
-
-### Install from npm
-
-The MCP server is published as [`warrioraashuu-codemaster`](https://www.npmjs.com/package/warrioraashuu-codemaster) on npm — no need to clone the repo:
+The root `mcp-server/` ships an MCP explorer server for any MCP-compatible client (Claude Code, Claude Desktop, VS Code Copilot, Cursor):
 
 ```bash
 # Claude Code
-claude mcp add warrioraashuu-codemaster -- npx -y warrioraashuu-codemaster
+claude mcp add claude-code-explorer -- node /abs/path/to/clawd-cloud/mcp-server/dist/index.js
 ```
 
-### One-liner setup (from source)
+Set `CLAUDE_CODE_SRC_ROOT` env to point at the source root (defaults to `clawd-code/src`).
 
-```bash
-git clone https://github.com/codeaashu/claude-code.git ~/claude-code \
-  && cd ~/claude-code/mcp-server \
-  && npm install && npm run build \
-  && claude mcp add claude-code-explorer -- node ~/claude-code/mcp-server/dist/index.js
-```
-
-<details>
-<summary><strong>Step-by-step setup</strong></summary>
-
-```bash
-# 1. Clone the repo
-git clone https://github.com/codeaashu/claude-code.git
-cd claude-code/mcp-server
-
-# 2. Install & build
-npm install && npm run build
-
-# 3. Register with Claude Code
-claude mcp add claude-code-explorer -- node /absolute/path/to/claude-code/mcp-server/dist/index.js
-```
-
-Replace `/absolute/path/to/claude-code` with your actual clone path.
-
-</details>
-
-<details>
-<summary><strong>VS Code / Cursor / Claude Desktop config</strong></summary>
-
-**VS Code** — add to `.vscode/mcp.json`:
-```json
-{
-  "servers": {
-    "claude-code-explorer": {
-      "type": "stdio",
-      "command": "node",
-      "args": ["${workspaceFolder}/mcp-server/dist/index.js"],
-      "env": { "CLAUDE_CODE_SRC_ROOT": "${workspaceFolder}/src" }
-    }
-  }
-}
-```
-
-**Claude Desktop** — add to your config file:
-```json
-{
-  "mcpServers": {
-    "claude-code-explorer": {
-      "command": "node",
-      "args": ["/absolute/path/to/claude-code/mcp-server/dist/index.js"],
-      "env": { "CLAUDE_CODE_SRC_ROOT": "/absolute/path/to/claude-code/src" }
-    }
-  }
-}
-```
-
-**Cursor** — add to `~/.cursor/mcp.json` (same format as Claude Desktop).
-
-</details>
-
-### Available tools & prompts
+### Available tools
 
 | Tool | Description |
 |------|-------------|
 | `list_tools` | List all ~40 agent tools with source files |
 | `list_commands` | List all ~50 slash commands with source files |
-| `get_tool_source` | Read full source of any tool (e.g. BashTool, FileEditTool) |
-| `get_command_source` | Read source of any slash command (e.g. review, mcp) |
-| `read_source_file` | Read any file from `src/` by path |
+| `get_tool_source` | Read full source of any tool |
+| `get_command_source` | Read source of any slash command |
+| `read_source_file` | Read any file from `clawd-code/src/` by path |
 | `search_source` | Grep across the entire source tree |
-| `list_directory` | Browse `src/` directories |
+| `list_directory` | Browse source directories |
 | `get_architecture` | High-level architecture overview |
+| `explain_tool` / `explain_command` / `architecture_overview` / `how_does_it_work` / `compare_tools` | Guided deep-dive prompts |
 
-| Prompt | Description |
-|--------|-------------|
-| `explain_tool` | Deep-dive into how a specific tool works |
-| `explain_command` | Understand a slash command's implementation |
-| `architecture_overview` | Guided tour of the full architecture |
-| `how_does_it_work` | Explain any subsystem (permissions, MCP, bridge, etc.) |
-| `compare_tools` | Side-by-side comparison of two tools |
+### Architecture highlights
 
-**Try asking:** *"How does the BashTool work?"* · *"Search for where permissions are checked"* · *"Show me the /review command source"*
+- **Tool System** — ~40 self-contained tools (FileRead/Write/Edit, Glob, Grep, Bash, Agent, MCP, LSP…)
+- **Command System** — ~50 slash commands (`/commit`, `/review`, `/compact`, `/mcp`, `/config`…)
+- **Service Layer** — API, MCP, OAuth, LSP, analytics, plugins, context compression, memory extraction
+- **Bridge System** — bidirectional IDE integration (VS Code, JetBrains)
+- **Permission System** — modes: `default`, `plan`, `bypassPermissions`, `auto`
+- **Feature Flags** — build-time dead-code elimination via `bun:bundle` (`PROACTIVE`, `KAIROS`, `BRIDGE_MODE`, `VOICE_MODE`, `DAEMON`…)
 
-### Custom source path / Remove
-
-```bash
-# Custom source location
-claude mcp add claude-code-explorer -e CLAUDE_CODE_SRC_ROOT=/path/to/src -- node /path/to/mcp-server/dist/index.js
-
-# Remove
-claude mcp remove claude-code-explorer
-```
-
----
-
-## Directory Structure
-
-```
-src/
-├── main.tsx                 # Entrypoint — Commander.js CLI parser + React/Ink renderer
-├── QueryEngine.ts           # Core LLM API caller (~46K lines)
-├── Tool.ts                  # Tool type definitions (~29K lines)
-├── commands.ts              # Command registry (~25K lines)
-├── tools.ts                 # Tool registry
-├── context.ts               # System/user context collection
-├── cost-tracker.ts          # Token cost tracking
-│
-├── tools/                   # Agent tool implementations (~40)
-├── commands/                # Slash command implementations (~50)
-├── components/              # Ink UI components (~140)
-├── services/                # External service integrations
-├── hooks/                   # React hooks (incl. permission checks)
-├── types/                   # TypeScript type definitions
-├── utils/                   # Utility functions
-├── screens/                 # Full-screen UIs (Doctor, REPL, Resume)
-│
-├── bridge/                  # IDE integration (VS Code, JetBrains)
-├── coordinator/             # Multi-agent orchestration
-├── plugins/                 # Plugin system
-├── skills/                  # Skill system
-├── server/                  # Server mode
-├── remote/                  # Remote sessions
-├── memdir/                  # Persistent memory directory
-├── tasks/                   # Task management
-├── state/                   # State management
-│
-├── voice/                   # Voice input
-├── vim/                     # Vim mode
-├── keybindings/             # Keybinding configuration
-├── schemas/                 # Config schemas (Zod)
-├── migrations/              # Config migrations
-├── entrypoints/             # Initialization logic
-├── query/                   # Query pipeline
-├── ink/                     # Ink renderer wrapper
-├── buddy/                   # Companion sprite (Easter egg 🐣)
-├── native-ts/               # Native TypeScript utils
-├── outputStyles/            # Output styling
-└── upstreamproxy/           # Proxy configuration
-```
-
----
-
-## Architecture
-
-### 1. Tool System
-
-> `src/tools/` — Every tool Claude can invoke is a self-contained module with its own input schema, permission model, and execution logic.
-
-| Tool | Description |
-|---|---|
-| **File I/O** | |
-| `FileReadTool` | Read files (images, PDFs, notebooks) |
-| `FileWriteTool` | Create / overwrite files |
-| `FileEditTool` | Partial modification (string replacement) |
-| `NotebookEditTool` | Jupyter notebook editing |
-| **Search** | |
-| `GlobTool` | File pattern matching |
-| `GrepTool` | ripgrep-based content search |
-| `WebSearchTool` | Web search |
-| `WebFetchTool` | Fetch URL content |
-| **Execution** | |
-| `BashTool` | Shell command execution |
-| `SkillTool` | Skill execution |
-| `MCPTool` | MCP server tool invocation |
-| `LSPTool` | Language Server Protocol integration |
-| **Agents & Teams** | |
-| `AgentTool` | Sub-agent spawning |
-| `SendMessageTool` | Inter-agent messaging |
-| `TeamCreateTool` / `TeamDeleteTool` | Team management |
-| `TaskCreateTool` / `TaskUpdateTool` | Task management |
-| **Mode & State** | |
-| `EnterPlanModeTool` / `ExitPlanModeTool` | Plan mode toggle |
-| `EnterWorktreeTool` / `ExitWorktreeTool` | Git worktree isolation |
-| `ToolSearchTool` | Deferred tool discovery |
-| `SleepTool` | Proactive mode wait |
-| `CronCreateTool` | Scheduled triggers |
-| `RemoteTriggerTool` | Remote trigger |
-| `SyntheticOutputTool` | Structured output generation |
-
-### 2. Command System
-
-> `src/commands/` — User-facing slash commands invoked with `/` in the REPL.
-
-| Command | Description | | Command | Description |
-|---|---|---|---|---|
-| `/commit` | Git commit | | `/memory` | Persistent memory |
-| `/review` | Code review | | `/skills` | Skill management |
-| `/compact` | Context compression | | `/tasks` | Task management |
-| `/mcp` | MCP server management | | `/vim` | Vim mode toggle |
-| `/config` | Settings | | `/diff` | View changes |
-| `/doctor` | Environment diagnostics | | `/cost` | Check usage cost |
-| `/login` / `/logout` | Auth | | `/theme` | Change theme |
-| `/context` | Context visualization | | `/share` | Share session |
-| `/pr_comments` | PR comments | | `/resume` | Restore session |
-| `/desktop` | Desktop handoff | | `/mobile` | Mobile handoff |
-
-### 3. Service Layer
-
-> `src/services/` — External integrations and core infrastructure.
-
-| Service | Description |
-|---|---|
-| `api/` | Anthropic API client, file API, bootstrap |
-| `mcp/` | Model Context Protocol connection & management |
-| `oauth/` | OAuth 2.0 authentication |
-| `lsp/` | Language Server Protocol manager |
-| `analytics/` | GrowthBook feature flags & analytics |
-| `plugins/` | Plugin loader |
-| `compact/` | Conversation context compression |
-| `extractMemories/` | Automatic memory extraction |
-| `teamMemorySync/` | Team memory synchronization |
-| `tokenEstimation.ts` | Token count estimation |
-| `policyLimits/` | Organization policy limits |
-| `remoteManagedSettings/` | Remote managed settings |
-
-### 4. Bridge System
-
-> `src/bridge/` — Bidirectional communication layer connecting IDE extensions (VS Code, JetBrains) with the CLI.
-
-Key files: `bridgeMain.ts` (main loop) · `bridgeMessaging.ts` (protocol) · `bridgePermissionCallbacks.ts` (permission callbacks) · `replBridge.ts` (REPL session) · `jwtUtils.ts` (JWT auth) · `sessionRunner.ts` (session execution)
-
-### 5. Permission System
-
-> `src/hooks/toolPermission/` — Checks permissions on every tool invocation.
-
-Prompts the user for approval/denial or auto-resolves based on the configured permission mode: `default`, `plan`, `bypassPermissions`, `auto`, etc.
-
-### 6. Feature Flags
-
-Dead code elimination at build time via Bun's `bun:bundle`:
-
-```typescript
-import { feature } from 'bun:bundle'
-
-const voiceCommand = feature('VOICE_MODE')
-  ? require('./commands/voice/index.js').default
-  : null
-```
-
-Notable flags: `PROACTIVE` · `KAIROS` · `BRIDGE_MODE` · `DAEMON` · `VOICE_MODE` · `AGENT_TRIGGERS` · `MONITOR_TOOL`
-
----
-
-## Key Files
+### Key files
 
 | File | Lines | Purpose |
 |------|------:|---------|
-| `QueryEngine.ts` | ~46K | Core LLM API engine — streaming, tool loops, thinking mode, retries, token counting |
-| `Tool.ts` | ~29K | Base types/interfaces for all tools — input schemas, permissions, progress state |
-| `commands.ts` | ~25K | Command registration & execution with conditional per-environment imports |
-| `main.tsx` | — | CLI parser + React/Ink renderer; parallelizes MDM, keychain, and GrowthBook on startup |
+| `clawd-code/src/QueryEngine.ts` | ~46K | Core LLM API engine — streaming, tool loops, thinking, retries |
+| `clawd-code/src/Tool.ts` | ~29K | Base types/interfaces for all tools |
+| `clawd-code/src/commands.ts` | ~25K | Command registration & execution |
+| `clawd-code/src/main.tsx` | — | CLI parser + React/Ink renderer |
 
 ---
 
-## Tech Stack
+## Docs
 
-| Category | Technology |
-|---|---|
-| Runtime | [Bun](https://bun.sh) |
-| Language | TypeScript (strict) |
-| Terminal UI | [React](https://react.dev) + [Ink](https://github.com/vadimdemedes/ink) |
-| CLI Parsing | [Commander.js](https://github.com/tj/commander.js) (extra-typings) |
-| Schema Validation | [Zod v4](https://zod.dev) |
-| Code Search | [ripgrep](https://github.com/BurntSushi/ripgrep) (via GrepTool) |
-| Protocols | [MCP SDK](https://modelcontextprotocol.io) · LSP |
-| API | [Anthropic SDK](https://docs.anthropic.com) |
-| Telemetry | OpenTelemetry + gRPC |
-| Feature Flags | GrowthBook |
-| Auth | OAuth 2.0 · JWT · macOS Keychain |
+| Guide | Description |
+|-------|-------------|
+| [Architecture](docs/architecture.md) | Core pipeline, startup sequence, state management, rendering |
+| [Tools Reference](docs/tools.md) | Complete catalog of all ~40 agent tools |
+| [Commands Reference](docs/commands.md) | All slash commands organized by category |
+| [Subsystems Guide](docs/subsystems.md) | Bridge, MCP, Permissions, Plugins, Skills, Tasks, Memory, Voice |
+| [Exploration Guide](docs/exploration-guide.md) | Study paths, grep patterns, key files |
+| [Open Clawd ADR](docs/ADR-001-open-clawd-v2.md) | Architecture decision record for the open-clawd stack |
+
+Also see: [`agent.md`](agent.md) · [`Skill.md`](Skill.md) · [`clawd-code/CLAWD.md`](clawd-code/CLAWD.md) · [`core-ai/README.md`](core-ai/README.md)
 
 ---
 
-## Design Patterns
+## Development
 
-<details>
-<summary><strong>Parallel Prefetch</strong> — Startup optimization</summary>
-
-MDM settings, keychain reads, and API preconnect fire in parallel as side-effects before heavy module evaluation:
-
-```typescript
-// main.tsx
-startMdmRawRead()
-startKeychainPrefetch()
-```
-
-</details>
-
-<details>
-<summary><strong>Lazy Loading</strong> — Deferred heavy modules</summary>
-
-OpenTelemetry (~400KB) and gRPC (~700KB) are loaded via dynamic `import()` only when needed.
-
-</details>
-
-<details>
-<summary><strong>Agent Swarms</strong> — Multi-agent orchestration</summary>
-
-Sub-agents spawn via `AgentTool`, with `coordinator/` handling orchestration. `TeamCreateTool` enables team-level parallel work.
-
-</details>
-
-<details>
-<summary><strong>Skill System</strong> — Reusable workflows</summary>
-
-Defined in `skills/` and executed through `SkillTool`. Users can add custom skills.
-
-</details>
-
-<details>
-<summary><strong>Plugin Architecture</strong> — Extensibility</summary>
-
-Built-in and third-party plugins loaded through the `plugins/` subsystem.
-
-</details>
-
----
-
-## GitPretty Setup
-
-<details>
-<summary>Show per-file emoji commit messages in GitHub's file UI</summary>
+The leaked-source build uses Bun:
 
 ```bash
-# Apply emoji commits
+bun install
+bun run build          # bundle the CLI
+bun run typecheck      # tsc --noEmit
+bun run lint           # biome check src/
+bun run check          # biome + tsc
+```
+
+Clawd Code / Core AI packages each carry their own manifests — see the per-package READMEs.
+
+### GitPretty Setup
+
+```bash
+# Apply per-file emoji commit messages
 bash ./gitpretty-apply.sh .
 
 # Optional: install hooks for future commits
 bash ./gitpretty-apply.sh . --hooks
-
-# Push as usual
-git push origin main
 ```
-
-</details>
 
 ---
 
 ## Contributing
 
-Contributions to documentation, the MCP server, and exploration tooling are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-> **Note:** The `src/` directory is the original leaked source and should not be modified.
+Contributions to documentation, the MCP explorer server, and exploration tooling are welcome. Keep changes small and targeted — see [`agent.md`](agent.md) for the agent operating guide.
 
 ---
 
 ## Disclaimer
 
-This repository archives source code leaked from Anthropic's npm registry on **2026-03-31**. All original source code is the property of [Anthropic](https://www.anthropic.com). This is not an official release and is not licensed for redistribution. Contact [aashuu ✦](https://x.com/warrioraashuu) for any comments.
+`clawd-code/src/` preserves source code leaked from Anthropic's npm registry on **2026-03-31**. All original source code is the property of [Anthropic](https://www.anthropic.com). This is not an official release and is not licensed for redistribution. The Clawd Code and Clawd Core AI layers are independent Clawd-native software built on top.
 
 ---
 
-<a href="https://www.star-history.com/?repos=codeaashu%2Fclaude-code&type=date&legend=bottom-right">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=codeaashu/claude-code&type=date&theme=dark&legend=bottom-right" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=codeaashu/claude-code&type=date&legend=bottom-right" />
-   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=codeaashu/claude-code&type=date&legend=bottom-right" />
- </picture>
-</a>
+## Links
 
-
-
+- [Clawd Code](clawd-code/) · [Clawd Code Agent Instructions](clawd-code/CLAWD.md)
+- [Clawd Core AI](core-ai/)
+- [$CLAWD on Phantom](https://phantom.com/tokens/solana/8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump) · [$CLAWD on Dexscreener](https://dexscreener.com/solana/8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump)
+- [Helius](https://www.helius.dev) · [Helius Docs](https://www.helius.dev/docs)
+- [Model Context Protocol](https://modelcontextprotocol.io)
