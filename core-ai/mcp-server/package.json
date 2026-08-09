@@ -1,5 +1,5 @@
 {
-  "name": "@pump-fun/mcp-server",
+  "name": "@onchainai/mcp-server",
   "version": "1.0.0",
   "description": "Solana Clawd MCP server for the Pump SDK: 55 tools for token creation, trading, fees, analytics, AMM, incentives, and wallet workflows",
   "type": "module",
@@ -41,5 +41,8 @@
   "engines": {
     "node": ">=18"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@openclawd/clawdrouter",
+  "name": "@onchainai/clawdrouter",
   "version": "0.1.0",
   "description": "The LLM router built for autonomous Solana agents — Solana-native, wallet-signed, USDC micropayments",
   "main": "dist/index.js",

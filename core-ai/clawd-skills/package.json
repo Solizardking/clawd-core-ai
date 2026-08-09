@@ -1,5 +1,5 @@
 {
-  "name": "clawd-skills",
+  "name": "@onchainai/clawd-skills",
   "version": "1.0.0",
   "description": "Clawd Skills — 75+ Solana trading, research, payments, and protocol-development skills for Clawd Code agents",
   "type": "module",
