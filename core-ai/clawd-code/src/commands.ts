@@ -8,7 +8,7 @@ import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { CLAWD_MINT, arena } from './arena.js';
 import { loadClawdEnv } from './env.js';
-import { DEFAULT_MODEL } from './grok-models.js';
+import { DEFAULT_MODEL } from './model-registry.js';
 import { createWallet, listWallets } from './wallet.js';
 
 const CLAWD_ENV = loadClawdEnv();
@@ -26,12 +26,11 @@ type JsonRpcResponse<T = unknown> = {
 function aiModeConfig(): Record<string, string | number> {
   const env = loadClawdEnv();
   return {
-    provider: env.CLAWD_PROVIDER || 'xai',
+    provider: env.CLAWD_PROVIDER || 'moonshot',
     model: env.CLAWD_MODEL || DEFAULT_MODEL,
-    xaiApiKey: env.XAI_API_KEY || '',
+    moonshotApiKey: env.MOONSHOT_API_KEY || '',
     deepSeekApiKey: env.DEEPSEEK_API_KEY || '',
     deepSeekBaseUrl: env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com',
-    agentCount: parseInt(env.CLAWD_AGENT_COUNT || '4', 10),
   };
 }
 
@@ -309,8 +308,8 @@ export async function cmdHelp(args: string[]): Promise<void> {
   console.log('║  strategies      Vulcan strategy runners               ║');
   console.log('║  arena [sub]     Agent Arena: mint|register|fetch|review║');
   console.log('║  agents          Clawd agent registry                  ║');
-  console.log('║  models          Model registry (Grok+Claude+DeepSeek) ║');
-  console.log('║  provider        Switch xai/anthropic/openrouter/ds    ║');
+  console.log('║  models          Model registry (Moonshot+Claude+DeepSeek)║');
+  console.log('║  provider        Switch moonshot/anthropic/openrouter/ds║');
   console.log('║  goal [text]     Natural language intent router        ║');
   console.log('║  verify          Preflight environment checks          ║');
   console.log('║                                                       ║');

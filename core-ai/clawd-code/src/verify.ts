@@ -2,14 +2,14 @@
  * Clawd Code — Environment Verification & Preflight
  * (Adapted from clawd-grok/src/verify/environment.ts)
  *
- * Now also pings xAI /v1/models to confirm the default provider is reachable
- * with the configured XAI_API_KEY.
+ * Now also pings Moonshot /v1/models to confirm the default provider is reachable
+ * with the configured MOONSHOT_API_KEY.
  */
 
 import { existsSync, readFileSync } from 'fs';
 import { homedir } from 'os';
 import { join } from 'path';
-import { createXaiClient } from './xai.js';
+import { createMoonshotClient } from './moonshot.js';
 
 export interface VerifyResult {
   name: string;
@@ -22,13 +22,13 @@ export class EnvironmentVerifier {
   private results: VerifyResult[] = [];
 
   /**
-   * Run all preflight checks (including async xAI /v1/models ping).
+   * Run all preflight checks (including async Moonshot /v1/models ping).
    */
   async verifyAll(): Promise<VerifyResult[]> {
     this.results = [];
     this.checkNodeVersion();
-    this.checkXaiKey();
-    await this.checkXaiReachable();
+    this.checkMoonshotKey();
+    await this.checkMoonshotReachable();
     this.checkHeliusRpc();
     this.checkPhoenixUrl();
     this.checkVulcanCli();
@@ -49,30 +49,30 @@ export class EnvironmentVerifier {
     });
   }
 
-  private checkXaiKey(): void {
-    const key = process.env.XAI_API_KEY;
+  private checkMoonshotKey(): void {
+    const key = process.env.MOONSHOT_API_KEY;
     this.results.push({
-      name: 'xAI Grok API key',
+      name: 'Moonshot Kimi API key',
       ok: !!key,
-      message: key ? 'XAI_API_KEY set' : 'XAI_API_KEY not set',
-      remedy: !key ? 'Get key from https://console.x.ai and set in ~/.clawd-code/.env' : undefined,
+      message: key ? 'MOONSHOT_API_KEY set' : 'MOONSHOT_API_KEY not set',
+      remedy: !key ? 'Get key from https://platform.moonshot.ai and set in ~/.clawd-code/.env' : undefined,
     });
   }
 
   /**
-   * Live ping of https://api.x.ai/v1/models using XAI_API_KEY. Skipped if the
-   * key is missing or the runtime can't reach the network. Reports the first
-   * few model ids so the operator can confirm the account is on the right
-   * tier (grok-4.x availability, etc.).
+   * Live ping of https://api.moonshot.ai/v1/models using MOONSHOT_API_KEY.
+   * Skipped if the key is missing or the runtime can't reach the network.
+   * Reports the first few model ids so the operator can confirm the account
+   * is on the right tier (kimi-k2 availability, etc.).
    */
-  private async checkXaiReachable(): Promise<void> {
-    const client = createXaiClient(process.env.XAI_API_KEY);
+  private async checkMoonshotReachable(): Promise<void> {
+    const client = createMoonshotClient(process.env.MOONSHOT_API_KEY);
     if (!client) {
       this.results.push({
-        name: 'xAI /v1/models reachability',
+        name: 'Moonshot /v1/models reachability',
         ok: false,
-        message: '(skipped — no XAI_API_KEY)',
-        remedy: 'Set XAI_API_KEY in ~/.clawd-code/.env',
+        message: '(skipped — no MOONSHOT_API_KEY)',
+        remedy: 'Set MOONSHOT_API_KEY in ~/.clawd-code/.env',
       });
       return;
     }
@@ -81,24 +81,24 @@ export class EnvironmentVerifier {
       if (ping.ok) {
         const sample = (ping.models ?? []).slice(0, 4).join(', ');
         this.results.push({
-          name: 'xAI /v1/models reachability',
+          name: 'Moonshot /v1/models reachability',
           ok: true,
           message: `online — ${ping.models?.length ?? 0} models (e.g. ${sample})`,
         });
       } else {
         this.results.push({
-          name: 'xAI /v1/models reachability',
+          name: 'Moonshot /v1/models reachability',
           ok: false,
           message: `offline — ${ping.error ?? 'unknown error'}`,
-          remedy: 'Check network or rotate XAI_API_KEY',
+          remedy: 'Check network or rotate MOONSHOT_API_KEY',
         });
       }
     } catch (error) {
       this.results.push({
-        name: 'xAI /v1/models reachability',
+        name: 'Moonshot /v1/models reachability',
         ok: false,
         message: `error — ${error instanceof Error ? error.message : String(error)}`,
-        remedy: 'Check network or rotate XAI_API_KEY',
+        remedy: 'Check network or rotate MOONSHOT_API_KEY',
       });
     }
   }

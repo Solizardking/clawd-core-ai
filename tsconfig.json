@@ -18,10 +18,10 @@
     "types": ["node"],
     "baseUrl": ".",
     "paths": {
-      "bun:bundle": ["./src/types/bun-bundle.d.ts"]
+      "bun:bundle": ["clawd-code/src/types/bun-bundle.d.ts"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["clawd-code/src/**/*.ts", "clawd-code/src/**/*.tsx"],
   "exclude": ["node_modules", "dist"]
 }
 

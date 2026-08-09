@@ -2,7 +2,7 @@
 /**
  * Clawd Code — CLI Entry Point
  * Headless lobster-native AI coding agent for the Clawd ecosystem
- * Default provider: xAI (Grok). Default model: grok-4.3 (code/REPL/trade).
+ * Default provider: Moonshot (Kimi). Default model: kimi-k2-thinking (code/REPL/trade/research).
  */
 
 import * as C from './commands.js';
@@ -18,27 +18,26 @@ import {
   listModelsByProvider,
   normalizeModelId,
   printModelsTable,
-} from './grok-models.js';
+} from './model-registry.js';
 import { DEFAULT_FREE_MODEL } from './openrouter.js';
-import { createXaiClient } from './xai.js';
+import { createMoonshotClient } from './moonshot.js';
 import { EnvironmentVerifier } from './verify.js';
 
 type Mode = 'CODE' | 'TRADE' | 'RESEARCH' | 'IMAGE' | 'VOICE' | 'REPL';
 
 interface ClawdCodeConfig {
   mode: Mode;
-  provider: 'xai' | 'openrouter' | 'deepseek' | 'anthropic';
+  provider: 'moonshot' | 'openrouter' | 'deepseek' | 'anthropic';
   liveTrading: boolean;
   operatorConfirmed: boolean;
   rpcUrl: string;
-  xaiApiKey: string;
+  moonshotApiKey: string;
   anthropicApiKey: string;
   deepSeekApiKey: string;
   deepSeekBaseUrl: string;
   heliusApiKey: string;
   phoenixRiseUrl: string;
   vulcanMcpUrl: string;
-  agentCount: 4 | 16;
   model: string;
   stream: boolean;
 }
