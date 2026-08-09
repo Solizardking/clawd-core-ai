@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🦞 ClawdRouter — Connect & Pay</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🦞 <strong>ClawdRouter</strong> <span class="sub">Solana-native LLM router</span></div>
+    <div class="topbar-right">
+      <span id="connState" class="state-pill">not connected</span>
+      <button id="connectBtn" class="btn btn-primary">Connect Wallet</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- Left: Wallet & Billing -->
+    <section class="panel panel-wallet">
+      <h2>Wallet</h2>
+      <div class="wallet-line"><span class="label">Address</span><code id="walletAddr">—</code></div>
+      <div class="wallet-line"><span class="label">$CLAWD</span><b id="balClawd">—</b></div>
+      <div class="wallet-line"><span class="label">USDC</span><b id="balUsdc">—</b></div>
+      <div class="wallet-line"><span class="label">SOL</span><b id="balSol">—</b></div>
+      <div class="wallet-line"><span class="label">Tier</span><b id="tier">—</b></div>
+      <div class="wallet-line"><span class="label">Discount</span><b id="discount">0%</b></div>
+
+      <h2 style="margin-top:22px">Pay to Use</h2>
+      <div class="row token-picker">
+        <button class="chip active" data-token="USDC">USDC</button>
+        <button class="chip" data-token="CLAWD">$CLAWD</button>
+        <button class="chip" data-token="SOL">SOL</button>
+      </div>
+
+      <div class="plan">
+        <h3>⚡ Pay Per Use</h3>
+        <p class="muted">One-time top-up. Funds the router for on-demand requests.</p>
+        <div class="amounts">
+          <button class="chip" data-amount="2">$2</button>
+          <button class="chip active" data-amount="5">$5</button>
+          <button class="chip" data-amount="10">$10</button>
+          <button class="chip" data-amount="25">$25</button>
+        </div>
+        <button id="payPerUseBtn" class="btn btn-primary block">Send & Enable</button>
+      </div>
+
+      <div class="plan">
+        <h3>📅 Subscribe Monthly</h3>
+        <p class="muted">Unlimited-ish access for a flat monthly fee.</p>
+        <div class="amounts">
+          <button class="chip" data-plan="9">$9/mo</button>
+          <button class="chip active" data-plan="29">$29/mo</button>
+          <button class="chip" data-plan="99">$99/mo</button>
+        </div>
+        <button id="subscribeBtn" class="btn btn-secondary block">Subscribe for $29/mo</button>
+      </div>
+
+      <div class="statusbox" id="payStatus"></div>
+      <p class="tiny muted" id="payTarget"></p>
+    </section>
+
+    <!-- Right: Chat playground -->
+    <section class="panel panel-chat">
+      <h2>Playground <span class="muted" id="authInfo"></span></h2>
+      <div class="row">
+        <label class="label">Model</label>
+        <select id="modelSelect"></select>
+      </div>
+      <div id="chat" class="chat"></div>
+      <div class="chat-input-row">
+        <textarea id="prompt" rows="2" placeholder="Ask the router... (authenticates as your wallet)"></textarea>
+        <button id="sendBtn" class="btn btn-primary">Send</button>
+      </div>
+      <p class="tiny muted" id="chatStatus"></p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
