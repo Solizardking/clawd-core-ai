@@ -26,18 +26,18 @@ async function main(): Promise<void> {
       const result = await pay.list();
       console.log(result.raw || result.error || '(no subscriptions)');
     } else if (sub === 'status') {
-      const id = args[2]?.split('--')[0]
+      const id = (args[2]?.split('--')[0]) ?? '';
       if (!id) {
         console.error('usage: clawd-connectors subscriptions status <subscription_id>');
         process.exit(2);
       }
       const result = await pay.status(id);
-      console.log(result.raw || result.error ?? '(no subscription)');
+      console.log(result.raw || (result.error ?? '(no subscription)'));
     } else if (sub === 'refresh') {
       const result = await pay.refresh();
       console.log(result.raw || result.error || '(refreshed)');
     } else if (sub === 'cancel') {
-      const id = args[2]?.split('--')[0]
+      const id = (args[2]?.split('--')[0]) ?? '';
       if (!id) {
         console.error('usage: clawd-connectors subscriptions cancel <subscription_id> [--local-only]');
         process.exit(2);
@@ -47,9 +47,9 @@ async function main(): Promise<void> {
     } else if (sub === 'new') {
       const get = (flag: string): string => {
         const i = args.indexOf(flag);
-        return i >= 0 ? args[i + 1] ?? '' : '';
+        return i >= 0 ? (args[i + 1] ?? '') : '';
       };
-      const result = await pay.new({
+      const result = await pay.newSubscription({
         plan: get('--plan'),
         mint: get('--mint'),
         puller: get('--puller'),
@@ -57,7 +57,7 @@ async function main(): Promise<void> {
         amount: get('--amount'),
         period: get('--period'),
       });
-      console.log(result.raw || result.error ?? '(activated)');
+      console.log(result.raw || (result.error ?? '(activated)'));
     } else {
       const result = await pay.help();
       console.log(result.raw);
