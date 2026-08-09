@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Clawd Code Plugin — @solana-clawd/clawd-plugin
+ * Clawd Code Plugin — @openclawd/clawd-plugin
  *
  * Bundles 80+ Solana skills and auto-starts MCP servers.
  *
@@ -98,15 +98,24 @@ function listCmd() {
   console.log(`\n  Total: ${skills.length} skills`);
 }
 
-const cmd = process.argv[2] ?? 'doctor';
-switch (cmd) {
-  case 'doctor':
-    doctor();
-    break;
-  case 'list-skills':
-    listCmd();
-    break;
-  default:
-    console.error(`Unknown command: ${cmd}`);
-    process.exitCode = 2;
+function runCli(argv = process.argv.slice(2)) {
+  const cmd = argv[0] ?? 'doctor';
+  switch (cmd) {
+    case 'doctor':
+      doctor();
+      break;
+    case 'list-skills':
+      listCmd();
+      break;
+    default:
+      console.error(`Unknown command: ${cmd}`);
+      process.exitCode = 2;
+  }
+}
+
+export { runCli };
+
+// Direct execution (node index.js)
+if (process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).href) {
+  runCli();
 }

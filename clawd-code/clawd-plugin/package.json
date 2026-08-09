@@ -1,5 +1,5 @@
 {
-  "name": "@solana-clawd/clawd-plugin",
+  "name": "@openclawd/clawd-plugin",
   "version": "1.0.0",
   "description": "Clawd Code Plugin — bundles 80+ Solana skills and auto-starts Helius, Pump, Phoenix Rise, DFlow, ZK Compression, and Clawd Code MCP servers",
   "type": "module",
@@ -10,13 +10,14 @@
     "character/**/*",
     "README.md",
     ".mcp.json",
-    "index.js"
+    "index.js",
+    "cli.js"
   ],
   "scripts": {
-    "doctor": "node index.js doctor"
+    "doctor": "node cli.js doctor"
   },
   "bin": {
-    "clawd-plugin": "./index.js"
+    "clawd-plugin": "./cli.js"
   },
   "keywords": [
     "solana",
