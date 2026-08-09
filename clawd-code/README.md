@@ -9,6 +9,7 @@
 **The lobster-native, headless AI coding agent for the Clawd ecosystem.**
 Not a chatbot — a cyborg coder-trader that ships production code, executes live perps trades, generates media, and pays its own way on-chain.
 
+[![npm](https://img.shields.io/npm/v/@onchainai/clawd-code?label=npm&color=cb3837&logo=npm&style=for-the-badge)](https://www.npmjs.com/package/@onchainai/clawd-code)
 [![License: MIT](https://img.shields.io/badge/License-MIT-8B5CF6.svg?style=for-the-badge)](./LICENSE)
 [![Runtime: Bun](https://img.shields.io/badge/runtime-bun-F7931A?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![Solana Native](https://img.shields.io/badge/Solana-Native-14F195?style=for-the-badge&logo=solana&logoColor=white)](https://solana.com)
@@ -16,6 +17,14 @@ Not a chatbot — a cyborg coder-trader that ships production code, executes liv
 [![x402](https://img.shields.io/badge/payments-x402-3B82F6?style=for-the-badge)](#-x402-autonomous-commerce)
 
 <sub>Default provider: **Moonshot Kimi** (`kimi-k2-thinking`) · Also speaks Claude, DeepSeek, OpenRouter</sub>
+
+<br />
+
+![Files](https://img.shields.io/badge/src%2F-1%2C835%2B_files-1a1a1a?style=flat-square&labelColor=1a1a1a&color=F7931A)
+![Lines](https://img.shields.io/badge/~421K_lines_of_TS-1a1a1a?style=flat-square&labelColor=1a1a1a&color=14F195)
+![Tools](https://img.shields.io/badge/~40_tools-1a1a1a?style=flat-square&labelColor=1a1a1a&color=3B82F6)
+![Commands](https://img.shields.io/badge/80%2B_slash_commands-1a1a1a?style=flat-square&labelColor=1a1a1a&color=8B5CF6)
+![Skills](https://img.shields.io/badge/97_skill_packages-1a1a1a?style=flat-square&labelColor=1a1a1a&color=EF4444)
 
 </div>
 
@@ -101,8 +110,8 @@ flowchart LR
 | Tool System | [`src/Tool.ts`](src/Tool.ts), [`src/tools/`](src/tools) | ~40 self-contained tools — Zod schemas, permission model, UI |
 | Command System | [`src/commands.ts`](src/commands.ts), [`src/commands/`](src/commands) | 80+ slash commands (`/commit`, `/review`, `/mcp`, `/x402`, …) |
 | State | [`src/state/`](src/state), [`src/context/`](src/context) | React-context + custom store, `AppState` |
-| UI | [`src/components/`](src/components) (~140), [`src/screens/`](src/screens), [`src/hooks/`](src/hooks) (~80) | Ink-rendered terminal React |
-| Skills (Layer B) | [`clawd-plugin/skills/`](clawd-plugin/skills), [`clawd-skills/`](clawd-skills) (100+) | Domain expertise: Solana, DFlow, Phantom, Jupiter, Pump, Imperial, Vulcan |
+| UI | [`src/components/`](src/components) (389 files), [`src/screens/`](src/screens), [`src/hooks/`](src/hooks) (104 files) | Ink-rendered terminal React |
+| Skills (Layer B) | [`.agents/skills/`](.agents/skills) (97 packages) | Domain expertise: Solana, DFlow, Phantom, Jupiter, Pump, Imperial, Vulcan — each with its own `SKILL.md` |
 | Trading Engine | Vulcan MCP → Phoenix DEX | Signal scoring (momentum/funding/liquidity), preflight, PAPER-first |
 | Payments | [`src/x402.ts`](src/x402.ts) | HTTP 402 autonomous commerce for APIs, compute, media |
 | Web Console | [`web/`](web) | Next.js 14 + Zustand + Radix dashboard |
@@ -156,12 +165,21 @@ Trading power scales with explicit, auditable trust — never assumed.
 ## Quick Start
 
 ```bash
-# Run with the bundled Solana plugin (Helius, Pump, Phoenix Rise, DFlow, ZK Compression)
-clawd --plugin-dir ./clawd-plugin
+# npm install (once published)
+npm install -g @onchainai/clawd-code
 
-# Or drive a single mode headlessly
+# Drive a single mode headlessly
 clawd-code code "write an Anchor program for a token vesting vault"
+clawd-code repl               # interactive multi-turn shell
 ```
+
+Domain skills in [`.agents/skills/`](.agents/skills) (97 packages — Vulcan, DFlow, Pump.fun, Imperial, Helius, ZK compression…) are discovered automatically at startup; no plugin flag required. For the fully bundled experience — skills **and** auto-started Solana MCP servers (Helius, Pump, Phoenix Rise, DFlow, ZK Compression) in one plugin — use the sibling package at [`core-ai/clawd-plugin/`](../core-ai/clawd-plugin):
+
+```bash
+clawd --plugin-dir ../core-ai/clawd-plugin
+```
+
+> The local [`.clawd-plugin/marketplace.json`](.clawd-plugin/marketplace.json) manifest currently points at a `./helius-plugin` source that isn't vendored in this checkout — use the `core-ai/clawd-plugin/` path above instead.
 
 <details>
 <summary><b>Environment variables</b></summary>
@@ -213,7 +231,7 @@ Clawd Code is one node in a fleet of 50+ specialized agents. It shares engines, 
 | **DFlow** | Swap and prediction-market router |
 | **Cheshire Terminal** | On-chain identity and reputation |
 
-**100+ bundled skills** in [`clawd-skills/`](clawd-skills) cover DFlow (spot, Kalshi, Phantom Connect, Proof KYC), Pump.fun (bonding curve, fee sharing, security, vanity keys), Imperial (execution modes, grid trading, TP/SL, risk, TWAP), Helius, ZK compression, and more — each with its own `SKILL.md` and reference docs.
+**97 skill packages** in [`.agents/skills/`](.agents/skills) cover DFlow (spot, Kalshi, Phantom Connect, Proof KYC), Pump.fun (bonding curve, fee sharing, security, vanity keys), Imperial (execution modes, grid trading, TP/SL, risk, TWAP), Helius, ZK compression, and more — each with its own `SKILL.md` and reference docs. Discovered automatically at runtime; also installable standalone via `npx skills add Solizardking/solana-clawd`.
 
 ### x402 Autonomous Commerce
 
@@ -227,26 +245,25 @@ Every folder below has its own `README.md` explaining what it is and how it fits
 
 | Folder | What's there |
 |---|---|
-| [`src/`](src/README.md) | CLI source — QueryEngine, tools, commands, UI (React/Ink) |
-| [`clawd-plugin/`](clawd-plugin/README.md) | Bundled plugin: skills + auto-started MCP servers |
-| [`clawd-skills/`](clawd-skills/README.md) | 100+ domain skill packages (Solana, DFlow, Pump, Imperial…) |
-| [`.agents/`](.agents/README.md) | Runtime-discovered skill registry (97 skill packages) |
-| [`.clawd-plugin/`](.clawd-plugin/README.md) | Plugin marketplace manifest (`clawd-helius`) |
-| [`mcp-server/`](mcp-server/README.md) | Clawd Code exposed as its own MCP server (STDIO/HTTP/SSE) |
-| [`clawdrouter/`](clawdrouter/README.md) | Model router service |
-| [`web/`](web/README.md) | Next.js 14 dashboard (Zustand, Radix, SWR) |
-| [`docker/`](docker/README.md) | Containerized deployment (Dockerfile, compose, entrypoint) |
-| [`docs/`](docs/README.md) | architecture · commands · tools · subsystems · exploration guide · bridge · ADR-001 |
-| [`prompts/`](prompts/README.md) | Ordered build-out prompt log (bootstrapping this repo to a working build) |
-| [`scripts/`](scripts/README.md) | Build, bundle, packaging, test-runner scripts |
-| [`knowledge/`](knowledge/README.md) | Reference knowledge base — agent memory + conventions |
-| [`spinners/`](spinners/README.md) | Themed terminal spinner verb packs |
+| [`src/`](src/README.md) | CLI source — QueryEngine, tools, commands, UI (React/Ink). 389 files in `components/`, 191 in `commands/`, 184 in `tools/`, 104 in `hooks/` |
+| [`.agents/skills/`](.agents/README.md) | Runtime-discovered skill registry — 97 skill packages, auto-loaded at startup |
+| [`.clawd-plugin/`](.clawd-plugin/README.md) | Plugin marketplace manifest (`clawd-helius`) — currently points at an unvendored `./helius-plugin` source |
+| [`agentwallet/`](agentwallet) | `agentwallet-vault` — encrypted Solana + EVM keypair vault, deployable to E2B/Cloudflare |
+| [`clawdrouter/`](clawdrouter) | `@openclawd/clawdrouter` — LLM router, 58 models across 9 providers, Ed25519 wallet auth + x402, CF Worker/Fly.io deploy |
+| [`mcp-server/`](mcp-server/README.md) | Clawd Code's own source exposed as an MCP server (STDIO/HTTP/Vercel) — still carries its upstream package name `warrioraashuu-codemaster`, not yet rebranded |
+| [`web/`](web/README.md) | Next.js 14 / React 18 dashboard (Zustand, Radix, SWR) — package name `claude-code-web`, not yet rebranded; note the React 18 vs. CLI's React 19 version split |
+| [`docker/`](docker) | Containerized deployment (Dockerfile, compose, entrypoint) |
+| [`docs/`](docs/README.md) | architecture · commands · tools · subsystems · exploration guide · bridge |
+| [`prompts/`](prompts) | 17-part ordered build-out prompt log (bootstrapping this repo to a working build) |
+| [`scripts/`](scripts) | Build, bundle, packaging, test-runner scripts — `build-bundle.ts` (esbuild), `package-npm.ts` (publish staging) |
+| [`knowledge/`](knowledge) | Reference knowledge base — facts/patterns/gotchas JSONL stores + architecture notes |
+| [`spinners/`](spinners) | 45 themed terminal spinner verb packs |
 | [`character/`](character/README.md) | Reserved location for persona/avatar/voice assets (currently empty — persona lives in `SOUL.md`/`IDENTITY.md`) |
-| [`dist/`](dist/README.md) | Generated build output — do not hand-edit |
+| [`dist/`](dist) | Generated build output — do not hand-edit |
 
 Plus root-level files: [`clawd.json`](clawd.json) (catalog entry — bio, lore, message examples), [`.env.example`](.env.example) / `.env.local` (local config).
 
-Governing docs: [`CLAWD.md`](CLAWD.md) (Layer A harness) · [`IDENTITY.md`](IDENTITY.md) · [`SOUL.md`](SOUL.md) · [`SKILL.md`](SKILL.md) · [`AGENT.md`](AGENT.md) · [`MIGRATE.md`](MIGRATE.md).
+Governing docs: [`CLAWD.md`](CLAWD.md) (Layer A harness) · [`IDENTITY.md`](IDENTITY.md) · [`SOUL.md`](SOUL.md) · [`SKILL.md`](SKILL.md) · [`AGENT.md`](AGENT.md) · [`MIGRATE.md`](MIGRATE.md) *(a consolidation plan — not yet executed)*.
 
 ---
 
