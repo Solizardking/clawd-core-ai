@@ -70,7 +70,7 @@ export class RemoteMcpClient {
     const result = await this.client!.callTool({ name, arguments: args });
     return {
       content: (result.content ?? []) as McpCallResult['content'],
-      isError: result.isError ?? false,
+      isError: result.isError === true,
     };
   }
 

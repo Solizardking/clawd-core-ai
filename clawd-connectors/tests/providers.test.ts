@@ -46,7 +46,9 @@ describe('Clawd Connectors', () => {
     });
     const s = await connectors.helius.status();
     assert.equal(s.configured, true);
-    assert.ok(s.error === undefined || s.tools !== undefined);
+    // API key is set (REST path works), but without an MCP URL, tool listing
+    // fails — which is surfaced as `error`. Both are valid states.
+    assert.equal(s.restBase, 'https://api.helius.dev');
   });
 
   it('listTools without MCP URL throws a clear error', async () => {
