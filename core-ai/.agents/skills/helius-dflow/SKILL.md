@@ -1,20 +1,15 @@
+<!-- Generated from helius-skills/helius-dflow/SKILL.md — do not edit -->
+
 ---
 name: helius-dflow
-description: Build Solana trading applications combining DFlow trading APIs with Helius infrastructure. Covers spot swaps (imperative and declarative), prediction markets, real-time market streaming, Proof KYC, the DFlow Agent CLI for autonomous trading, transaction submission via Sender, fee optimization, shred-level streaming via LaserStream, and wallet intelligence.
-license: MIT
-metadata:
-  author: Helius Labs
-  version: "1.1.1"
-  tags:
-    - solana
-    - trading
-    - dex
-    - prediction-markets
-    - kyc
-    - websocket
-    - laserstream
-  mcp-server: helius-mcp
-  mintlify-proj: dflow
+version: "1.1.1"
+description: >
+  Build Solana trading applications combining DFlow trading APIs with Helius
+  infrastructure. Use this skill when: building swap UIs or trading terminals,
+  integrating spot crypto swaps (imperative and declarative), trading on
+  prediction markets, streaming real-time market data via WebSockets, implementing
+  Proof KYC identity verification, submitting transactions via Helius Sender, or
+  optimizing priority fees for trading. Requires helius-mcp MCP server.
 ---
 
 # Helius x DFlow — Build Trading Apps on Solana
@@ -42,9 +37,8 @@ Before doing anything, verify these:
 **CRITICAL**: Check if Helius MCP public tools are available (e.g., `heliusWallet`, `heliusAsset`, `heliusChain`). If they are NOT available, **STOP**. Do NOT attempt to call Helius APIs via curl or any other workaround. Tell the user:
 
 ```
-You need to install the Helius MCP server first:
-npx helius-mcp@latest  # configure in .clawd/settings.json or your MCP client
-Then restart Clawd so the tools become available.
+Configure the Helius MCP server in .clawd/settings.json or your MCP client: npx helius-mcp@latest
+Then restart Clawd Code Code so the tools become available.
 ```
 
 ### 2. DFlow MCP Server (Optional but Recommended)
@@ -55,7 +49,7 @@ Check if DFlow MCP tools are available. The DFlow MCP server provides tools for 
 Add the DFlow MCP server at pond.dflow.net/mcp for enhanced API tooling.
 ```
 
-It can also be installed by running the command `Configure DFlow MCP over HTTP: https://pond.dflow.net/mcp`, or by being directly added to your project's `.mcp.json`:
+It can also be configured in your MCP client at `https://pond.dflow.net/mcp`, or by being directly added to your project's `.mcp.json`:
 
 ```
 {
@@ -313,7 +307,7 @@ Follow these rules in ALL implementations:
 - Rate Limits: `https://www.helius.dev/docs/billing/rate-limits.md`
 - Dashboard: `https://dashboard.helius.dev`
 - Full Agent Signup Instructions: `https://dashboard.helius.dev/agents.md`
-- Helius MCP Server: `npx helius-mcp@latest  # configure in .clawd/settings.json or your MCP client`
+- Helius MCP Server: `npx helius-mcp@latest` (configure in `.clawd/settings.json` or your MCP client)
 - LaserStream SDK: `open-clawd.local/helius-labs/laserstream-sdk`
 
 ### DFlow

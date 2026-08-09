@@ -21,9 +21,9 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ROOT = join(__dirname, "..");
-const CANONICAL_DIR = join(ROOT, "helius-skills");
+const CANONICAL_DIR = join(ROOT, "clawd-skills");
 const AGENTS_OUT = join(ROOT, ".agents", "skills");
-const MCP_OUT = join(ROOT, "helius-mcp", "system-prompts");
+const MCP_OUT = join(ROOT, "clawd-mcp", "system-prompts");
 
 interface SkillConfig {
   /** Directory name under helius-skills/ */
@@ -34,8 +34,10 @@ interface SkillConfig {
   enhancedDescription: string;
 }
 
-const PLUGIN_DIR = join(ROOT, "helius-plugin", "skills");
-const CURSOR_DIR = join(ROOT, "helius-cursor", "skills");
+const PLUGIN_DIR = join(ROOT, "clawd-plugin", "skills");
+// No clawd-cursor/ package exists in this checkout; destSkillMd's existsSync
+// guard below makes this a safe no-op rather than a hard requirement.
+const CURSOR_DIR = join(ROOT, "clawd-cursor", "skills");
 
 /** Load skill versions from versions.json (single source of truth). */
 const VERSIONS: Record<string, string> = JSON.parse(

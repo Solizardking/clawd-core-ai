@@ -1,10 +1,14 @@
+<!-- Generated from helius-skills/helius/SKILL.md — do not edit -->
+
 ---
 name: helius
-description: Build Solana applications with Helius infrastructure. Covers transaction sending (Sender), asset/NFT queries (DAS API), real-time streaming (WebSockets, Laserstream), event pipelines (webhooks), priority fees, wallet analysis, and agent onboarding.
-metadata:
-  author: Helius Labs
-  version: "1.1.1"
-  mcp-server: helius-mcp
+version: "1.1.1"
+description: >
+  Build Solana applications with Helius infrastructure. Use this skill when:
+  sending transactions (SOL, SPL tokens, swaps), querying assets/NFTs (DAS API),
+  streaming real-time data (WebSockets, Laserstream), setting up webhooks for
+  event notifications, analyzing wallets (balances, history, identity), or
+  managing Helius API keys and plans. Requires helius-mcp MCP server.
 ---
 
 # Helius — Build on Solana
@@ -15,7 +19,7 @@ You are an expert Solana developer building with Helius's infrastructure. Helius
 
 ### 1. Helius MCP Server
 
-**Recommended**: If Helius MCP tools are available (e.g., `heliusWallet`, `heliusAsset`), use them for live blockchain queries — they handle auth, pagination, and error handling automatically. If not available, suggest: `npx helius-mcp@latest  # configure in .clawd/settings.json or your MCP client` then restart Clawd. Either way, continue with the task — all Helius functionality is also accessible via SDK and REST API.
+**Recommended**: If Helius MCP tools are available (e.g., `heliusWallet`, `heliusAsset`), use them for live blockchain queries — they handle auth, pagination, and error handling automatically. If not available, suggest: `npx helius-mcp@latest` (configure in `.clawd/settings.json` or your MCP client) then restart Clawd Code. Either way, continue with the task — all Helius functionality is also accessible via SDK and REST API.
 
 ### 2. MCP Router Surface
 
@@ -212,7 +216,7 @@ Follow these rules in ALL implementations:
 - Use `getTransactionHistory` in `signatures` mode for lightweight listing (~5 lines/tx), then `parseTransactions` only on transactions of interest
 - Prefer `getTokenBalances` (compact per-token lines) over `getWalletBalances` (full portfolio with metadata) when you don't need USD values or SOL balance
 
-### Common Pitfalls
+## Quality Checks & Common Pitfalls
 - **SDK parameter names differ from API names** — The REST API uses kebab-case (`before-signature`), the Enhanced SDK uses camelCase (`beforeSignature`), and the RPC SDK uses different names entirely (`paginationToken`). Always check `references/enhanced-transactions.md` for the parameter name mapping before writing pagination or filtering code.
 - **Never use `any` for SDK request params** — Import the proper request types (`GetEnhancedTransactionsByAddressRequest`, `GetTransactionsForAddressConfigFull`, etc.) so TypeScript catches name mismatches at compile time. A wrong param name like `before` instead of `beforeSignature` silently does nothing.
 - **Some features require paid Helius plans** — Ascending sort, certain pagination modes, and advanced filters on `getTransactionHistory` may return "only available for paid plans". When this happens, suggest alternative approaches (e.g., use `parseTransactions` with specific signatures, or use `getWalletFundedBy` instead of ascending sort to find first transactions).

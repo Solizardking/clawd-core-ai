@@ -1,21 +1,15 @@
+<!-- Generated from helius-skills/helius-jupiter/SKILL.md — do not edit -->
+
 ---
 name: helius-jupiter
-description: Build Solana DeFi applications combining Jupiter APIs with Helius infrastructure. Covers token swaps (Swap API V2), lending/borrowing (Lend protocol), limit orders (Trigger), DCA (Recurring), token/price data, transaction submission via Sender, fee optimization, real-time streaming, and wallet intelligence.
-license: MIT
-metadata:
-  author: Helius Labs
-  version: "1.0.1"
-  tags:
-    - solana
-    - defi
-    - swap
-    - lending
-    - dca
-    - limit-orders
-    - websocket
-    - laserstream
-  mcp-server: helius-mcp
-  mintlify-proj: jupiter
+version: "1.0.1"
+description: >
+  Build Solana DeFi applications combining Jupiter APIs with Helius
+  infrastructure. Use this skill when: building token swap UIs or trading terminals,
+  integrating lending/borrowing via Jupiter Lend, setting up limit orders or DCA,
+  querying token prices and metadata, checking token safety via Token Shield,
+  embedding a drop-in swap widget, submitting transactions via Helius Sender, or
+  optimizing priority fees for DeFi operations. Requires helius-mcp MCP server.
 ---
 
 # Helius x Jupiter — Build DeFi Apps on Solana
@@ -31,9 +25,8 @@ Before doing anything, verify these:
 **CRITICAL**: Check if Helius MCP tools are available (e.g., `getBalance`, `getAssetsByOwner`, `getPriorityFeeEstimate`). If they are NOT available, **STOP**. Do NOT attempt to call Helius APIs via curl or any other workaround. Tell the user:
 
 ```
-You need to install the Helius MCP server first:
-npx helius-mcp@latest  # configure in .clawd/settings.json or your MCP client
-Then restart Clawd so the tools become available.
+Configure the Helius MCP server in .clawd/settings.json or your MCP client: npx helius-mcp@latest
+Then restart Clawd Code Code so the tools become available.
 ```
 
 ### 2. Jupiter API Key
@@ -320,7 +313,7 @@ Follow these rules in ALL implementations:
 - Rate Limits: `https://www.helius.dev/docs/billing/rate-limits.md`
 - Dashboard: `https://dashboard.helius.dev`
 - Full Agent Signup Instructions: `https://dashboard.helius.dev/agents.md`
-- Helius MCP Server: `npx helius-mcp@latest  # configure in .clawd/settings.json or your MCP client`
+- Helius MCP Server: `npx helius-mcp@latest` (configure in `.clawd/settings.json` or your MCP client)
 - LaserStream SDK: `open-clawd.local/helius-labs/laserstream-sdk`
 
 ### Jupiter

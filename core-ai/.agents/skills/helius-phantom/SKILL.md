@@ -1,20 +1,15 @@
+<!-- Generated from helius-skills/helius-phantom/SKILL.md — do not edit -->
+
 ---
 name: helius-phantom
-description: Build frontend Solana applications with Phantom Connect SDK and Helius infrastructure. Covers React, React Native, and browser SDK integration, transaction signing via Helius Sender, API key proxying, token gating, NFT minting, crypto payments, real-time updates, and secure frontend architecture.
-license: MIT
-metadata:
-  author: Helius Labs
-  version: "1.0.1"
-  tags:
-    - solana
-    - phantom
-    - wallet
-    - frontend
-    - react
-    - react-native
-    - nextjs
-    - dapp
-  mcp-server: helius-mcp
+version: "1.0.1"
+description: >
+  Build frontend Solana applications with Phantom Connect SDK and Helius
+  infrastructure. Use this skill when: connecting Phantom wallet in React,
+  React Native, or vanilla JS apps, signing and submitting transactions via
+  Helius Sender, building token-gated content, minting NFTs, accepting crypto
+  payments, displaying portfolio data, streaming real-time updates, or setting
+  up secure API key proxying. Requires helius-mcp MCP server.
 ---
 
 # Helius x Phantom — Build Frontend Solana Apps
@@ -42,9 +37,8 @@ Before doing anything, verify these:
 **CRITICAL**: Check if Helius MCP public tools are available (e.g., `heliusWallet`, `heliusAsset`, `heliusChain`). If they are NOT available, **STOP**. Do NOT attempt to call Helius APIs via curl or any other workaround. Tell the user:
 
 ```
-You need to install the Helius MCP server first:
-npx helius-mcp@latest  # configure in .clawd/settings.json or your MCP client
-Then restart Clawd so the tools become available.
+Configure the Helius MCP server in .clawd/settings.json or your MCP client: npx helius-mcp@latest
+Then restart Clawd Code Code so the tools become available.
 ```
 
 ### 2. API Key
@@ -67,9 +61,9 @@ When users have multiple skills installed, route by environment:
 
 - **"build a frontend app" / "React" / "Next.js" / "browser" / "connect wallet"** → This skill (Phantom + Helius frontend patterns)
 - **"build a mobile app" / "React Native" / "Expo"** → This skill (Phantom React Native SDK)
-- **"build a backend" / "CLI" / "server" / "script"** → `/helius` skill (Helius infrastructure)
-- **"build a trading bot" / "swap" / "DFlow"** → `/helius-dflow` skill (DFlow trading APIs)
-- **"query blockchain data" (no browser context)** → `/helius` skill
+- **"build a backend" / "CLI" / "server" / "script"** → the Helius skill skill (Helius infrastructure)
+- **"build a trading bot" / "swap" / "DFlow"** → the Helius DFlow skill skill (DFlow trading APIs)
+- **"query blockchain data" (no browser context)** → the Helius skill skill
 
 ### Wallet Connection — React
 **Read**: `references/react-sdk.md`
@@ -347,11 +341,10 @@ Follow these rules in ALL implementations:
 - Rate Limits: `https://www.helius.dev/docs/billing/rate-limits.md`
 - Dashboard: `https://dashboard.helius.dev`
 - Full Agent Signup Instructions: `https://dashboard.helius.dev/agents.md`
-- Helius MCP Server: `npx helius-mcp@latest  # configure in .clawd/settings.json or your MCP client`
+- Helius MCP Server: `npx helius-mcp@latest` (configure in `.clawd/settings.json` or your MCP client)
 - Orb Explorer: `https://orbmarkets.io`
 
-## Common Pitfalls
-
+## Quality Checks & Common Pitfalls
 - **Using `signAndSendTransaction` when `signTransaction` + Sender is available** — for extension wallets (`"injected"` provider), `signAndSendTransaction` submits through standard RPC. Use `signTransaction` then POST to Helius Sender for better landing rates. Note: embedded wallets (`"google"`, `"apple"`) only support `signAndSendTransaction`.
 - **Missing Phantom Portal App ID** — Google and Apple OAuth providers require an appId from phantom.com/portal. Extension-only (`"injected"`) does not.
 - **Redirect URL not allowlisted in Portal** — OAuth login will fail if the exact redirect URL (including protocol and path) isn't allowlisted in Phantom Portal settings.
