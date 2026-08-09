@@ -1,11 +1,17 @@
+import type { UUID } from 'crypto';
+
 import type {
   Base64ImageSource,
   ContentBlockParam,
   ImageBlockParam,
-} from '@anthropic-ai/sdk/resources/messages.mjs'
-import type { UUID } from 'crypto'
-import type { SDKMessage } from '../entrypoints/agentSdkTypes.js'
-import { detectImageFormatFromBase64 } from '../utils/imageResizer.js'
+} from '@anthropic-ai/sdk/resources/messages.mjs';
+
+import type {
+  SDKMessage,
+} from '../../../core-ai/clawd-code/src/entrypoints/agentSdkTypes.js';
+import {
+  detectImageFormatFromBase64,
+} from '../../../core-ai/clawd-code/src/utils/imageResizer.js';
 
 /**
  * Process an inbound user message from the bridge, extracting content

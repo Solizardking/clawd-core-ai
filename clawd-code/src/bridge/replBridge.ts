@@ -1,71 +1,100 @@
 // biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
-import { randomUUID } from 'crypto'
+import { randomUUID } from 'crypto';
+
 import {
-  createBridgeApiClient,
-  BridgeFatalError,
-  isExpiredErrorType,
-  isSuppressible403,
-} from './bridgeApi.js'
-import type { BridgeConfig, BridgeApiClient } from './types.js'
-import { logForDebugging } from '../utils/debug.js'
-import { logForDiagnosticsNoPII } from '../utils/diagLogs.js'
+  HybridTransport,
+} from '../../../core-ai/clawd-code/src/cli/transports/HybridTransport.js';
+import type {
+  SDKMessage,
+} from '../../../core-ai/clawd-code/src/entrypoints/agentSdkTypes.js';
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../services/analytics/index.js'
-import { registerCleanup } from '../utils/cleanupRegistry.js'
+} from '../../../core-ai/clawd-code/src/services/analytics/index.js';
+import type { Message } from '../../../core-ai/clawd-code/src/types/message.js';
 import {
+  registerCleanup,
+} from '../../../core-ai/clawd-code/src/utils/cleanupRegistry.js';
+import {
+  updateSessionBridgeId,
+} from '../../../core-ai/clawd-code/src/utils/concurrentSessions.js';
+import {
+  logForDebugging,
+} from '../../../core-ai/clawd-code/src/utils/debug.js';
+import {
+  logForDiagnosticsNoPII,
+} from '../../../core-ai/clawd-code/src/utils/diagLogs.js';
+import {
+  isEnvTruthy,
+  isInProtectedNamespace,
+} from '../../../core-ai/clawd-code/src/utils/envUtils.js';
+import { errorMessage } from '../../../core-ai/clawd-code/src/utils/errors.js';
+import type {
+  PermissionMode,
+} from '../../../core-ai/clawd-code/src/utils/permissions/PermissionMode.js';
+import {
+  updateSessionIngressAuthToken,
+} from '../../../core-ai/clawd-code/src/utils/sessionIngressAuth.js';
+import { sleep } from '../../../core-ai/clawd-code/src/utils/sleep.js';
+import type {
+  SDKControlRequest,
+  SDKControlResponse,
+} from '../entrypoints/sdk/controlTypes.js';
+import {
+  BridgeFatalError,
+  createBridgeApiClient,
+  isExpiredErrorType,
+  isSuppressible403,
+  validateBridgeId,
+} from './bridgeApi.js';
+import {
+  clearBridgeDebugHandle,
+  injectBridgeFault,
+  registerBridgeDebugHandle,
+  wrapApiForFaultInjection,
+} from './bridgeDebug.js';
+import {
+  BoundedUUIDSet,
+  extractTitleText,
   handleIngressMessage,
   handleServerControlRequest,
-  makeResultMessage,
   isEligibleBridgeMessage,
-  extractTitleText,
-  BoundedUUIDSet,
-} from './bridgeMessaging.js'
+  makeResultMessage,
+} from './bridgeMessaging.js';
 import {
-  decodeWorkSecret,
-  buildSdkUrl,
-  buildCCRv2SdkUrl,
-  sameSessionId,
-} from './workSecret.js'
-import { toCompatSessionId, toInfraSessionId } from './sessionIdCompat.js'
-import { updateSessionBridgeId } from '../utils/concurrentSessions.js'
-import { getTrustedDeviceToken } from './trustedDevice.js'
-import { HybridTransport } from '../cli/transports/HybridTransport.js'
-import {
-  type ReplBridgeTransport,
-  createV1ReplTransport,
-  createV2ReplTransport,
-} from './replBridgeTransport.js'
-import { updateSessionIngressAuthToken } from '../utils/sessionIngressAuth.js'
-import { isEnvTruthy, isInProtectedNamespace } from '../utils/envUtils.js'
-import { validateBridgeId } from './bridgeApi.js'
+  type CapacitySignal,
+  createCapacityWake,
+} from './capacityWake.js';
 import {
   describeAxiosError,
   extractHttpStatus,
   logBridgeSkip,
-} from './debugUtils.js'
-import type { Message } from '../types/message.js'
-import type { SDKMessage } from '../entrypoints/agentSdkTypes.js'
-import type { PermissionMode } from '../utils/permissions/PermissionMode.js'
-import type {
-  SDKControlRequest,
-  SDKControlResponse,
-} from '../entrypoints/sdk/controlTypes.js'
-import { createCapacityWake, type CapacitySignal } from './capacityWake.js'
-import { FlushGate } from './flushGate.js'
+} from './debugUtils.js';
+import { FlushGate } from './flushGate.js';
 import {
   DEFAULT_POLL_CONFIG,
   type PollIntervalConfig,
-} from './pollConfigDefaults.js'
-import { errorMessage } from '../utils/errors.js'
-import { sleep } from '../utils/sleep.js'
+} from './pollConfigDefaults.js';
 import {
-  wrapApiForFaultInjection,
-  registerBridgeDebugHandle,
-  clearBridgeDebugHandle,
-  injectBridgeFault,
-} from './bridgeDebug.js'
+  createV1ReplTransport,
+  createV2ReplTransport,
+  type ReplBridgeTransport,
+} from './replBridgeTransport.js';
+import {
+  toCompatSessionId,
+  toInfraSessionId,
+} from './sessionIdCompat.js';
+import { getTrustedDeviceToken } from './trustedDevice.js';
+import type {
+  BridgeApiClient,
+  BridgeConfig,
+} from './types.js';
+import {
+  buildCCRv2SdkUrl,
+  buildSdkUrl,
+  decodeWorkSecret,
+  sameSessionId,
+} from './workSecret.js';
 
 export type ReplBridgeHandle = {
   bridgeSessionId: string
@@ -2399,10 +2428,8 @@ async function startWorkPollLoop({
 
 // Exported for testing only
 export {
-  startWorkPollLoop as _startWorkPollLoopForTesting,
+  POLL_ERROR_GIVE_UP_MS as _POLL_ERROR_GIVE_UP_MS_ForTesting,
   POLL_ERROR_INITIAL_DELAY_MS as _POLL_ERROR_INITIAL_DELAY_MS_ForTesting,
   POLL_ERROR_MAX_DELAY_MS as _POLL_ERROR_MAX_DELAY_MS_ForTesting,
-  POLL_ERROR_GIVE_UP_MS as _POLL_ERROR_GIVE_UP_MS_ForTesting,
-}
-
-
+  startWorkPollLoop as _startWorkPollLoopForTesting,
+};

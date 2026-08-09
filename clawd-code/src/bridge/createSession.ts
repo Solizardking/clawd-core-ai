@@ -1,8 +1,12 @@
-import type { SDKMessage } from '../entrypoints/agentSdkTypes.js'
-import { logForDebugging } from '../utils/debug.js'
-import { errorMessage } from '../utils/errors.js'
-import { extractErrorDetail } from './debugUtils.js'
-import { toCompatSessionId } from './sessionIdCompat.js'
+import type {
+  SDKMessage,
+} from '../../../core-ai/clawd-code/src/entrypoints/agentSdkTypes.js';
+import {
+  logForDebugging,
+} from '../../../core-ai/clawd-code/src/utils/debug.js';
+import { errorMessage } from '../../../core-ai/clawd-code/src/utils/errors.js';
+import { extractErrorDetail } from './debugUtils.js';
+import { toCompatSessionId } from './sessionIdCompat.js';
 
 type GitSource = {
   type: 'git_repository'
@@ -52,13 +56,13 @@ export async function createBridgeSession({
   getAccessToken?: () => string | undefined
   permissionMode?: string
 }): Promise<string | null> {
-  const { getClaudeAIOAuthTokens } = await import('../utils/auth.js')
-  const { getOrganizationUUID } = await import('../services/oauth/client.js')
-  const { getOauthConfig } = await import('../constants/oauth.js')
-  const { getOAuthHeaders } = await import('../utils/teleport/api.js')
-  const { parseGitHubRepository } = await import('../utils/detectRepository.js')
-  const { getDefaultBranch } = await import('../utils/git.js')
-  const { getMainLoopModel } = await import('../utils/model/model.js')
+  const { getClaudeAIOAuthTokens } = await import('../../../core-ai/clawd-code/src/utils/auth.js')
+  const { getOrganizationUUID } = await import('../../../core-ai/clawd-code/src/services/oauth/client.js')
+  const { getOauthConfig } = await import('../../../core-ai/clawd-code/src/constants/oauth.js')
+  const { getOAuthHeaders } = await import('../../../core-ai/clawd-code/src/utils/teleport/api.js')
+  const { parseGitHubRepository } = await import('../../../core-ai/clawd-code/src/utils/detectRepository.js')
+  const { getDefaultBranch } = await import('../../../core-ai/clawd-code/src/utils/git.js')
+  const { getMainLoopModel } = await import('../../../core-ai/clawd-code/src/utils/model/model.js')
   const { default: axios } = await import('axios')
 
   const accessToken =
@@ -79,7 +83,7 @@ export async function createBridgeSession({
   let gitOutcome: GitOutcome | null = null
 
   if (gitRepoUrl) {
-    const { parseGitRemote } = await import('../utils/detectRepository.js')
+    const { parseGitRemote } = await import('../../../core-ai/clawd-code/src/utils/detectRepository.js')
     const parsed = parseGitRemote(gitRepoUrl)
     if (parsed) {
       const { host, owner, name } = parsed
@@ -191,10 +195,10 @@ export async function getBridgeSession(
   sessionId: string,
   opts?: { baseUrl?: string; getAccessToken?: () => string | undefined },
 ): Promise<{ environment_id?: string; title?: string } | null> {
-  const { getClaudeAIOAuthTokens } = await import('../utils/auth.js')
-  const { getOrganizationUUID } = await import('../services/oauth/client.js')
-  const { getOauthConfig } = await import('../constants/oauth.js')
-  const { getOAuthHeaders } = await import('../utils/teleport/api.js')
+  const { getClaudeAIOAuthTokens } = await import('../../../core-ai/clawd-code/src/utils/auth.js')
+  const { getOrganizationUUID } = await import('../../../core-ai/clawd-code/src/services/oauth/client.js')
+  const { getOauthConfig } = await import('../../../core-ai/clawd-code/src/constants/oauth.js')
+  const { getOAuthHeaders } = await import('../../../core-ai/clawd-code/src/utils/teleport/api.js')
   const { default: axios } = await import('axios')
 
   const accessToken =
@@ -268,10 +272,10 @@ export async function archiveBridgeSession(
     timeoutMs?: number
   },
 ): Promise<void> {
-  const { getClaudeAIOAuthTokens } = await import('../utils/auth.js')
-  const { getOrganizationUUID } = await import('../services/oauth/client.js')
-  const { getOauthConfig } = await import('../constants/oauth.js')
-  const { getOAuthHeaders } = await import('../utils/teleport/api.js')
+  const { getClaudeAIOAuthTokens } = await import('../../../core-ai/clawd-code/src/utils/auth.js')
+  const { getOrganizationUUID } = await import('../../../core-ai/clawd-code/src/services/oauth/client.js')
+  const { getOauthConfig } = await import('../../../core-ai/clawd-code/src/constants/oauth.js')
+  const { getOAuthHeaders } = await import('../../../core-ai/clawd-code/src/utils/teleport/api.js')
   const { default: axios } = await import('axios')
 
   const accessToken =
@@ -329,10 +333,10 @@ export async function updateBridgeSessionTitle(
   title: string,
   opts?: { baseUrl?: string; getAccessToken?: () => string | undefined },
 ): Promise<void> {
-  const { getClaudeAIOAuthTokens } = await import('../utils/auth.js')
-  const { getOrganizationUUID } = await import('../services/oauth/client.js')
-  const { getOauthConfig } = await import('../constants/oauth.js')
-  const { getOAuthHeaders } = await import('../utils/teleport/api.js')
+  const { getClaudeAIOAuthTokens } = await import('../../../core-ai/clawd-code/src/utils/auth.js')
+  const { getOrganizationUUID } = await import('../../../core-ai/clawd-code/src/services/oauth/client.js')
+  const { getOauthConfig } = await import('../../../core-ai/clawd-code/src/constants/oauth.js')
+  const { getOAuthHeaders } = await import('../../../core-ai/clawd-code/src/utils/teleport/api.js')
   const { default: axios } = await import('axios')
 
   const accessToken =

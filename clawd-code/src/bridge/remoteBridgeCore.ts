@@ -28,48 +28,70 @@
  * REPL-only — daemon/print stay on env-based.
  */
 
-import { feature } from 'bun:bundle'
-import axios from 'axios'
-import {
-  createV2ReplTransport,
-  type ReplBridgeTransport,
-} from './replBridgeTransport.js'
-import { buildCCRv2SdkUrl } from './workSecret.js'
-import { toCompatSessionId } from './sessionIdCompat.js'
-import { FlushGate } from './flushGate.js'
-import { createTokenRefreshScheduler } from './jwtUtils.js'
-import { getTrustedDeviceToken } from './trustedDevice.js'
-import {
-  getEnvLessBridgeConfig,
-  type EnvLessBridgeConfig,
-} from './envLessBridgeConfig.js'
-import {
-  handleIngressMessage,
-  handleServerControlRequest,
-  makeResultMessage,
-  isEligibleBridgeMessage,
-  extractTitleText,
-  BoundedUUIDSet,
-} from './bridgeMessaging.js'
-import { logBridgeSkip } from './debugUtils.js'
-import { logForDebugging } from '../utils/debug.js'
-import { logForDiagnosticsNoPII } from '../utils/diagLogs.js'
-import { isInProtectedNamespace } from '../utils/envUtils.js'
-import { errorMessage } from '../utils/errors.js'
-import { sleep } from '../utils/sleep.js'
-import { registerCleanup } from '../utils/cleanupRegistry.js'
+import axios from 'axios';
+import { feature } from 'bun:bundle';
+
+import type {
+  SDKMessage,
+} from '../../../core-ai/clawd-code/src/entrypoints/agentSdkTypes.js';
 import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
-} from '../services/analytics/index.js'
-import type { ReplBridgeHandle, BridgeState } from './replBridge.js'
-import type { Message } from '../types/message.js'
-import type { SDKMessage } from '../entrypoints/agentSdkTypes.js'
+} from '../../../core-ai/clawd-code/src/services/analytics/index.js';
+import type { Message } from '../../../core-ai/clawd-code/src/types/message.js';
+import {
+  registerCleanup,
+} from '../../../core-ai/clawd-code/src/utils/cleanupRegistry.js';
+import {
+  logForDebugging,
+} from '../../../core-ai/clawd-code/src/utils/debug.js';
+import {
+  logForDiagnosticsNoPII,
+} from '../../../core-ai/clawd-code/src/utils/diagLogs.js';
+import {
+  isInProtectedNamespace,
+} from '../../../core-ai/clawd-code/src/utils/envUtils.js';
+import { errorMessage } from '../../../core-ai/clawd-code/src/utils/errors.js';
+import type {
+  PermissionMode,
+} from '../../../core-ai/clawd-code/src/utils/permissions/PermissionMode.js';
+import { sleep } from '../../../core-ai/clawd-code/src/utils/sleep.js';
 import type {
   SDKControlRequest,
   SDKControlResponse,
-} from '../entrypoints/sdk/controlTypes.js'
-import type { PermissionMode } from '../utils/permissions/PermissionMode.js'
+} from '../entrypoints/sdk/controlTypes.js';
+import { getBridgeBaseUrlOverride } from './bridgeConfig.js';
+import {
+  BoundedUUIDSet,
+  extractTitleText,
+  handleIngressMessage,
+  handleServerControlRequest,
+  isEligibleBridgeMessage,
+  makeResultMessage,
+} from './bridgeMessaging.js';
+import {
+  createCodeSession,
+  fetchRemoteCredentials as fetchRemoteCredentialsRaw,
+  type RemoteCredentials,
+} from './codeSessionApi.js';
+import { logBridgeSkip } from './debugUtils.js';
+import {
+  type EnvLessBridgeConfig,
+  getEnvLessBridgeConfig,
+} from './envLessBridgeConfig.js';
+import { FlushGate } from './flushGate.js';
+import { createTokenRefreshScheduler } from './jwtUtils.js';
+import type {
+  BridgeState,
+  ReplBridgeHandle,
+} from './replBridge.js';
+import {
+  createV2ReplTransport,
+  type ReplBridgeTransport,
+} from './replBridgeTransport.js';
+import { toCompatSessionId } from './sessionIdCompat.js';
+import { getTrustedDeviceToken } from './trustedDevice.js';
+import { buildCCRv2SdkUrl } from './workSecret.js';
 
 const ANTHROPIC_VERSION = '2023-06-01'
 
@@ -914,16 +936,7 @@ async function withRetry<T>(
 
 // Moved to codeSessionApi.ts so the SDK /bridge subpath can bundle them
 // without pulling in this file's heavy CLI tree (analytics, transport).
-export {
-  createCodeSession,
-  type RemoteCredentials,
-} from './codeSessionApi.js'
-import {
-  createCodeSession,
-  fetchRemoteCredentials as fetchRemoteCredentialsRaw,
-  type RemoteCredentials,
-} from './codeSessionApi.js'
-import { getBridgeBaseUrlOverride } from './bridgeConfig.js'
+export { createCodeSession, type RemoteCredentials } from './codeSessionApi.js';
 
 // CLI-side wrapper that applies the CLAUDE_BRIDGE_BASE_URL dev override and
 // injects the trusted-device token (both are env/GrowthBook reads that the

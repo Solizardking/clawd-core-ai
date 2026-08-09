@@ -1,6 +1,12 @@
-import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { EnvironmentVerifier } from './verify.js';
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  test,
+} from 'node:test';
+
+import { EnvironmentVerifier } from '../../core-ai/clawd-code/src/verify.js';
 
 /**
  * Focused on the synchronous, side-effect-free checks. checkXaiReachable()

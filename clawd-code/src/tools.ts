@@ -1,16 +1,137 @@
+import { feature } from 'bun:bundle';
+import uniqBy from 'lodash-es/uniqBy.js';
+
+/* eslint-enable custom-rules/no-process-env-top-level, @typescript-eslint/no-require-imports */
+import type {
+  ToolPermissionContext,
+} from '../../core-ai/clawd-code/src/Tool.js';
 // biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
-import { toolMatchesName, type Tool, type Tools } from './Tool.js'
-import { AgentTool } from './tools/AgentTool/AgentTool.js'
-import { SkillTool } from './tools/SkillTool/SkillTool.js'
-import { BashTool } from './tools/BashTool/BashTool.js'
-import { FileEditTool } from './tools/FileEditTool/FileEditTool.js'
-import { FileReadTool } from './tools/FileReadTool/FileReadTool.js'
-import { FileWriteTool } from './tools/FileWriteTool/FileWriteTool.js'
-import { GlobTool } from './tools/GlobTool/GlobTool.js'
-import { NotebookEditTool } from './tools/NotebookEditTool/NotebookEditTool.js'
-import { WebFetchTool } from './tools/WebFetchTool/WebFetchTool.js'
-import { TaskStopTool } from './tools/TaskStopTool/TaskStopTool.js'
-import { BriefTool } from './tools/BriefTool/BriefTool.js'
+import {
+  type Tool,
+  toolMatchesName,
+  type Tools,
+} from '../../core-ai/clawd-code/src/Tool.js';
+import {
+  AgentTool,
+} from '../../core-ai/clawd-code/src/tools/AgentTool/AgentTool.js';
+/* eslint-enable @typescript-eslint/no-require-imports */
+import {
+  AskUserQuestionTool,
+} from '../../core-ai/clawd-code/src/tools/AskUserQuestionTool/AskUserQuestionTool.js';
+import {
+  BashTool,
+} from '../../core-ai/clawd-code/src/tools/BashTool/BashTool.js';
+import {
+  BriefTool,
+} from '../../core-ai/clawd-code/src/tools/BriefTool/BriefTool.js';
+import {
+  ConfigTool,
+} from '../../core-ai/clawd-code/src/tools/ConfigTool/ConfigTool.js';
+import {
+  EnterPlanModeTool,
+} from '../../core-ai/clawd-code/src/tools/EnterPlanModeTool/EnterPlanModeTool.js';
+import {
+  EnterWorktreeTool,
+} from '../../core-ai/clawd-code/src/tools/EnterWorktreeTool/EnterWorktreeTool.js';
+import {
+  ExitPlanModeV2Tool,
+} from '../../core-ai/clawd-code/src/tools/ExitPlanModeTool/ExitPlanModeV2Tool.js';
+import {
+  ExitWorktreeTool,
+} from '../../core-ai/clawd-code/src/tools/ExitWorktreeTool/ExitWorktreeTool.js';
+import {
+  FileEditTool,
+} from '../../core-ai/clawd-code/src/tools/FileEditTool/FileEditTool.js';
+import {
+  FileReadTool,
+} from '../../core-ai/clawd-code/src/tools/FileReadTool/FileReadTool.js';
+import {
+  FileWriteTool,
+} from '../../core-ai/clawd-code/src/tools/FileWriteTool/FileWriteTool.js';
+import {
+  GlobTool,
+} from '../../core-ai/clawd-code/src/tools/GlobTool/GlobTool.js';
+import {
+  GrepTool,
+} from '../../core-ai/clawd-code/src/tools/GrepTool/GrepTool.js';
+import {
+  ListMcpResourcesTool,
+} from '../../core-ai/clawd-code/src/tools/ListMcpResourcesTool/ListMcpResourcesTool.js';
+import { LSPTool } from '../../core-ai/clawd-code/src/tools/LSPTool/LSPTool.js';
+import {
+  NotebookEditTool,
+} from '../../core-ai/clawd-code/src/tools/NotebookEditTool/NotebookEditTool.js';
+import {
+  ReadMcpResourceTool,
+} from '../../core-ai/clawd-code/src/tools/ReadMcpResourceTool/ReadMcpResourceTool.js';
+import {
+  isReplModeEnabled,
+  REPL_ONLY_TOOLS,
+  REPL_TOOL_NAME,
+} from '../../core-ai/clawd-code/src/tools/REPLTool/constants.js';
+import {
+  SkillTool,
+} from '../../core-ai/clawd-code/src/tools/SkillTool/SkillTool.js';
+/* eslint-enable custom-rules/no-process-env-top-level, @typescript-eslint/no-require-imports */
+import {
+  SYNTHETIC_OUTPUT_TOOL_NAME,
+} from '../../core-ai/clawd-code/src/tools/SyntheticOutputTool/SyntheticOutputTool.js';
+import {
+  TaskCreateTool,
+} from '../../core-ai/clawd-code/src/tools/TaskCreateTool/TaskCreateTool.js';
+import {
+  TaskGetTool,
+} from '../../core-ai/clawd-code/src/tools/TaskGetTool/TaskGetTool.js';
+import {
+  TaskListTool,
+} from '../../core-ai/clawd-code/src/tools/TaskListTool/TaskListTool.js';
+/* eslint-enable custom-rules/no-process-env-top-level, @typescript-eslint/no-require-imports */
+import {
+  TaskOutputTool,
+} from '../../core-ai/clawd-code/src/tools/TaskOutputTool/TaskOutputTool.js';
+import {
+  TaskStopTool,
+} from '../../core-ai/clawd-code/src/tools/TaskStopTool/TaskStopTool.js';
+import {
+  TaskUpdateTool,
+} from '../../core-ai/clawd-code/src/tools/TaskUpdateTool/TaskUpdateTool.js';
+import {
+  TestingPermissionTool,
+} from '../../core-ai/clawd-code/src/tools/testing/TestingPermissionTool.js';
+import {
+  TodoWriteTool,
+} from '../../core-ai/clawd-code/src/tools/TodoWriteTool/TodoWriteTool.js';
+import {
+  ToolSearchTool,
+} from '../../core-ai/clawd-code/src/tools/ToolSearchTool/ToolSearchTool.js';
+import {
+  WebFetchTool,
+} from '../../core-ai/clawd-code/src/tools/WebFetchTool/WebFetchTool.js';
+import {
+  WebSearchTool,
+} from '../../core-ai/clawd-code/src/tools/WebSearchTool/WebSearchTool.js';
+import {
+  isAgentSwarmsEnabled,
+} from '../../core-ai/clawd-code/src/utils/agentSwarmsEnabled.js';
+import {
+  hasEmbeddedSearchTools,
+} from '../../core-ai/clawd-code/src/utils/embeddedTools.js';
+import { isEnvTruthy } from '../../core-ai/clawd-code/src/utils/envUtils.js';
+import {
+  getDenyRuleForTool,
+} from '../../core-ai/clawd-code/src/utils/permissions/permissions.js';
+import {
+  isPowerShellToolEnabled,
+} from '../../core-ai/clawd-code/src/utils/shell/shellToolUtils.js';
+import { isTodoV2Enabled } from '../../core-ai/clawd-code/src/utils/tasks.js';
+import {
+  isToolSearchEnabledOptimistic,
+} from '../../core-ai/clawd-code/src/utils/toolSearch.js';
+import {
+  isWorktreeModeEnabled,
+} from '../../core-ai/clawd-code/src/utils/worktreeModeEnabled.js';
+import { TungstenTool } from './tools/TungstenTool/TungstenTool.js';
+
 // Dead code elimination: conditional import for ant-only tools
 /* eslint-disable custom-rules/no-process-env-top-level, @typescript-eslint/no-require-imports */
 const REPLTool =
@@ -50,42 +171,19 @@ const PushNotificationTool =
 const SubscribePRTool = feature('KAIROS_GITHUB_WEBHOOKS')
   ? require('./tools/SubscribePRTool/SubscribePRTool.js').SubscribePRTool
   : null
-/* eslint-enable custom-rules/no-process-env-top-level, @typescript-eslint/no-require-imports */
-import { TaskOutputTool } from './tools/TaskOutputTool/TaskOutputTool.js'
-import { WebSearchTool } from './tools/WebSearchTool/WebSearchTool.js'
-import { TodoWriteTool } from './tools/TodoWriteTool/TodoWriteTool.js'
-import { ExitPlanModeV2Tool } from './tools/ExitPlanModeTool/ExitPlanModeV2Tool.js'
-import { TestingPermissionTool } from './tools/testing/TestingPermissionTool.js'
-import { GrepTool } from './tools/GrepTool/GrepTool.js'
-import { TungstenTool } from './tools/TungstenTool/TungstenTool.js'
+
 // Lazy require to break circular dependency: tools.ts -> TeamCreateTool/TeamDeleteTool -> ... -> tools.ts
 /* eslint-disable @typescript-eslint/no-require-imports */
 const getTeamCreateTool = () =>
   require('./tools/TeamCreateTool/TeamCreateTool.js')
-    .TeamCreateTool as typeof import('./tools/TeamCreateTool/TeamCreateTool.js').TeamCreateTool
+    .TeamCreateTool as typeof import('../../core-ai/clawd-code/src/tools/TeamCreateTool/TeamCreateTool.js').TeamCreateTool
 const getTeamDeleteTool = () =>
   require('./tools/TeamDeleteTool/TeamDeleteTool.js')
-    .TeamDeleteTool as typeof import('./tools/TeamDeleteTool/TeamDeleteTool.js').TeamDeleteTool
+    .TeamDeleteTool as typeof import('../../core-ai/clawd-code/src/tools/TeamDeleteTool/TeamDeleteTool.js').TeamDeleteTool
 const getSendMessageTool = () =>
   require('./tools/SendMessageTool/SendMessageTool.js')
-    .SendMessageTool as typeof import('./tools/SendMessageTool/SendMessageTool.js').SendMessageTool
-/* eslint-enable @typescript-eslint/no-require-imports */
-import { AskUserQuestionTool } from './tools/AskUserQuestionTool/AskUserQuestionTool.js'
-import { LSPTool } from './tools/LSPTool/LSPTool.js'
-import { ListMcpResourcesTool } from './tools/ListMcpResourcesTool/ListMcpResourcesTool.js'
-import { ReadMcpResourceTool } from './tools/ReadMcpResourceTool/ReadMcpResourceTool.js'
-import { ToolSearchTool } from './tools/ToolSearchTool/ToolSearchTool.js'
-import { EnterPlanModeTool } from './tools/EnterPlanModeTool/EnterPlanModeTool.js'
-import { EnterWorktreeTool } from './tools/EnterWorktreeTool/EnterWorktreeTool.js'
-import { ExitWorktreeTool } from './tools/ExitWorktreeTool/ExitWorktreeTool.js'
-import { ConfigTool } from './tools/ConfigTool/ConfigTool.js'
-import { TaskCreateTool } from './tools/TaskCreateTool/TaskCreateTool.js'
-import { TaskGetTool } from './tools/TaskGetTool/TaskGetTool.js'
-import { TaskUpdateTool } from './tools/TaskUpdateTool/TaskUpdateTool.js'
-import { TaskListTool } from './tools/TaskListTool/TaskListTool.js'
-import uniqBy from 'lodash-es/uniqBy.js'
-import { isToolSearchEnabledOptimistic } from './utils/toolSearch.js'
-import { isTodoV2Enabled } from './utils/tasks.js'
+    .SendMessageTool as typeof import('../../core-ai/clawd-code/src/tools/SendMessageTool/SendMessageTool.js').SendMessageTool
+
 // Dead code elimination: conditional import for CLAUDE_CODE_VERIFY_PLAN
 /* eslint-disable custom-rules/no-process-env-top-level, @typescript-eslint/no-require-imports */
 const VerifyPlanExecutionTool =
@@ -93,15 +191,12 @@ const VerifyPlanExecutionTool =
     ? require('./tools/VerifyPlanExecutionTool/VerifyPlanExecutionTool.js')
         .VerifyPlanExecutionTool
     : null
-/* eslint-enable custom-rules/no-process-env-top-level, @typescript-eslint/no-require-imports */
-import { SYNTHETIC_OUTPUT_TOOL_NAME } from './tools/SyntheticOutputTool/SyntheticOutputTool.js'
 export {
   ALL_AGENT_DISALLOWED_TOOLS,
-  CUSTOM_AGENT_DISALLOWED_TOOLS,
   ASYNC_AGENT_ALLOWED_TOOLS,
   COORDINATOR_MODE_ALLOWED_TOOLS,
-} from './constants/tools.js'
-import { feature } from 'bun:bundle'
+  CUSTOM_AGENT_DISALLOWED_TOOLS,
+} from '../../core-ai/clawd-code/src/constants/tools.js';
 // Dead code elimination: conditional import for OVERFLOW_TEST_TOOL
 /* eslint-disable custom-rules/no-process-env-top-level, @typescript-eslint/no-require-imports */
 const OverflowTestTool = feature('OVERFLOW_TEST_TOOL')
@@ -118,7 +213,7 @@ const WebBrowserTool = feature('WEB_BROWSER_TOOL')
   ? require('./tools/WebBrowserTool/WebBrowserTool.js').WebBrowserTool
   : null
 const coordinatorModeModule = feature('COORDINATOR_MODE')
-  ? (require('./coordinator/coordinatorMode.js') as typeof import('./coordinator/coordinatorMode.js'))
+  ? (require('./coordinator/coordinatorMode.js') as typeof import('../../core-ai/clawd-code/src/coordinator/coordinatorMode.js'))
   : null
 const SnipTool = feature('HISTORY_SNIP')
   ? require('./tools/SnipTool/SnipTool.js').SnipTool
@@ -132,25 +227,12 @@ const WorkflowTool = feature('WORKFLOW_SCRIPTS')
       return require('./tools/WorkflowTool/WorkflowTool.js').WorkflowTool
     })()
   : null
-/* eslint-enable custom-rules/no-process-env-top-level, @typescript-eslint/no-require-imports */
-import type { ToolPermissionContext } from './Tool.js'
-import { getDenyRuleForTool } from './utils/permissions/permissions.js'
-import { hasEmbeddedSearchTools } from './utils/embeddedTools.js'
-import { isEnvTruthy } from './utils/envUtils.js'
-import { isPowerShellToolEnabled } from './utils/shell/shellToolUtils.js'
-import { isAgentSwarmsEnabled } from './utils/agentSwarmsEnabled.js'
-import { isWorktreeModeEnabled } from './utils/worktreeModeEnabled.js'
-import {
-  REPL_TOOL_NAME,
-  REPL_ONLY_TOOLS,
-  isReplModeEnabled,
-} from './tools/REPLTool/constants.js'
-export { REPL_ONLY_TOOLS }
+export { REPL_ONLY_TOOLS };
 /* eslint-disable @typescript-eslint/no-require-imports */
 const getPowerShellTool = () => {
   if (!isPowerShellToolEnabled()) return null
   return (
-    require('./tools/PowerShellTool/PowerShellTool.js') as typeof import('./tools/PowerShellTool/PowerShellTool.js')
+    require('./tools/PowerShellTool/PowerShellTool.js') as typeof import('../../core-ai/clawd-code/src/tools/PowerShellTool/PowerShellTool.js')
   ).PowerShellTool
 }
 /* eslint-enable @typescript-eslint/no-require-imports */

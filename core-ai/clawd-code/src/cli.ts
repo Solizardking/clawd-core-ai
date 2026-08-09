@@ -21,6 +21,7 @@ import {
 } from './model-registry.js';
 import { DEFAULT_FREE_MODEL } from './openrouter.js';
 import { createMoonshotClient } from './moonshot.js';
+import { getProviderStatus } from './providers/index.js';
 import { EnvironmentVerifier } from './verify.js';
 
 type Mode = 'CODE' | 'TRADE' | 'RESEARCH' | 'IMAGE' | 'VOICE' | 'REPL';
@@ -243,6 +244,14 @@ async function cmdInspect(): Promise<void> {
   console.log(`║    anthropic   ${maskSecret(env.ANTHROPIC_API_KEY).padEnd(58)}║`);
   console.log(`║    deepseek    ${maskSecret(env.DEEPSEEK_API_KEY).padEnd(58)}║`);
   console.log(`║    openrouter  ${maskSecret(env.OPENROUTER_API_KEY).padEnd(58)}║`);
+
+  // 3b. Solana / data API providers (masked only — see src/providers)
+  console.log('║                                                                      ║');
+  console.log('║  DATA PROVIDER KEYS                                                  ║');
+  for (const row of getProviderStatus(env)) {
+    const label = row.envKey.replace(/_API_KEY(_ID)?$/, '').toLowerCase().padEnd(14);
+    console.log(`║    ${label} ${row.masked.padEnd(58)}║`);
+  }
 
   // 4. Moonshot live ping
   const moonshot = createMoonshotClient(env.MOONSHOT_API_KEY);

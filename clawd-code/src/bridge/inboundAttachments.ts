@@ -10,17 +10,38 @@
  * skips that attachment. The message still reaches Claude, just without @path.
  */
 
-import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs'
-import axios from 'axios'
-import { randomUUID } from 'crypto'
-import { mkdir, writeFile } from 'fs/promises'
-import { basename, join } from 'path'
-import { z } from 'zod/v4'
-import { getSessionId } from '../bootstrap/state.js'
-import { logForDebugging } from '../utils/debug.js'
-import { getClaudeConfigHomeDir } from '../utils/envUtils.js'
-import { lazySchema } from '../utils/lazySchema.js'
-import { getBridgeAccessToken, getBridgeBaseUrl } from './bridgeConfig.js'
+import axios from 'axios';
+import { randomUUID } from 'crypto';
+import {
+  mkdir,
+  writeFile,
+} from 'fs/promises';
+import {
+  basename,
+  join,
+} from 'path';
+import { z } from 'zod/v4';
+
+import type {
+  ContentBlockParam,
+} from '@anthropic-ai/sdk/resources/messages.mjs';
+
+import {
+  getSessionId,
+} from '../../../core-ai/clawd-code/src/bootstrap/state.js';
+import {
+  logForDebugging,
+} from '../../../core-ai/clawd-code/src/utils/debug.js';
+import {
+  getClaudeConfigHomeDir,
+} from '../../../core-ai/clawd-code/src/utils/envUtils.js';
+import {
+  lazySchema,
+} from '../../../core-ai/clawd-code/src/utils/lazySchema.js';
+import {
+  getBridgeAccessToken,
+  getBridgeBaseUrl,
+} from './bridgeConfig.js';
 
 const DOWNLOAD_TIMEOUT_MS = 30_000
 

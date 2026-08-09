@@ -13,64 +13,95 @@
  * (SDK -p mode via query.enableRemoteControl).
  */
 
-import { feature } from 'bun:bundle'
-import { hostname } from 'os'
-import { getOriginalCwd, getSessionId } from '../bootstrap/state.js'
-import type { SDKMessage } from '../entrypoints/agentSdkTypes.js'
-import type { SDKControlResponse } from '../entrypoints/sdk/controlTypes.js'
-import { getFeatureValue_CACHED_WITH_REFRESH } from '../services/analytics/growthbook.js'
-import { getOrganizationUUID } from '../services/oauth/client.js'
+import { feature } from 'bun:bundle';
+import { hostname } from 'os';
+
+import {
+  getOriginalCwd,
+  getSessionId,
+} from '../../../core-ai/clawd-code/src/bootstrap/state.js';
+import type {
+  SDKMessage,
+} from '../../../core-ai/clawd-code/src/entrypoints/agentSdkTypes.js';
+import {
+  getFeatureValue_CACHED_WITH_REFRESH,
+} from '../../../core-ai/clawd-code/src/services/analytics/growthbook.js';
+import {
+  getOrganizationUUID,
+} from '../../../core-ai/clawd-code/src/services/oauth/client.js';
 import {
   isPolicyAllowed,
   waitForPolicyLimitsToLoad,
-} from '../services/policyLimits/index.js'
-import type { Message } from '../types/message.js'
+} from '../../../core-ai/clawd-code/src/services/policyLimits/index.js';
+import type { Message } from '../../../core-ai/clawd-code/src/types/message.js';
 import {
   checkAndRefreshOAuthTokenIfNeeded,
   getClaudeAIOAuthTokens,
   handleOAuth401Error,
-} from '../utils/auth.js'
-import { getGlobalConfig, saveGlobalConfig } from '../utils/config.js'
-import { logForDebugging } from '../utils/debug.js'
-import { stripDisplayTagsAllowEmpty } from '../utils/displayTags.js'
-import { errorMessage } from '../utils/errors.js'
-import { getBranch, getRemoteUrl } from '../utils/git.js'
-import { toSDKMessages } from '../utils/messages/mappers.js'
+} from '../../../core-ai/clawd-code/src/utils/auth.js';
+import {
+  getGlobalConfig,
+  saveGlobalConfig,
+} from '../../../core-ai/clawd-code/src/utils/config.js';
+import {
+  logForDebugging,
+} from '../../../core-ai/clawd-code/src/utils/debug.js';
+import {
+  stripDisplayTagsAllowEmpty,
+} from '../../../core-ai/clawd-code/src/utils/displayTags.js';
+import { errorMessage } from '../../../core-ai/clawd-code/src/utils/errors.js';
+import {
+  getBranch,
+  getRemoteUrl,
+} from '../../../core-ai/clawd-code/src/utils/git.js';
 import {
   getContentText,
   getMessagesAfterCompactBoundary,
   isSyntheticMessage,
-} from '../utils/messages.js'
-import type { PermissionMode } from '../utils/permissions/PermissionMode.js'
-import { getCurrentSessionTitle } from '../utils/sessionStorage.js'
+} from '../../../core-ai/clawd-code/src/utils/messages.js';
+import {
+  toSDKMessages,
+} from '../../../core-ai/clawd-code/src/utils/messages/mappers.js';
+import type {
+  PermissionMode,
+} from '../../../core-ai/clawd-code/src/utils/permissions/PermissionMode.js';
+import {
+  getCurrentSessionTitle,
+} from '../../../core-ai/clawd-code/src/utils/sessionStorage.js';
 import {
   extractConversationText,
   generateSessionTitle,
-} from '../utils/sessionTitle.js'
-import { generateShortWordSlug } from '../utils/words.js'
+} from '../../../core-ai/clawd-code/src/utils/sessionTitle.js';
+import {
+  generateShortWordSlug,
+} from '../../../core-ai/clawd-code/src/utils/words.js';
+import type { SDKControlResponse } from '../entrypoints/sdk/controlTypes.js';
 import {
   getBridgeAccessToken,
   getBridgeBaseUrl,
   getBridgeTokenOverride,
-} from './bridgeConfig.js'
+} from './bridgeConfig.js';
 import {
   checkBridgeMinVersion,
   isBridgeEnabledBlocking,
   isCseShimEnabled,
   isEnvLessBridgeEnabled,
-} from './bridgeEnabled.js'
+} from './bridgeEnabled.js';
 import {
   archiveBridgeSession,
   createBridgeSession,
   updateBridgeSessionTitle,
-} from './createSession.js'
-import { logBridgeSkip } from './debugUtils.js'
-import { checkEnvLessBridgeMinVersion } from './envLessBridgeConfig.js'
-import { getPollIntervalConfig } from './pollConfig.js'
-import type { BridgeState, ReplBridgeHandle } from './replBridge.js'
-import { initBridgeCore } from './replBridge.js'
-import { setCseShimGate } from './sessionIdCompat.js'
-import type { BridgeWorkerType } from './types.js'
+} from './createSession.js';
+import { logBridgeSkip } from './debugUtils.js';
+import { checkEnvLessBridgeMinVersion } from './envLessBridgeConfig.js';
+import { getPollIntervalConfig } from './pollConfig.js';
+import type {
+  BridgeState,
+  ReplBridgeHandle,
+} from './replBridge.js';
+import { initBridgeCore } from './replBridge.js';
+import { setCseShimGate } from './sessionIdCompat.js';
+import type { BridgeWorkerType } from './types.js';
 
 export type InitBridgeOptions = {
   onInboundMessage?: (msg: SDKMessage) => void | Promise<void>
