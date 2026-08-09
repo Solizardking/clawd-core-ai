@@ -122,9 +122,9 @@ const buildOptions: esbuild.BuildOptions = {
   // process.env.USER_TYPE — eliminates 'ant' (Anthropic-internal) code branches
   define: {
     'MACRO.VERSION': JSON.stringify(version),
-    'MACRO.PACKAGE_URL': JSON.stringify('@anthropic-ai/claude-code'),
+    'MACRO.PACKAGE_URL': JSON.stringify('@onchainai/clawd-code'),
     'MACRO.ISSUES_EXPLAINER': JSON.stringify(
-      'report issues at https://github.com/anthropics/claude-code/issues'
+      'report issues at https://github.com/Solizardking/clawd-core-ai/issues'
     ),
     'process.env.USER_TYPE': '"external"',
     'process.env.NODE_ENV': minify ? '"production"' : '"development"',
