@@ -1,5 +1,7 @@
-import type { VerifyRetryStrategy } from "../types/index.js";
-import type { VerifyProjectProfile } from "./recipes.js";
+import type {
+  VerifyRetryStrategy,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
+import type { VerifyProjectProfile } from './recipes.js';
 
 const NODE_WEB_APP_KINDS = new Set(["nextjs", "vite", "astro", "sveltekit", "remix", "cra"]);
 

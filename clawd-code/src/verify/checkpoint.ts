@@ -1,10 +1,18 @@
-import { execFile, spawn } from "child_process";
-import { createHash } from "crypto";
-import * as fs from "fs";
-import * as path from "path";
-import type { VerifyRecipe } from "../types/index.js";
-import type { SandboxSettings } from "../utils/settings.js";
-import type { VerifyProjectProfile } from "./recipes.js";
+import {
+  execFile,
+  spawn,
+} from 'child_process';
+import { createHash } from 'crypto';
+import * as fs from 'fs';
+import * as path from 'path';
+
+import type {
+  VerifyRecipe,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
+import type {
+  SandboxSettings,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
+import type { VerifyProjectProfile } from './recipes.js';
 
 const DEFAULT_VERIFY_GUEST_WORKDIR = "/grok/verify/worktree";
 

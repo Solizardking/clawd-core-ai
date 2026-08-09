@@ -1,5 +1,8 @@
-import type { Plan, PlanQuestion } from "../types/index.js";
-import type { Theme } from "./theme.js";
+import type {
+  Plan,
+  PlanQuestion,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
+import type { Theme } from './theme.js';
 
 export type PlanAnswers = Record<string, string | string[]>;
 

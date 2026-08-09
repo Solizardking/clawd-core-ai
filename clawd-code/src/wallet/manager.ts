@@ -1,11 +1,28 @@
-import * as fs from "fs";
-import * as os from "os";
-import * as path from "path";
-import { createPublicClient, formatEther, formatUnits, http } from "viem";
-import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
-import { base, baseSepolia } from "viem/chains";
-import type { PaymentChain } from "../utils/settings.js";
-import type { WalletBalance, WalletData } from "./types.js";
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
+import {
+  createPublicClient,
+  formatEther,
+  formatUnits,
+  http,
+} from 'viem';
+import {
+  generatePrivateKey,
+  privateKeyToAccount,
+} from 'viem/accounts';
+import {
+  base,
+  baseSepolia,
+} from 'viem/chains';
+
+import type {
+  PaymentChain,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
+import type {
+  WalletBalance,
+  WalletData,
+} from './types.js';
 
 const WALLET_DIR = path.join(os.homedir(), ".clawd");
 const WALLET_PATH = path.join(WALLET_DIR, "wallet.json");

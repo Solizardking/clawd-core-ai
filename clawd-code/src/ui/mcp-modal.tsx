@@ -1,10 +1,25 @@
-import type { ScrollBoxRenderable, TextareaRenderable } from "@opentui/core";
-import { type RefObject, useEffect, useRef } from "react";
-import type { McpCatalogEntry } from "../mcp/catalog.js";
-import { toMcpServerId } from "../mcp/validate.js";
-import type { McpServerConfig } from "../utils/settings.js";
-import type { McpBrowserRow, McpEditorDraft, McpEditorField } from "./mcp-modal-types.js";
-import type { Theme } from "./theme.js";
+import {
+  type RefObject,
+  useEffect,
+  useRef,
+} from 'react';
+
+import type {
+  ScrollBoxRenderable,
+  TextareaRenderable,
+} from '@opentui/core';
+
+import type {
+  McpServerConfig,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
+import type { McpCatalogEntry } from '../mcp/catalog.js';
+import { toMcpServerId } from '../mcp/validate.js';
+import type {
+  McpBrowserRow,
+  McpEditorDraft,
+  McpEditorField,
+} from './mcp-modal-types.js';
+import type { Theme } from './theme.js';
 
 const EDITOR_KEYBINDINGS = [{ name: "return", action: "submit" as const }];
 

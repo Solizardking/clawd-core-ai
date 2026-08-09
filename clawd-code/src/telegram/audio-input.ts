@@ -1,9 +1,18 @@
-import { mkdtemp, rm, writeFile } from "fs/promises";
-import os from "os";
-import path from "path";
-import { createTelegramAudioInputEngine } from "../audio/stt/engine.js";
-import type { TelegramSettings } from "../utils/settings.js";
-import { resolveTelegramAudioInputSettings } from "../utils/settings.js";
+import {
+  mkdtemp,
+  rm,
+  writeFile,
+} from 'fs/promises';
+import os from 'os';
+import path from 'path';
+
+import type {
+  TelegramSettings,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
+import {
+  resolveTelegramAudioInputSettings,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
+import { createTelegramAudioInputEngine } from '../audio/stt/engine.js';
 
 export interface TelegramAudioSource {
   kind: "voice" | "audio";

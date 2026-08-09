@@ -1,5 +1,7 @@
-import type { PaymentChain } from "../utils/settings.js";
-import type { BrinScanResult } from "./brin.js";
+import type {
+  PaymentChain,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
+import type { BrinScanResult } from './brin.js';
 
 export interface PaymentOption {
   scheme: string;

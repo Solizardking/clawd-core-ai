@@ -1,4 +1,6 @@
-import type { ToolResult } from "../types/index.js";
+import type {
+  ToolResult,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
 
 export function extractToolResultFromOutput(output: unknown): ToolResult | null {
   if (!output || typeof output !== "object") return null;

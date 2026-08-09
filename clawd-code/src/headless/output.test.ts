@@ -1,11 +1,19 @@
-import { describe, expect, it } from "vitest";
-import type { StreamChunk, ToolCall } from "../types/index.js";
+import {
+  describe,
+  expect,
+  it,
+} from 'vitest';
+
+import type {
+  StreamChunk,
+  ToolCall,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
 import {
   createHeadlessJsonlEmitter,
   isHeadlessOutputFormat,
   renderHeadlessChunk,
   renderHeadlessPrelude,
-} from "./output.js";
+} from './output.js';
 
 function toolCall(name: string): ToolCall {
   return {

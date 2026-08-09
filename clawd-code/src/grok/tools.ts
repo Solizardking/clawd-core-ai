@@ -1,9 +1,16 @@
-import { generateText, type ToolSet, tool } from "ai";
-import { z } from "zod";
-import { executePostToolFailureHooks, executePostToolHooks, executePreToolHooks } from "../hooks/index.js";
-import { isLspToolEnabled, queryLsp } from "../lsp/runtime.js";
-import { LSP_TOOL_OPERATIONS } from "../lsp/types.js";
-import type { BashTool } from "../tools/bash.js";
+import {
+  generateText,
+  tool,
+  type ToolSet,
+} from 'ai';
+import { z } from 'zod';
+
+import {
+  executePostToolFailureHooks,
+  executePostToolHooks,
+  executePreToolHooks,
+} from '../../../core-ai/clawd-grok/src/hooks/index.js';
+import type { BashTool } from '../../../core-ai/clawd-grok/src/tools/bash.js';
 import {
   computerClick,
   computerFocusWindow,
@@ -17,23 +24,44 @@ import {
   computerSnapshot,
   computerType,
   computerWait,
-} from "../tools/computer.js";
-import { editFile, readFile, writeFile } from "../tools/file.js";
-import { executeGrep } from "../tools/grep.js";
-import type { ScheduleDaemonStatus, ScheduleManager, StoredSchedule } from "../tools/schedule.js";
-import type { AgentMode, TaskRequest, ToolResult } from "../types/index.js";
-import { type CustomSubagentConfig, loadPaymentSettings, loadValidSubAgents } from "../utils/settings.js";
-import type { XaiProvider } from "./client.js";
+} from '../../../core-ai/clawd-grok/src/tools/computer.js';
 import {
-  type GenerateImageToolInput,
-  type GenerateVideoToolInput,
+  editFile,
+  readFile,
+  writeFile,
+} from '../../../core-ai/clawd-grok/src/tools/file.js';
+import { executeGrep } from '../../../core-ai/clawd-grok/src/tools/grep.js';
+import type {
+  ScheduleDaemonStatus,
+  ScheduleManager,
+  StoredSchedule,
+} from '../../../core-ai/clawd-grok/src/tools/schedule.js';
+import type {
+  AgentMode,
+  TaskRequest,
+  ToolResult,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
+import {
+  type CustomSubagentConfig,
+  loadPaymentSettings,
+  loadValidSubAgents,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
+import {
+  isLspToolEnabled,
+  queryLsp,
+} from '../lsp/runtime.js';
+import { LSP_TOOL_OPERATIONS } from '../lsp/types.js';
+import type { XaiProvider } from './client.js';
+import {
   generateImageTool,
+  type GenerateImageToolInput,
   generateVideoTool,
+  type GenerateVideoToolInput,
   IMAGE_ASPECT_RATIOS,
   IMAGE_RESOLUTIONS,
   VIDEO_ASPECT_RATIOS,
   VIDEO_RESOLUTIONS,
-} from "./media.js";
+} from './media.js';
 
 const RESPONSES_SEARCH_MODEL = process.env.GROK_MODEL || "grok-4.3";
 

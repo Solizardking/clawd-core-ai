@@ -1,5 +1,8 @@
-import type { McpCatalogEntry } from "../mcp/catalog.js";
-import type { McpRemoteTransport, McpServerConfig } from "../utils/settings.js";
+import type {
+  McpRemoteTransport,
+  McpServerConfig,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
+import type { McpCatalogEntry } from '../mcp/catalog.js';
 
 export type McpBrowserRow =
   | { kind: "server"; server: McpServerConfig; description?: string }

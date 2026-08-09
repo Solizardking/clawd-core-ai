@@ -1,4 +1,8 @@
-import type { ChatEntry, ToolCall, ToolResult } from "../types/index.js";
+import type {
+  ChatEntry,
+  ToolCall,
+  ToolResult,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
 
 export interface EntryDecoration {
   modeColor?: string;

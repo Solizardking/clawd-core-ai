@@ -1,16 +1,29 @@
-import { Bot } from "grammy";
-import type { Agent } from "../agent/agent.js";
-import type { ToolCall, ToolResult } from "../types/index.js";
-import { loadUserSettings, resolveTelegramStreamSettings } from "../utils/settings.js";
-import { getTelegramAudioSource, transcribeTelegramAudioMessage } from "./audio-input.js";
-import { splitTelegramMessage, TELEGRAM_MAX_MESSAGE } from "./limits.js";
-import { registerPairingCode } from "./pairing.js";
-import { runTelegramPartialReply } from "./preview-stream.js";
-import { sendFileToTelegram } from "./send-file.js";
-import type { TurnCoordinator } from "./turn-coordinator.js";
-import { startTypingRefresh } from "./typing-refresh.js";
+import { Bot } from 'grammy';
 
-export { splitTelegramMessage, TELEGRAM_MAX_MESSAGE } from "./limits.js";
+import type {
+  ToolCall,
+  ToolResult,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
+import {
+  loadUserSettings,
+  resolveTelegramStreamSettings,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
+import type { Agent } from '../agent/agent.js';
+import {
+  getTelegramAudioSource,
+  transcribeTelegramAudioMessage,
+} from './audio-input.js';
+import {
+  splitTelegramMessage,
+  TELEGRAM_MAX_MESSAGE,
+} from './limits.js';
+import { registerPairingCode } from './pairing.js';
+import { runTelegramPartialReply } from './preview-stream.js';
+import { sendFileToTelegram } from './send-file.js';
+import type { TurnCoordinator } from './turn-coordinator.js';
+import { startTypingRefresh } from './typing-refresh.js';
+
+export { splitTelegramMessage, TELEGRAM_MAX_MESSAGE } from './limits.js';
 
 export interface TelegramBridgeOptions {
   token: string;

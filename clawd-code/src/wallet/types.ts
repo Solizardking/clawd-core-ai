@@ -1,4 +1,6 @@
-import type { PaymentChain } from "../utils/settings.js";
+import type {
+  PaymentChain,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
 
 export interface WalletData {
   address: string;

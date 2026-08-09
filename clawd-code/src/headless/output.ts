@@ -1,5 +1,14 @@
-import type { ProcessMessageObserver, ProcessMessageStepFinish, ProcessMessageStepStart } from "../agent/agent.js";
-import type { MediaAsset, StreamChunk, ToolCall, ToolResult } from "../types/index.js";
+import type {
+  MediaAsset,
+  StreamChunk,
+  ToolCall,
+  ToolResult,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
+import type {
+  ProcessMessageObserver,
+  ProcessMessageStepFinish,
+  ProcessMessageStepStart,
+} from '../agent/agent.js';
 
 export type HeadlessOutputFormat = "text" | "json";
 

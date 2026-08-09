@@ -1,4 +1,6 @@
-import type { McpRemoteTransport } from "../utils/settings.js";
+import type {
+  McpRemoteTransport,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
 
 export interface McpCatalogEntry {
   id: string;

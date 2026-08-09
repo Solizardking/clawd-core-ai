@@ -1,9 +1,12 @@
-import { createHash } from "crypto";
-import fs from "fs";
-import path from "path";
-import type { WorkspaceInfo } from "../types/index.js";
-import { findGitRoot } from "../utils/git-root.js";
-import { getDatabase } from "./db.js";
+import { createHash } from 'crypto';
+import fs from 'fs';
+import path from 'path';
+
+import type {
+  WorkspaceInfo,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
+import { findGitRoot } from '../../../core-ai/clawd-grok/src/utils/git-root.js';
+import { getDatabase } from './db.js';
 
 interface WorkspaceRow {
   id: string;

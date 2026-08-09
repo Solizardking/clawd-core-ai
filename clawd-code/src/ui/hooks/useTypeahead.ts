@@ -1,6 +1,15 @@
-import type { TextareaRenderable } from "@opentui/core";
-import { useCallback, useEffect, useRef, useState } from "react";
-import type { FileIndex } from "../../utils/file-index.js";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
+import type { TextareaRenderable } from '@opentui/core';
+
+import type {
+  FileIndex,
+} from '../../../../core-ai/clawd-grok/src/utils/file-index.js';
 
 const AT_TOKEN_RE = /(^|\s)@([\w\-./\\~][\w\-./\\~:]*|"[^"]*"?)$/u;
 const BARE_PATH_RE = /(^|\s)(\.{0,2}\/[\w\-./\\~]*|[\w-]+\/[\w\-./\\~]*)$/u;

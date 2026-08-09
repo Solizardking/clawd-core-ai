@@ -1,7 +1,19 @@
-import { createXai, type XaiProvider } from "@ai-sdk/xai";
-import { generateText } from "ai";
-import { getReasoningEffortForModel } from "../utils/settings.js";
-import { getEffectiveReasoningEffort, getModelInfo, type ModelDefinition, normalizeModelId } from "./models.js";
+import { generateText } from 'ai';
+
+import {
+  createXai,
+  type XaiProvider,
+} from '@ai-sdk/xai';
+
+import {
+  getReasoningEffortForModel,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
+import {
+  getEffectiveReasoningEffort,
+  getModelInfo,
+  type ModelDefinition,
+  normalizeModelId,
+} from './models.js';
 
 export type { XaiProvider };
 

@@ -1,29 +1,16 @@
-import { APICallError } from "@ai-sdk/provider";
-import { convertToBase64 } from "@ai-sdk/provider-utils";
-import { type ModelMessage, stepCountIs, streamText, type ToolSet } from "ai";
 import {
-  addBatchRequests,
-  type BatchChatCompletionRequest,
-  type BatchChatCompletionResponse,
-  type BatchChatMessage,
-  type BatchClientOptions,
-  type BatchFunctionTool,
-  type BatchToolCall,
-  createBatch,
-  getBatchChatCompletion,
-  pollBatchRequestResult,
-} from "../grok/batch.js";
+  type ModelMessage,
+  stepCountIs,
+  streamText,
+  type ToolSet,
+} from 'ai';
+
+import { APICallError } from '@ai-sdk/provider';
+import { convertToBase64 } from '@ai-sdk/provider-utils';
+
 import {
-  createProvider,
-  generateRecap as genRecap,
-  generateTitle as genTitle,
-  resolveModelRuntime,
-  type XaiProvider,
-} from "../grok/client.js";
-import { DEFAULT_MODEL, getModelInfo, normalizeModelId } from "../grok/models.js";
-import { toolSetToBatchTools } from "../grok/tool-schemas.js";
-import { createTools } from "../grok/tools.js";
-import { executeEventHooks } from "../hooks/index.js";
+  executeEventHooks,
+} from '../../../core-ai/clawd-grok/src/hooks/index.js';
 import type {
   NotificationHookInput,
   PostCompactHookInput,
@@ -37,23 +24,13 @@ import type {
   TaskCompletedHookInput,
   TaskCreatedHookInput,
   UserPromptSubmitHookInput,
-} from "../hooks/types.js";
-import { shutdownWorkspaceLspManager } from "../lsp/runtime.js";
-import { buildMcpToolSet } from "../mcp/runtime.js";
+} from '../../../core-ai/clawd-grok/src/hooks/types.js';
+import { BashTool } from '../../../core-ai/clawd-grok/src/tools/bash.js';
 import {
-  appendCompaction,
-  appendMessages,
-  appendSystemMessage,
-  buildChatEntries,
-  getNextMessageSequence,
-  getSessionTotalTokens,
-  loadTranscript,
-  loadTranscriptState,
-  recordUsageEvent,
-  SessionStore,
-} from "../storage/index.js";
-import { BashTool } from "../tools/bash.js";
-import { type ScheduleDaemonStatus, ScheduleManager, type StoredSchedule } from "../tools/schedule.js";
+  type ScheduleDaemonStatus,
+  ScheduleManager,
+  type StoredSchedule,
+} from '../../../core-ai/clawd-grok/src/tools/schedule.js';
 import type {
   AgentMode,
   ChatEntry,
@@ -68,8 +45,10 @@ import type {
   UsageSource,
   VerifyRecipe,
   WorkspaceInfo,
-} from "../types/index.js";
-import { loadCustomInstructions } from "../utils/instructions.js";
+} from '../../../core-ai/clawd-grok/src/types/index.js';
+import {
+  loadCustomInstructions,
+} from '../../../core-ai/clawd-grok/src/utils/instructions.js';
 import {
   type CustomSubagentConfig,
   getCurrentModel,
@@ -79,11 +58,61 @@ import {
   loadValidSubAgents,
   type SandboxMode,
   type SandboxSettings,
-} from "../utils/settings.js";
-import { runSideQuestion, type SideQuestionResult } from "../utils/side-question.js";
-import { discoverSkills, formatSkillsForPrompt } from "../utils/skills.js";
-import { buildVerifyDetectPrompt, normalizeVerifyRecipe, prepareVerifySandbox } from "../verify/entrypoint.js";
-import { runVerifyOrchestration } from "../verify/orchestrator.js";
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
+import {
+  runSideQuestion,
+  type SideQuestionResult,
+} from '../../../core-ai/clawd-grok/src/utils/side-question.js';
+import {
+  discoverSkills,
+  formatSkillsForPrompt,
+} from '../../../core-ai/clawd-grok/src/utils/skills.js';
+import {
+  addBatchRequests,
+  type BatchChatCompletionRequest,
+  type BatchChatCompletionResponse,
+  type BatchChatMessage,
+  type BatchClientOptions,
+  type BatchFunctionTool,
+  type BatchToolCall,
+  createBatch,
+  getBatchChatCompletion,
+  pollBatchRequestResult,
+} from '../grok/batch.js';
+import {
+  createProvider,
+  generateRecap as genRecap,
+  generateTitle as genTitle,
+  resolveModelRuntime,
+  type XaiProvider,
+} from '../grok/client.js';
+import {
+  DEFAULT_MODEL,
+  getModelInfo,
+  normalizeModelId,
+} from '../grok/models.js';
+import { toolSetToBatchTools } from '../grok/tool-schemas.js';
+import { createTools } from '../grok/tools.js';
+import { shutdownWorkspaceLspManager } from '../lsp/runtime.js';
+import { buildMcpToolSet } from '../mcp/runtime.js';
+import {
+  appendCompaction,
+  appendMessages,
+  appendSystemMessage,
+  buildChatEntries,
+  getNextMessageSequence,
+  getSessionTotalTokens,
+  loadTranscript,
+  loadTranscriptState,
+  recordUsageEvent,
+  SessionStore,
+} from '../storage/index.js';
+import {
+  buildVerifyDetectPrompt,
+  normalizeVerifyRecipe,
+  prepareVerifySandbox,
+} from '../verify/entrypoint.js';
+import { runVerifyOrchestration } from '../verify/orchestrator.js';
 import {
   type CompactionSettings,
   createCompactionSummaryMessage,
@@ -94,10 +123,13 @@ import {
   prepareCompaction,
   relaxCompactionSettings,
   shouldCompactContext,
-} from "./compaction.js";
-import { DelegationManager } from "./delegations.js";
-import { containsEncryptedReasoning, sanitizeModelMessages } from "./reasoning.js";
-import { buildVisionUserMessages } from "./vision-input.js";
+} from './compaction.js';
+import { DelegationManager } from './delegations.js';
+import {
+  containsEncryptedReasoning,
+  sanitizeModelMessages,
+} from './reasoning.js';
+import { buildVisionUserMessages } from './vision-input.js';
 
 const MAX_TOOL_ROUNDS = 400;
 const VISION_MODEL = "gpt-4o";
@@ -2039,7 +2071,7 @@ export class Agent {
                   },
                 };
 
-                let paymentPrecheck: import("../types/index.js").PaymentPrecheck | undefined;
+                let paymentPrecheck: import("../../../core-ai/clawd-grok/src/types/index.js").PaymentPrecheck | undefined;
                 if (approvalPart.toolCall?.toolName === "paid_request") {
                   try {
                     const input = approvalPart.toolCall.input as { url?: string; method?: string } | null;

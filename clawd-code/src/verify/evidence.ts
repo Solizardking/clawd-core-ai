@@ -1,5 +1,7 @@
-import type { VerifyArtifact } from "../types/index.js";
-import type { VerifyProjectProfile } from "./recipes.js";
+import type {
+  VerifyArtifact,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
+import type { VerifyProjectProfile } from './recipes.js';
 
 export const VERIFY_ARTIFACT_DIR = ".grok/verify-artifacts";
 export const VERIFY_SCREENSHOT_PATH = `${VERIFY_ARTIFACT_DIR}/verify-screenshot.png`;

@@ -81,11 +81,26 @@ This monorepo bundles the **Clawd Cloud** ecosystem — Solana-native AI agents 
 │   └── ADR-001-open-clawd-v2.md # Open-clawd v2 architecture decision record
 │
 ├── mcp-server/                  # MCP explorer server for the leaked source
-├── agent.md                    # Agent operating guide
-├── Skill.md                    # Repository skill (development conventions)
-├── gitpretty-apply.sh          # Per-file emoji commit helper
-└── package.json                # Leaked package manifest (@anthropic-ai/claude-code)
+└── *.root-config               # Root toolchain, deployment, and legal files (see below)
 ```
+
+### Root files
+
+| File | What it is |
+|------|-----------|
+| `package.json` | Leaked Claude Code manifest (`@anthropic-ai/claude-code`, `0.0.0-leaked`) — Bun build/lint/typecheck scripts |
+| `bun.lock` · `package-lock.json` | Lockfiles for Bun and npm |
+| `bunfig.toml` | Bun config — preloads `scripts/bun-plugin-shims.ts` to intercept `bun:bundle` feature-flag imports |
+| `tsconfig.json` | TypeScript config — includes `clawd-code/src/**`, maps `bun:bundle` to `clawd-code/src/types/bun-bundle.d.ts` |
+| `biome.json` | Biome linter/formatter config (tab indent, single quotes, as-needed semicolons) |
+| `Dockerfile` | Multi-stage production container for the CLI — Bun build → minimal Alpine runtime with git + ripgrep |
+| `vercel.json` | Vercel deployment — routes `/health`, `/mcp`, `/sse`, `/messages` to `mcp-server/api/index.ts` |
+| `server.json` | MCP registry manifest — publishes the explorer as `warrioraashuu-codemaster` on npm |
+| `gitpretty-apply.sh` | Per-file emoji commit helper |
+| `agent.md` | Agent operating guide — how an automated coding agent should behave in this repo |
+| `Skill.md` | Repository skill — development conventions + architecture guide for the leaked source |
+| `.gitignore` | Ignores node_modules, dist, env files, and Clawd runtime state/artifacts |
+| `LICENSE` | **UNLICENSED** — leaked proprietary Anthropic code, published for educational/research purposes only |
 
 ---
 

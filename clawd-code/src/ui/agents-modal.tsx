@@ -1,9 +1,22 @@
-import type { ScrollBoxRenderable, TextareaRenderable } from "@opentui/core";
-import { type RefObject, useEffect, useRef } from "react";
-import { MODELS } from "../grok/models.js";
-import type { CustomSubagentConfig } from "../utils/settings.js";
-import { formatSubagentName } from "../utils/subagent-display.js";
-import type { Theme } from "./theme.js";
+import {
+  type RefObject,
+  useEffect,
+  useRef,
+} from 'react';
+
+import type {
+  ScrollBoxRenderable,
+  TextareaRenderable,
+} from '@opentui/core';
+
+import type {
+  CustomSubagentConfig,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
+import {
+  formatSubagentName,
+} from '../../../core-ai/clawd-grok/src/utils/subagent-display.js';
+import { MODELS } from '../grok/models.js';
+import type { Theme } from './theme.js';
 
 const EDITOR_KEYBINDINGS = [{ name: "return", action: "submit" as const }];
 

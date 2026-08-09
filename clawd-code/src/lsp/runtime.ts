@@ -1,8 +1,19 @@
-import { existsSync } from "fs";
-import path from "path";
-import { getCurrentLspSettings } from "../utils/settings.js";
-import { createWorkspaceLspManager, summarizeLspDiagnostics, type WorkspaceLspManager } from "./manager.js";
-import type { LspDiagnosticFile, LspQueryInput, LspToolResponse } from "./types.js";
+import { existsSync } from 'fs';
+import path from 'path';
+
+import {
+  getCurrentLspSettings,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
+import {
+  createWorkspaceLspManager,
+  summarizeLspDiagnostics,
+  type WorkspaceLspManager,
+} from './manager.js';
+import type {
+  LspDiagnosticFile,
+  LspQueryInput,
+  LspToolResponse,
+} from './types.js';
 
 const managers = new Map<string, WorkspaceLspManager>();
 

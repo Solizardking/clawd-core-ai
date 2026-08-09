@@ -1,7 +1,13 @@
-import * as fs from "fs";
-import * as path from "path";
-import type { VerifyRecipe } from "../types/index.js";
-import { mergeSandboxSettings, type SandboxSettings } from "../utils/settings.js";
+import * as fs from 'fs';
+import * as path from 'path';
+
+import type {
+  VerifyRecipe,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
+import {
+  mergeSandboxSettings,
+  type SandboxSettings,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
 
 export type VerifyAppKind =
   | "nextjs"

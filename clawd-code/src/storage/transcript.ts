@@ -1,9 +1,25 @@
-import type { ModelMessage } from "ai";
-import { getCompactionSummaryText } from "../agent/compaction.js";
-import type { ChatEntry, ToolCall, ToolResult } from "../types/index.js";
-import { getDatabase, withTransaction } from "./db.js";
-import { extractToolResultFromOutput, getOutputKind, isOutputSuccess } from "./tool-results.js";
-import { buildEffectiveTranscript, type LoadedTranscriptState, type PersistedCompaction } from "./transcript-view.js";
+import type { ModelMessage } from 'ai';
+
+import type {
+  ChatEntry,
+  ToolCall,
+  ToolResult,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
+import { getCompactionSummaryText } from '../agent/compaction.js';
+import {
+  getDatabase,
+  withTransaction,
+} from './db.js';
+import {
+  extractToolResultFromOutput,
+  getOutputKind,
+  isOutputSuccess,
+} from './tool-results.js';
+import {
+  buildEffectiveTranscript,
+  type LoadedTranscriptState,
+  type PersistedCompaction,
+} from './transcript-view.js';
 
 interface MessageRow {
   session_id: string;

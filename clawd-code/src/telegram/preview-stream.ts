@@ -1,8 +1,14 @@
-import type { Api } from "grammy";
-import { GrammyError } from "grammy";
-import type { StreamChunk } from "../types/index.js";
-import { splitTelegramMessage, TELEGRAM_MAX_MESSAGE } from "./limits.js";
-import { startTypingRefresh } from "./typing-refresh.js";
+import type { Api } from 'grammy';
+import { GrammyError } from 'grammy';
+
+import type {
+  StreamChunk,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
+import {
+  splitTelegramMessage,
+  TELEGRAM_MAX_MESSAGE,
+} from './limits.js';
+import { startTypingRefresh } from './typing-refresh.js';
 
 const EDIT_THROTTLE_MS = 350;
 const EDIT_MIN_CHARS = 48;

@@ -1,7 +1,14 @@
-import { randomUUID } from "crypto";
-import type { AgentMode, SessionInfo, SessionRecap, SessionStatus, WorkspaceInfo } from "../types/index.js";
-import { getDatabase } from "./db.js";
-import { ensureWorkspace } from "./workspaces.js";
+import { randomUUID } from 'crypto';
+
+import type {
+  AgentMode,
+  SessionInfo,
+  SessionRecap,
+  SessionStatus,
+  WorkspaceInfo,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
+import { getDatabase } from './db.js';
+import { ensureWorkspace } from './workspaces.js';
 
 interface SessionRow {
   id: string;

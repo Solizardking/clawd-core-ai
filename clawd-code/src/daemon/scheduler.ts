@@ -5,10 +5,10 @@ import {
   removeScheduleDaemonPid,
   type ScheduleDaemonStatus,
   ScheduleManager,
-  type StoredSchedule,
   startDetachedHeadlessRun,
+  type StoredSchedule,
   writeScheduleDaemonPid,
-} from "../tools/schedule.js";
+} from '../../../core-ai/clawd-grok/src/tools/schedule.js';
 
 export class SchedulerDaemon {
   private readonly schedules = new ScheduleManager();

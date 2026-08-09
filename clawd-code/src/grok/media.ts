@@ -1,8 +1,26 @@
-import { generateImage, experimental_generateVideo as generateVideo } from "ai";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
-import { dirname, extname, isAbsolute, join, resolve } from "path";
-import type { MediaAsset, ToolResult } from "../types/index.js";
-import type { XaiProvider } from "./client.js";
+import {
+  experimental_generateVideo as generateVideo,
+  generateImage,
+} from 'ai';
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+} from 'fs';
+import {
+  dirname,
+  extname,
+  isAbsolute,
+  join,
+  resolve,
+} from 'path';
+
+import type {
+  MediaAsset,
+  ToolResult,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
+import type { XaiProvider } from './client.js';
 
 const GENERATED_MEDIA_DIR = ".grok/generated-media";
 const IMAGE_MODEL_ID = "grok-imagine-image";

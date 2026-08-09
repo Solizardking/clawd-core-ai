@@ -1,4 +1,7 @@
-import type { McpRemoteTransport, McpServerConfig } from "../utils/settings.js";
+import type {
+  McpRemoteTransport,
+  McpServerConfig,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
 
 export function isRemoteTransport(value: string): value is McpRemoteTransport {
   return value === "http" || value === "sse";

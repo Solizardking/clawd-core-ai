@@ -1,8 +1,16 @@
-import * as fs from "fs";
-import * as path from "path";
-import type { VerifyEnvironmentManifest, VerifyRecipe } from "../types/index.js";
-import { mergeSandboxSettings, normalizeSandboxSettings, type SandboxSettings } from "../utils/settings.js";
-import { normalizeVerifyRecipe } from "./recipes.js";
+import * as fs from 'fs';
+import * as path from 'path';
+
+import type {
+  VerifyEnvironmentManifest,
+  VerifyRecipe,
+} from '../../../core-ai/clawd-grok/src/types/index.js';
+import {
+  mergeSandboxSettings,
+  normalizeSandboxSettings,
+  type SandboxSettings,
+} from '../../../core-ai/clawd-grok/src/utils/settings.js';
+import { normalizeVerifyRecipe } from './recipes.js';
 
 export interface LoadedVerifyEnvironment {
   path: string;
