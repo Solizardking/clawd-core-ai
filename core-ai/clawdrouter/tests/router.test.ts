@@ -71,8 +71,8 @@ describe('Model Aliases', () => {
     assert.equal(resolveModelAlias('opus'), 'anthropic/claude-opus-4.6');
   });
 
-  it('should resolve "grok" to grok-4-1-fast-reasoning', () => {
-    assert.equal(resolveModelAlias('grok'), 'xai/grok-4-1-fast-reasoning');
+  it('should resolve "grok" to grok-4.20-beta', () => {
+    assert.equal(resolveModelAlias('grok'), 'xai/grok-4.20-beta');
   });
 
   it('should resolve "free" to nemotron-ultra-253b', () => {

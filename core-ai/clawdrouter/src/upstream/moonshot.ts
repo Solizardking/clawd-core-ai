@@ -50,6 +50,11 @@ export async function proxyToMoonshot(
   const body: MoonshotChatRequest = {
     ...request,
     model: moonshotModel,
+    // Moonshot expects string content; flatten ContentPart[] to plain text
+    messages: request.messages.map((m) => ({
+      role: m.role,
+      content: typeof m.content === 'string' ? m.content : m.content.map((p) => p.text ?? '').join(''),
+    })),
   };
 
   // Enable extended thinking for k2-thinking models
