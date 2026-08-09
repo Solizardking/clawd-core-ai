@@ -13,6 +13,9 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "reflect-metadata": "0.2.2"
   },

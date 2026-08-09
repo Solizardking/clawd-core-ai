@@ -25,6 +25,8 @@ This fork keeps the Helius Solana infrastructure surface and replaces the old as
 | Package | Description | Install |
 |---|---|---|
 | [`clawd-mcp`](./clawd-mcp) | MCP server (npm name `helius-mcp`) with 10 public tools total: 9 routed domains plus `expandResult` | `npx helius-mcp@latest` in `.clawd/settings.json` |
+| [`clawd-core`](./clawd-core) | Solana-native agent toolkit (package `@openclawd/clawd-core`, rebranded from `@goat-sdk/core`) — typed tools (`ToolBase`/`createTool()`), a reflect-metadata plugin system, and wallet clients | `npm install @openclawd/clawd-core` |
+| [`constitution`](./constitution) | Governance bundle — three/six laws, `CONSTITUTION.md`, `SOUL.md`, `IDENTITY.md`, research-loop `program.md` and `strategy.md` — the authority hierarchy every Clawd spawn inherits | read-only reference |
 | [`clawd-plugin`](./clawd-plugin) | Clawd Code plugin — bundles all skills and auto-starts the MCP server | `clawd --plugin-dir ./clawd-plugin` |
 | [`.agents/skills`](./.agents/skills) / [`clawd-skills`](./clawd-skills) | Clawd Code skills for building on Solana — `clawd-skills/` is canonical source, `.agents/skills/` is the generated Clawd-native output (`npx tsx scripts/compile-skills.ts`) | discovered automatically by Clawd Code |
 | [`clawd-code`](./clawd-code) | Curl-installable Solana-native AI coding CLI (xAI / Anthropic / DeepSeek / OpenRouter) with paper-gated perps workflows | `curl -fsSL https://raw.githubusercontent.com/Solizardking/solana-clawd/main/clawd-code/install.sh \| sh` |

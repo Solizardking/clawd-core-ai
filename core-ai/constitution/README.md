@@ -3,6 +3,13 @@
 Canonical agent harness documents for the Clawd Automaton / X402Agent runtime.
 Loaded at runtime from this directory by `src/services/constitution.js`.
 
+> **Checkout note:** `src/services/constitution.js` (and the `agent/` Rust crate's
+> `openclawd_solana_kit::constitution` module referenced below) do not exist anywhere
+> in this checkout — confirmed via full-repo grep. Nothing in [`clawd-core`](../clawd-core)
+> or elsewhere currently reads from this directory at runtime. Treat this bundle as the
+> canonical *document set* until that loader lands; the runtime-load section below
+> describes the intended integration, not current behavior.
+
 | File | Role | Authority |
 |------|------|-----------|
 | `three-laws.md` | Immutable on-chain execution laws I–III | 1 (highest) |

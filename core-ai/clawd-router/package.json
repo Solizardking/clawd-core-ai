@@ -27,16 +27,19 @@
     "grok",
     "openai"
   ],
-  "author": "x402agent",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Solizardking",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/x402agent/openclawd.git",
-    "directory": "clawdrouter"
+    "url": "https://github.com/Solizardking/clawd-core-ai.git",
+    "directory": "core-ai/clawd-router"
   },
-  "homepage": "https://github.com/x402agent/openclawd/tree/main/clawdrouter#readme",
+  "homepage": "https://github.com/Solizardking/clawd-core-ai/tree/main/core-ai/clawd-router#readme",
   "bugs": {
-    "url": "https://github.com/x402agent/openclawd/issues"
+    "url": "https://github.com/Solizardking/clawd-core-ai/issues"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.0",
