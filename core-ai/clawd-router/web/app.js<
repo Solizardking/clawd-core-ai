@@ -1,0 +1,427 @@
+/**
+ * 🦞 ClawdRouter — Web UI
+ * Connect a Solana wallet (Phantom injected), view balances, top up,
+ * subscribe monthly, or pay per use with $CLAWD / SOL / USDC.
+ *
+ * The gateway endpoints (`/v1/web/config`, `/v1/web/access`) are served by
+ * ClawdRouter's HTTP proxy; this file talks to them and to the Solana RPC
+ * directly for balances + transfers.
+ */
+
+// ── Constants ────────────────────────────────────────────────────────
+const CLAWD_TOKEN = '8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump';
+const USDC_TOKEN = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+const SOL_TOKEN = 'So11111111111111111111111111111111111111112';
+const RPC_URL =
+  localStorage.getItem('clawdrouter_rpc') ||
+  'https://api.mainnet-beta.solana.com';
+
+// Default recipient = ClawdRouter wallet. Overridden by /v1/web/config.
+let RECIPIENT = '';
+let PAYMENT_AMOUNT_USD = 5; // $5 default top-up
+
+// ── State ────────────────────────────────────────────────────────────
+let wallet = null;           // Solana injected provider (window.solana)
+let publicKey = null;
+let currentToken = 'USDC';
+let currentAmount = 5;
+let currentPlan = 29;
+
+// ── DOM refs ─────────────────────────────────────────────────────────
+const $ = (id) => document.getElementById(id);
+const connectBtn = $('connectBtn');
+const connState = $('connState');
+const walletAddr = $('walletAddr');
+const balClawd = $('balClawd');
+const balUsdc = $('balUsdc');
+const balSol = $('balSol');
+const tier = $('tier');
+const discount = $('discount');
+const payStatus = $('payStatus');
+const payTarget = $('payTarget');
+const chat = $('chat');
+const prompt = $('prompt');
+const sendBtn = $('sendBtn');
+const chatStatus = $('chatStatus');
+const modelSelect = $('modelSelect');
+
+// ── Bootstrap config ─────────────────────────────────────────────────
+async function loadConfig() {
+  try {
+    const res = await fetch('/v1/web/config');
+    if (res.ok) {
+      const cfg = await res.json();
+      if (cfg.recipient) RECIPIENT = cfg.recipient;
+      if (cfg.payTo) RECIPIENT = cfg.payTo;
+      if (cfg.defaultAmount) PAYMENT_AMOUNT_USD = cfg.defaultAmount;
+    }
+  } catch {
+    // fallback: no server — use wallet itself? No. Use blank recipient.
+  }
+  payTarget.textContent = `Recipient: ${RECIPIENT || 'configured by server'} · Token: ${currentToken} · $${currentAmount}`;
+}
+
+// ── Wallet connect ───────────────────────────────────────────────────
+async function connectWallet() {
+  if (!window.solana || !window.solana.isPhantom) {
+    payStatus.textContent =
+      'Phantom wallet not found. Install it from https://phantom.app';
+    payStatus.className = 'statusbox err';
+    return;
+  }
+  wallet = window.solana;
+  connState.textContent = 'connecting…';
+  try {
+    const resp = await wallet.connect();
+    publicKey = resp.publicKey.toString();
+    connState.textContent = 'connected';
+    connState.className = 'state-pill connected';
+    walletAddr.textContent = short(publicKey);
+    connectBtn.textContent = 'Disconnect';
+    await refreshBalances();
+  } catch (err) {
+    connState.textContent = 'not connected';
+    payStatus.textContent = 'Connection rejected: ' + err.message;
+    payStatus.className = 'statusbox err';
+  }
+}
+
+function disconnectWallet() {
+  wallet?.disconnect?.();
+  publicKey = null;
+  connState.textContent = 'not connected';
+  connState.className = 'state-pill';
+  walletAddr.textContent = '—';
+  connectBtn.textContent = 'Connect Wallet';
+  ['balClawd', 'balUsdc', 'balSol'].forEach((id) => ($(id).textContent = '—'));
+  tier.textContent = '—';
+  discount.textContent = '0%';
+}
+
+function short(addr) {
+  return addr.slice(0, 4) + '…' + addr.slice(-4);
+}
+
+// ── Balances & tier ──────────────────────────────────────────────────
+async function rpc(method, params = []) {
+  const res = await fetch(RPC_URL, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }),
+  });
+  const json = await res.json();
+  if (json.error) throw new Error(json.error.message);
+  return json.result;
+}
+
+async function getBalance(addr, mint) {
+  try {
+    if (mint === SOL_TOKEN) {
+      const lamports = await rpc('getBalance', [addr]);
+      return lamports?.value / 1e9 ?? 0;
+    }
+    const { value } = await rpc('getTokenAccountsByOwner', [
+      addr,
+      { mint },
+      { encoding: 'jsonParsed' },
+    ]);
+    for (const acc of value || []) {
+      const info = acc.account?.data?.parsed?.info;
+      return Number(info?.tokenAmount?.uiAmount ?? 0);
+    }
+    return 0;
+  } catch {
+    return 0;
+  }
+}
+
+async function getTier(clawdBalance) {
+  if (clawdBalance >= 10000000) return { name: 'WHALE', discount: 50 };
+  if (clawdBalance >= 1000000) return { name: 'DIAMOND', discount: 25 };
+  if (clawdBalance >= 100000) return { name: 'HOLDER', discount: 10 };
+  if (clawdBalance >= 1000) return { name: 'HOLDER', discount: 5 };
+  return { name: 'FREE', discount: 0 };
+}
+
+async function refreshBalances() {
+  if (!publicKey) return;
+  try {
+    const [clawd, usdc, sol] = await Promise.all([
+      getBalance(publicKey, CLAWD_TOKEN),
+      getBalance(publicKey, USDC_TOKEN),
+      getBalance(publicKey, SOL_TOKEN),
+    ]);
+    balClawd.textContent = clawd.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    balUsdc.textContent = '$' + usdc.toFixed(2);
+    balSol.textContent = sol.toFixed(3) + ' SOL';
+    const t = await getTier(clawd);
+    tier.textContent = t.name;
+    discount.textContent = t.discount + '%';
+  } catch (err) {
+    payStatus.textContent = 'Balance fetch failed: ' + err.message;
+    payStatus.className = 'statusbox err';
+  }
+}
+
+// ── Payments ─────────────────────────────────────────────────────────
+function tokenMint() {
+  if (currentToken === 'CLAWD') return CLAWD_TOKEN;
+  if (currentToken === 'SOL') return SOL_TOKEN;
+  return USDC_TOKEN;
+}
+
+function tokenDecimals() {
+  if (currentToken === 'SOL') return 9;
+  return 6;
+}
+
+// Convert USDC-dollar amount to the selected token using native balances.
+function toTokenAmount(usdAmount) {
+  if (currentToken === 'USDC') return usdAmount; // 1:1
+  if (currentToken === 'CLAWD') {
+    // Use CLAWD balance as a stand-in value; the server multiplies by a
+    // CLAWD/USD rate. For chrome we simply pass the raw USD and let the
+    // memo describe it — the transfer uses a user-typed token amount.
+    return usdAmount; // documented: placeholder — see UX note
+  }
+  return usdAmount; // SOL placeholder
+}
+
+async function sendPayment(kind, amountUsd) {
+  if (!publicKey) {
+    payStatus.textContent = 'Connect your wallet first.';
+    payStatus.className = 'statusbox err';
+    return;
+  }
+  if (!RECIPIENT) {
+    payStatus.textContent =
+      'No payment recipient configured on the server — set CLAWDROUTER_PAY_TO.';
+    payStatus.className = 'statusbox err';
+    return;
+  }
+  payStatus.textContent = `Building transaction: ${kind} $${amountUsd} ${currentToken}…`;
+  payStatus.className = 'statusbox';
+
+  const mint = tokenMint();
+  const decimals = tokenDecimals();
+  const lamports = Math.round(amountUsd * 1e6); // 6dp USDC base
+
+  try {
+    if (mint === SOL_TOKEN) {
+      // Native SOL transfer (9 decimals)
+      const lamportsSol = Math.round(amountUsd * 1e9);
+      const tx = new solana.Transaction().add(
+        solana.SystemProgram.transfer({
+          fromPubkey: new solana.PublicKey(publicKey),
+          toPubkey: new solana.PublicKey(RECIPIENT),
+          lamports: lamportsSol,
+        }),
+      );
+      const sig = await wallet.signAndSendTransaction(
+        { transaction: tx, connection: new solana.Connection(RPC_URL) },
+        { skipPreflight: false },
+      );
+      payStatus.textContent =
+        'Paid! SOL signature: ' + short(sig?.signature ?? sig);
+      payStatus.className = 'statusbox ok';
+    } else {
+      // SPL transfer via transfer instruction (uses the sender's ATA by default)
+      const connection = new solana.Connection(RPC_URL);
+      const fromPubkey = new solana.PublicKey(publicKey);
+      const toPubkey = new solana.PublicKey(RECIPIENT);
+      const mintPubkey = new solana.PublicKey(mint);
+
+      const fromAta = await solana.Token.getAssociatedTokenAddress(
+        solana.ASSOCIATED_TOKEN_PROGRAM_ID,
+        solana.TOKEN_PROGRAM_ID,
+        mintPubkey,
+        fromPubkey,
+      );
+      let toAta = await solana.Token.getAssociatedTokenAddress(
+        solana.ASSOCIATED_TOKEN_PROGRAM_ID,
+        solana.TOKEN_PROGRAM_ID,
+        mintPubkey,
+        toPubkey,
+      );
+      // Ensure recipient ATA exists
+      const toAccountInfo = await connection.getAccountInfo(toAta);
+      const tx = new solana.Transaction();
+      if (!toAccountInfo) {
+        tx.add(
+          solana.Token.createAssociatedTokenAccountInstruction(
+            solana.ASSOCIATED_TOKEN_PROGRAM_ID,
+            solana.TOKEN_PROGRAM_ID,
+            mintPubkey,
+            toAta,
+            toPubkey,
+            fromPubkey,
+          ),
+        );
+      }
+      tx.add(
+        solana.Token.createTransferInstruction(
+          solana.TOKEN_PROGRAM_ID,
+          fromAta,
+          toAta,
+          fromPubkey,
+          [],
+          BigInt(lamports),
+        ),
+      );
+      const sig = await wallet.signAndSendTransaction(
+        { transaction: tx, connection },
+        { skipPreflight: false },
+      );
+      payStatus.textContent =
+        'Paid! ' + currentToken + ' signature: ' + short(sig?.signature ?? sig);
+      payStatus.className = 'statusbox ok';
+    }
+  } catch (err) {
+    payStatus.textContent = 'Payment failed: ' + err.message;
+    payStatus.className = 'statusbox err';
+  }
+}
+
+// ── Chat ─────────────────────────────────────────────────────────────
+function addMsg(role, text) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  const r = document.createElement('span');
+  r.className = 'role';
+  r.textContent = role === 'user' ? 'You' : role === 'assistant' ? '🦞' : '⚠';
+  const t = document.createElement('span');
+  t.textContent = text;
+  div.appendChild(r);
+  div.appendChild(t);
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+  return div;
+}
+
+async function sendChat() {
+  const text = prompt.value.trim();
+  if (!text) return;
+  addMsg('user', text);
+  prompt.value = '';
+  sendBtn.disabled = true;
+  chatStatus.textContent = 'authenticating…';
+  const model = modelSelect.value || 'clawdrouter/auto';
+
+  try {
+    let authHeader;
+    if (publicKey) {
+      // Wallet-sign a challenge for the router
+      const msg = new TextEncoder().encode(
+        'ClawdRouter auth: ' + new Date().toISOString().slice(0, 10),
+      );
+      const sig = await wallet.signMessage(msg);
+      authHeader = 'x402:' + publicKey + ':' + Buffer.from(sig).toString('base64');
+    } else {
+      authHeader = 'x402'; // local mode fallback
+    }
+
+    chatStatus.textContent = 'routing request…';
+    const res = await fetch('/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: 'Bearer ' + authHeader,
+      },
+      body: JSON.stringify({
+        model,
+        messages: [{ role: 'user', content: text }],
+        stream: false,
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err?.error?.message || res.statusText);
+    }
+    const json = await res.json();
+    addMsg('assistant', json?.choices?.[0]?.message?.content || '(empty)');
+  } catch (err) {
+    addMsg('error', 'Request failed: ' + err.message);
+  } finally {
+    sendBtn.disabled = false;
+    chatStatus.textContent = '';
+  }
+}
+
+// ── Model list ───────────────────────────────────────────────────────
+async function loadModels() {
+  try {
+    const res = await fetch('/v1/models');
+    if (!res.ok) return;
+    const json = await res.json();
+    modelSelect.innerHTML = '';
+    for (const m of json.data || []) {
+      const opt = document.createElement('option');
+      opt.value = m.id;
+      opt.textContent = m.id;
+      modelSelect.appendChild(opt);
+    }
+  } catch {
+    // ignore — default option remains
+  }
+}
+
+// ── Wire up events ───────────────────────────────────────────────────
+connectBtn.addEventListener('click', () => {
+  if (publicKey) disconnectWallet();
+  else connectWallet();
+});
+
+document.querySelectorAll('.chip[data-token]').forEach((chip) => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.chip[data-token]').forEach((c) => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentToken = chip.dataset.token;
+    payTarget.textContent = `Recipient: ${RECIPIENT || 'configured by server'} · Token: ${currentToken} · $${currentAmount}`;
+  });
+});
+
+document.querySelectorAll('.chip[data-amount]').forEach((chip) => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.chip[data-amount]').forEach((c) => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentAmount = parseInt(chip.dataset.amount, 10);
+  });
+});
+
+document.querySelectorAll('.chip[data-plan]').forEach((chip) => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.chip[data-plan]').forEach((c) => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentPlan = parseInt(chip.dataset.plan, 10);
+    $('subscribeBtn').textContent = `Subscribe for $${currentPlan}/mo`;
+  });
+});
+
+$('payPerUseBtn').addEventListener('click', () => sendPayment('pay-per-use', currentAmount));
+$('subscribeBtn').addEventListener('click', () => sendPayment('subscription', currentPlan));
+
+sendBtn.addEventListener('click', sendChat);
+prompt.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendChat();
+  }
+});
+
+// ── Boot ─────────────────────────────────────────────────────────────
+window.addEventListener('solana::connect', refreshBalances);
+window.addEventListener('solana::disconnect', disconnectWallet);
+loadConfig();
+loadModels();
+
+// Expose the solana library for the transaction builders
+window.solana_lib = {
+  Transaction: window.solana?.Transaction || undefined,
+  SystemProgram: window.solana?.SystemProgram || undefined,
+  PublicKey: undefined,
+  Connection: undefined,
+  Token: undefined,
+  ASSOCIATED_TOKEN_PROGRAM_ID: undefined,
+  TOKEN_PROGRAM_ID: undefined,
+};

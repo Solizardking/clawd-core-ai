@@ -10,6 +10,8 @@
  */
 
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import type {
   ChatCompletionRequest,
   ClawdRouterConfig,
@@ -244,6 +246,20 @@ export class ClawdRouterProxy {
       return;
     }
 
+    // ── Web UI ──────────────────────────────────────────────────
+    if (url === '/v1/web/config') {
+      return this.handleWebConfig(res);
+    }
+
+    if (url === '/v1/web/access') {
+      return this.handleAccessCheck(req, res);
+    }
+
+    const webFile = resolveWebAsset(url);
+    if (webFile) {
+      return this.handleWebAsset(res, webFile);
+    }
+
     // 404 for everything else
     sendJSON(res, 404, {
       error: {
@@ -251,6 +267,41 @@ export class ClawdRouterProxy {
         type: 'invalid_request',
       },
     });
+  }
+
+  // ── Web UI Config ────────────────────────────────────────────────
+
+  private handleWebConfig(res: ServerResponse): void {
+    sendJSON(res, 200, {
+      recipient: this.config.x402PayTo || this.wallet.publicKey,
+      clawdToken: this.config.clawdTokenMint,
+      usdcToken: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      solToken: 'So11111111111111111111111111111111111111112',
+      holderTier: this.holderStatus?.tier ?? 'FREE',
+      network: this.config.network,
+    });
+  }
+
+  // ── Web Asset Serving ────────────────────────────────────────────
+
+  private handleWebAsset(res: ServerResponse, file: string): void {
+    try {
+      const content = readFileSync(file);
+      const ext = file.split('.').pop() ?? '';
+      const mime =
+        ext === 'html' ? 'text/html' :
+        ext === 'css' ? 'text/css' :
+        ext === 'js' ? 'application/javascript' :
+        'application/octet-stream';
+      res.writeHead(200, {
+        'Content-Type': mime,
+        'Content-Length': content.length,
+        'Cache-Control': 'no-cache',
+      });
+      res.end(content);
+    } catch {
+      sendJSON(res, 404, { error: { message: 'Not found', type: 'invalid_request' } });
+    }
   }
 
   // ── Health Check ──────────────────────────────────────────────────
@@ -1086,6 +1137,30 @@ function isLocalPath(url: string): boolean {
     || path === '/local/models'
     || path.startsWith('/v1/local/')
     || path.startsWith('/local/');
+}
+
+function resolveWebAsset(url: string): string | null {
+  const qIdx = url.indexOf('?');
+  const path = qIdx >= 0 ? url.slice(0, qIdx) : url;
+
+  // Only serve known web roots
+  const webRoot = join(process.cwd(), 'web');
+  let rel: string;
+  if (path === '/web' || path === '/web/') {
+    rel = 'index.html';
+  } else if (path === '/index.html' || path === '/') {
+    rel = 'index.html';
+  } else if (path.startsWith('/web/')) {
+    rel = path.slice('/web/'.length);
+  } else {
+    return null;
+  }
+
+  // Prevent traversal
+  const full = join(webRoot, rel);
+  if (!full.startsWith(webRoot)) return null;
+  if (!existsSync(full)) return null;
+  return full;
 }
 
 function createEmptyStats(): UsageStats {

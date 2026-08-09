@@ -10,8 +10,9 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install --omit=dev --no-audit --no-fund && npm cache clean --force
 
-# Copy prebuilt dist only (src excluded by .dockerignore)
+# Copy prebuilt dist + web UI (src excluded by .dockerignore)
 COPY dist/ dist/
+COPY web/ web/
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
