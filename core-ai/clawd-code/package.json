@@ -1,5 +1,5 @@
 {
-  "name": "@solana-clawd/clawd-code",
+  "name": "clawd-code",
   "version": "1.0.0",
   "description": "Curl-installable Solana-native AI coding CLI with wallet creation and paper-gated perps workflows",
   "type": "module",
@@ -35,14 +35,20 @@
     "phoenix",
     "vulcan"
   ],
-  "homepage": "https://github.com/Solizardking/solana-clawd/tree/main/clawd-code#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "allowScripts": {
+    "esbuild": ["postinstall"]
+  },
+  "homepage": "https://github.com/Solizardking/clawd-core-ai/tree/main/core-ai/clawd-code#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Solizardking/solana-clawd.git",
-    "directory": "clawd-code"
+    "url": "git+https://github.com/Solizardking/clawd-core-ai.git",
+    "directory": "core-ai/clawd-code"
   },
   "bugs": {
-    "url": "https://github.com/Solizardking/solana-clawd/issues"
+    "url": "https://github.com/Solizardking/clawd-core-ai/issues"
   },
   "author": "Solizardking",
   "license": "MIT",
