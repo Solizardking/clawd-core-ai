@@ -4,11 +4,9 @@
   "description": "Clawd Skills — 80+ Solana trading, research, payments, and protocol-development skills for Clawd Code agents",
   "type": "module",
   "main": "./index.js",
-  "files": [
-    "README.md",
-    "SYSTEM-PROMPTS.md",
-    ".mcp.json",
-    "index.js"
+  "files": ["**/*"],
+  ".npmignore": [
+    "node_modules"
   ],
   "scripts": {
     "doctor": "node index.js doctor",
