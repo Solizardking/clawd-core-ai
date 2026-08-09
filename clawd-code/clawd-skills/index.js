@@ -13,15 +13,28 @@ import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const SKILLS_DIR = join(__dirname, 'skills');
+// Skills are packaged at the package root (top-level directories).
+const SKILLS_DIR = __dirname;
 const TARGET_DIR = join(homedir(), '.clawd', 'skills');
 
 const REQUIRED_FILES = ['SKILL.md'];
 
+const NON_SKILL_DIRS = new Set([
+  'node_modules',
+  '.git',
+  '.github',
+  'dist',
+  '.clawd',
+  // Application / tool directories, not skills
+  'onchain',
+  'scanner',
+  'google',
+]);
+
 function listSkills() {
   if (!existsSync(SKILLS_DIR)) return [];
   return readdirSync(SKILLS_DIR, { withFileTypes: true })
-    .filter((e) => e.isDirectory())
+    .filter((e) => e.isDirectory() && !NON_SKILL_DIRS.has(e.name))
     .map((e) => e.name)
     .sort();
 }

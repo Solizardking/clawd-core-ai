@@ -17,10 +17,22 @@ const SKILLS_DIR = join(__dirname, 'skills');
 const MCP_PATH = join(__dirname, '.mcp.json');
 const KNOWLEDGE_DIR = join(__dirname, 'knowledge');
 
+const NON_SKILL_DIRS = new Set([
+  'node_modules',
+  '.git',
+  '.github',
+  'dist',
+  '.clawd',
+  // Application / tool directories, not skills
+  'onchain',
+  'scanner',
+  'google',
+]);
+
 function listSkills() {
   if (!existsSync(SKILLS_DIR)) return [];
   return readdirSync(SKILLS_DIR, { withFileTypes: true })
-    .filter((e) => e.isDirectory())
+    .filter((e) => e.isDirectory() && !NON_SKILL_DIRS.has(e.name))
     .map((e) => e.name)
     .sort();
 }
