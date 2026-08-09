@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /**
- * Clawd Skills — @solana-clawd/clawd-skills
+ * Clawd Skills — @openclawd/clawd-skills
  *
  * CLI:
  *   clawd-skills doctor        Validate skill structure
  *   clawd-skills install       Install skills into ~/.clawd/skills/
  *   clawd-skills list          List all bundled skills
  */
-import { readdirSync, existsSync, mkdirSync, cpSync, readFileSync, writeFileSync } from 'node:fs';
+import { readdirSync, existsSync, mkdirSync, cpSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -115,19 +115,28 @@ function listCmd() {
   console.log(`\n  Total: ${skills.length} skills`);
 }
 
-const cmd = process.argv[2] ?? 'doctor';
-switch (cmd) {
-  case 'doctor':
-    doctor();
-    break;
-  case 'install':
-    install();
-    break;
-  case 'list':
-    listCmd();
-    break;
-  default:
-    console.error(`Unknown command: ${cmd}`);
-    console.error('Usage: clawd-skills <doctor|install|list>');
-    process.exitCode = 2;
+function runCli(argv = process.argv.slice(2)) {
+  const cmd = argv[0] ?? 'doctor';
+  switch (cmd) {
+    case 'doctor':
+      doctor();
+      break;
+    case 'install':
+      install();
+      break;
+    case 'list':
+      listCmd();
+      break;
+    default:
+      console.error(`Unknown command: ${cmd}`);
+      console.error('Usage: clawd-skills <doctor|install|list>');
+      process.exitCode = 2;
+  }
+}
+
+export { runCli };
+
+// Direct execution (node index.js)
+if (process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).href) {
+  runCli();
 }
