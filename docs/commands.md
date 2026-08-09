@@ -1,6 +1,6 @@
 # Commands Reference
 
-> Complete catalog of all slash commands in Claude Code.
+> Complete catalog of all slash commands in Clawd Code.
 
 ---
 
@@ -71,7 +71,7 @@ const command = {
 
 | Command | Source | Description |
 |---------|--------|-------------|
-| `/config` | `config/` | View or modify Claude Code settings |
+| `/config` | `config/` | View or modify Clawd Code settings |
 | `/permissions` | `permissions/` | Manage tool permission rules |
 | `/theme` | `theme/` | Change the terminal color theme |
 | `/output-style` | `output-style/` | Change output formatting style |
@@ -126,7 +126,7 @@ const command = {
 | `/status` | `status/` | Show system and session status |
 | `/stats` | `stats/` | Show session statistics |
 | `/cost` | `cost/` | Display token usage and estimated cost |
-| `/version` | `version.ts` | Show Claude Code version |
+| `/version` | `version.ts` | Show Clawd Code version |
 | `/usage` | `usage/` | Show detailed API usage |
 | `/extra-usage` | `extra-usage/` | Show extended usage details |
 | `/rate-limit-options` | `rate-limit-options/` | View rate limit configuration |
@@ -135,7 +135,7 @@ const command = {
 
 | Command | Source | Description |
 |---------|--------|-------------|
-| `/install` | `install.tsx` | Install or update Claude Code |
+| `/install` | `install.tsx` | Install or update Clawd Code |
 | `/upgrade` | `upgrade/` | Upgrade to the latest version |
 | `/init` | `init.ts` | Initialize a project (create CLAUDE.md) |
 | `/init-verifiers` | `init-verifiers.ts` | Set up verifier hooks |
@@ -167,7 +167,7 @@ const command = {
 | Command | Source | Description |
 |---------|--------|-------------|
 | `/help` | `help/` | Show help and available commands |
-| `/exit` | `exit/` | Exit Claude Code |
+| `/exit` | `exit/` | Exit Clawd Code |
 | `/copy` | `copy/` | Copy content to clipboard |
 | `/feedback` | `feedback/` | Send feedback to Anthropic |
 | `/release-notes` | `release-notes/` | View release notes |

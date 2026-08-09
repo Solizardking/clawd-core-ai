@@ -1,6 +1,6 @@
 # Subsystems Guide
 
-> Detailed documentation of Claude Code's major subsystems.
+> Detailed documentation of Clawd Code's major subsystems.
 
 ---
 
@@ -23,7 +23,7 @@
 
 **Location:** `src/bridge/`
 
-The bridge is a bidirectional communication layer connecting Claude Code's CLI with IDE extensions (VS Code, JetBrains). It allows the CLI to run as a backend for IDE-based interfaces.
+The bridge is a bidirectional communication layer connecting Clawd Code's CLI with IDE extensions (VS Code, JetBrains). It allows the CLI to run as a backend for IDE-based interfaces.
 
 ### Architecture
 
@@ -39,7 +39,7 @@ The bridge is a bidirectional communication layer connecting Claude Code's CLI w
                                         │
                                         ▼
                               ┌──────────────────────┐
-                              │   Claude Code Core   │
+                              │   Clawd Code Core   │
                               │  (QueryEngine, Tools) │
                               └──────────────────────┘
 ```
@@ -73,7 +73,7 @@ The bridge is gated behind the `BRIDGE_MODE` feature flag and is stripped from n
 
 **Location:** `src/services/mcp/`
 
-Claude Code acts as both an **MCP client** (consuming tools/resources from MCP servers) and can run as an **MCP server** (exposing its own tools via `src/entrypoints/mcp.ts`).
+Clawd Code acts as both an **MCP client** (consuming tools/resources from MCP servers) and can run as an **MCP server** (exposing its own tools via `src/entrypoints/mcp.ts`).
 
 ### Client Features
 
@@ -85,7 +85,7 @@ Claude Code acts as both an **MCP client** (consuming tools/resources from MCP s
 
 ### Server Mode
 
-When launched via `src/entrypoints/mcp.ts`, Claude Code exposes its own tools and resources via the MCP protocol, allowing other AI agents to use Claude Code as a tool server.
+When launched via `src/entrypoints/mcp.ts`, Clawd Code exposes its own tools and resources via the MCP protocol, allowing other AI agents to use Clawd Code as a tool server.
 
 ### Related Tools
 
@@ -151,14 +151,14 @@ FileRead(*)           # Allow reading any file
 
 **Location:** `src/plugins/`, `src/services/plugins/`
 
-Claude Code supports installable plugins that can extend its capabilities.
+Clawd Code supports installable plugins that can extend its capabilities.
 
 ### Structure
 
 | Component | Location | Purpose |
 |-----------|----------|---------|
 | Plugin loader | `src/services/plugins/` | Discovers and loads plugins |
-| Built-in plugins | `src/plugins/builtinPlugins.ts` | Plugins that ship with Claude Code |
+| Built-in plugins | `src/plugins/builtinPlugins.ts` | Plugins that ship with Clawd Code |
 | Bundled plugins | `src/plugins/bundled/` | Plugin code bundled into the binary |
 | Plugin types | `src/types/plugin.ts` | TypeScript types for plugin API |
 
@@ -189,7 +189,7 @@ Skills are reusable, named workflows that bundle prompts and tool configurations
 
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| Bundled skills | `src/skills/bundled/` | Skills that ship with Claude Code |
+| Bundled skills | `src/skills/bundled/` | Skills that ship with Clawd Code |
 | Skill loader | `src/skills/loadSkillsDir.ts` | Loads skills from disk |
 | MCP skill builders | `src/skills/mcpSkillBuilders.ts` | Creates skills from MCP resources |
 | Skill registry | `src/skills/bundledSkills.ts` | Registration of all bundled skills |
@@ -253,7 +253,7 @@ Manages background and parallel work items — shell tasks, agent tasks, and tea
 
 **Location:** `src/memdir/`
 
-Claude Code's persistent memory system, based on `CLAUDE.md` files.
+Clawd Code's persistent memory system, based on `CLAUDE.md` files.
 
 ### Memory Hierarchy
 
