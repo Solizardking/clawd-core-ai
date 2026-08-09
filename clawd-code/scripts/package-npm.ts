@@ -44,14 +44,14 @@ function main() {
 
   // Generate a publishable package.json
   const npmPkg = {
-    name: srcPkg.name || '@anthropic-ai/claude-code',
-    version: srcPkg.version || '0.0.0',
-    description: srcPkg.description || 'Anthropic Claude Code CLI',
+    name: srcPkg.name || '@onchainai/clawd-code',
+    version: srcPkg.version || '1.0.0',
+    description: srcPkg.description || 'Clawd Code — Solana-native headless AI coding agent CLI',
     license: 'MIT',
     type: 'module',
     main: './cli.mjs',
     bin: {
-      claude: './cli.mjs',
+      clawd: './cli.mjs',
     },
     engines: {
       node: '>=20.0.0',
@@ -62,6 +62,11 @@ function main() {
       'cli.mjs.map',
       'README.md',
     ],
+    repository: {
+      type: 'git',
+      url: 'https://github.com/Solizardking/clawd-core-ai.git',
+      directory: 'clawd-code',
+    },
   }
 
   writeFileSync(
@@ -75,6 +80,12 @@ function main() {
     copyFileSync(readme, resolve(NPM_DIR, 'README.md'))
   }
 
+  // Copy LICENSE
+  const license = resolve(ROOT, 'LICENSE')
+  if (existsSync(license)) {
+    copyFileSync(license, resolve(NPM_DIR, 'LICENSE'))
+  }
+
   // Summary
   const bundleSize = readFileSync(CLI_BUNDLE).byteLength
   const sizeMB = (bundleSize / 1024 / 1024).toFixed(2)
@@ -82,7 +93,7 @@ function main() {
   console.log('npm package generated in dist/npm/')
   console.log(`  package:  ${npmPkg.name}@${npmPkg.version}`)
   console.log(`  bundle:   cli.mjs (${sizeMB} MB)`)
-  console.log(`  bin:      claude → ./cli.mjs`)
+  console.log(`  bin:      clawd → ./cli.mjs`)
   console.log('')
   console.log('To publish:')
   console.log('  cd dist/npm && npm publish')
