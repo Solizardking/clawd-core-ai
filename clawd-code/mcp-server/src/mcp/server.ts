@@ -9,22 +9,27 @@
  * - Manage wallet and spending
  */
 
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import {
+  StdioServerTransport,
+} from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
   CallToolRequestSchema,
-  ListToolsRequestSchema,
   ListResourcesRequestSchema,
+  ListToolsRequestSchema,
   ReadResourceRequestSchema,
-} from "@modelcontextprotocol/sdk/types.js";
-import { z } from "zod";
+} from '@modelcontextprotocol/sdk/types.js';
 
-import type { X402SolanaClient } from "../x402/solana-client.js";
-import type { ServiceRegistry } from "../discovery/registry.js";
-import type { XGateClient } from "../discovery/xgate.js";
-import type { BrowserTool } from "../tools/browser.js";
-import type { TerminalTool } from "../tools/terminal.js";
-import type { HttpTool } from "../tools/http.js";
+import type {
+  BrowserTool,
+} from '../../../../core-ai/clawd-mcp/src/tools/browser.js';
+import type { HttpTool } from '../../../../core-ai/clawd-mcp/src/tools/http.js';
+import type {
+  TerminalTool,
+} from '../../../../core-ai/clawd-mcp/src/tools/terminal.js';
+import type { ServiceRegistry } from '../discovery/registry.js';
+import type { XGateClient } from '../discovery/xgate.js';
+import type { X402SolanaClient } from '../x402/solana-client.js';
 
 export interface McpServerConfig {
   name?: string;
