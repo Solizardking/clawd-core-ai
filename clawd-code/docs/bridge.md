@@ -46,7 +46,7 @@ IDE / claude.ai  ──WebSocket/SSE──→  Session-Ingress  ──→  CLI (
 - `control_response` (permission decisions from IDE)
 
 **Outbound** (CLI → server):
-- `assistant` messages (Claude's responses)
+- `assistant` messages (Clawd's responses)
 - `user` messages (echoed for sync)
 - `result` messages (turn completion)
 - System events, tool starts, activities
@@ -194,8 +194,8 @@ claude remote-control --spawn same-dir
 
 ### `--claude-in-chrome-mcp` (cli.tsx:72)
 
-Launches a **Claude-in-Chrome MCP server** via `runClaudeInChromeMcpServer()` from
-`src/utils/claudeInChrome/mcpServer.ts`. This:
+Launches a **Clawd-in-Chrome MCP server** via `runClaudeInChromeMcpServer()` from
+`src/utils/claudeInChrome/mcpServer.ts` (function/path names kept as-is — they are the real source identifiers). This:
 - Creates a `StdioServerTransport` (MCP over stdin/stdout)
 - Uses `@ant/claude-for-chrome-mcp` package to create an MCP server
 - Bridges between Clawd Code and the Chrome extension

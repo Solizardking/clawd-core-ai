@@ -175,12 +175,12 @@ const command = {
 | `/tag` | `tag/` | Tag the current session |
 | `/insights` | `insights.ts` | Show codebase insights |
 | `/stickers` | `stickers/` | Easter egg — stickers |
-| `/good-claude` | `good-claude/` | Easter egg — praise Claude |
+| `/good-claude` | `good-claude/` | Easter egg — praise Clawd |
 | `/voice` | `voice/` | Toggle voice input mode |
 | `/chrome` | `chrome/` | Chrome extension integration |
 | `/issue` | `issue/` | File a GitHub issue |
 | `/statusline` | `statusline.tsx` | Customize the status line |
-| `/thinkback` | `thinkback/` | Replay Claude's thinking process |
+| `/thinkback` | `thinkback/` | Replay Clawd's thinking process |
 | `/thinkback-play` | `thinkback-play/` | Animated thinking replay |
 | `/passes` | `passes/` | Multi-pass execution |
 | `/x402` | `x402/` | x402 payment protocol integration |

@@ -51,7 +51,7 @@ The heart of Clawd Code. Handles:
 
 ### 4. Tool System (`src/Tool.ts` + `src/tools/`)
 
-Every capability Claude can invoke is a **tool**. Each tool is self-contained with:
+Every capability Clawd can invoke is a **tool**. Each tool is self-contained with:
 
 - **Input schema** (Zod validation)
 - **Permission model** (what needs user approval)
