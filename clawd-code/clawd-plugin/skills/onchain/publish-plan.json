@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "skillhub-publish-plan/v1",
+  "createdAt": "2026-07-06T22:47:34.062Z",
+  "cluster": "mainnet-beta",
+  "rpc": "https://api.mainnet-beta.solana.com",
+  "merkleRoot": "sha256-ffaddd505dd657c1aa4c62a26b553bf669efcc8124b4e4d89e50cb4509edfa3b",
+  "catalogHash": "sha256-35f71fbfdfee9e4c946d5b946aa06a03269317cf6f53e40a490f72b80ac2403a",
+  "totalSkills": 239,
+  "uploads": [
+    {
+      "label": "onchain-skill-registry.json",
+      "bytes": 187694,
+      "tags": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "App-Name",
+          "value": "skill-hub"
+        },
+        {
+          "name": "Type",
+          "value": "onchain-skill-registry/v1"
+        },
+        {
+          "name": "Skill-Count",
+          "value": "239"
+        },
+        {
+          "name": "Merkle-Root",
+          "value": "sha256-ffaddd505dd657c1aa4c62a26b553bf669efcc8124b4e4d89e50cb4509edfa3b"
+        },
+        {
+          "name": "Catalog-Hash",
+          "value": "sha256-35f71fbfdfee9e4c946d5b946aa06a03269317cf6f53e40a490f72b80ac2403a"
+        },
+        {
+          "name": "Hub-Url",
+          "value": "https://skills.onchainai.fund"
+        }
+      ]
+    },
+    {
+      "label": "catalog.json",
+      "bytes": 97149,
+      "tags": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "App-Name",
+          "value": "skill-hub"
+        },
+        {
+          "name": "Type",
+          "value": "skill-catalog/v1"
+        },
+        {
+          "name": "Skill-Count",
+          "value": "239"
+        },
+        {
+          "name": "Merkle-Root",
+          "value": "sha256-ffaddd505dd657c1aa4c62a26b553bf669efcc8124b4e4d89e50cb4509edfa3b"
+        },
+        {
+          "name": "Catalog-Hash",
+          "value": "sha256-35f71fbfdfee9e4c946d5b946aa06a03269317cf6f53e40a490f72b80ac2403a"
+        },
+        {
+          "name": "Hub-Url",
+          "value": "https://skills.onchainai.fund"
+        }
+      ]
+    }
+  ],
+  "memoPreview": "skillhub:v1|skills:239|merkle:sha256-ffaddd505dd657c1aa4c62a26b553bf669efcc8124b4e4d89e50cb4509edfa3b|catalog:sha256-35f71fbfdfee9e4c946d5b946aa06a03269317cf6f53e40a490f72b80ac2403a|ar:<registry-ar-tx>,<catalog-ar-tx>"
+}

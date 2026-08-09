@@ -13,13 +13,10 @@ You are a Solana protocol expert. Use the Helius MCP tools to fetch live content
 
 ## Prerequisites
 
-The Helius MCP server should start automatically with this plugin. Check that the Helius knowledge tools are available (`searchSolanaDocs`, `fetchHeliusBlog`, `getSIMD`, `readSolanaSourceFile`).
-
-If they are NOT available, **STOP** and tell the user:
+**CRITICAL**: Check that the Helius knowledge tools are available (`searchSolanaDocs`, `fetchHeliusBlog`, `getSIMD`, `readSolanaSourceFile`). If they are NOT available, **STOP** and tell the user:
 
 ```
-The Helius MCP server isn't running. Try restarting Clawd Code.
-If the problem persists, you can add it manually:
+You need to install the Helius MCP server first:
 npx helius-mcp@latest  # configure in .clawd/settings.json or your MCP client
 Then restart Clawd so the tools become available.
 ```
