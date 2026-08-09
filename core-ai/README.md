@@ -31,6 +31,7 @@ This fork keeps the Helius Solana infrastructure surface and replaces the old as
 | [`clawd-perps-agent`](./clawd-perps-agent) | Specialized perps agent: Phoenix Rise, Vulcan, Imperial WS, on-chain MM, TWAMM, Telegram | `cd clawd-perps-agent && npm install && npm run build` |
 | [`mcp-server`](./mcp-server) | Standalone MCP server for pump-sdk and related tooling | `npm install && npm run build` |
 | [`v3`](./v3) | v3 Clawd runtime — next-generation Clawd scaffolding | `npm install && npm run build` |
+| [`tailclawd`](./tailclawd) | Local UI + Tailscale proxy for Clawd/Claude session monitoring | `cd tailclawd && npm install && npm run dev` |
 | [`knowledge`](./knowledge) | Clawd knowledge base — facts, gotchas, patterns, anti-patterns, decisions, API behaviors | read-only reference |
 | [`docs`](./docs) | Architecture decision records (ADRs) for the open-clawd stack | read-only reference |
 

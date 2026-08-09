@@ -1,8 +1,9 @@
 {
-  "name": "tailclaude",
+  "name": "tailclawd",
   "version": "0.2.0",
   "private": true,
   "type": "module",
+  "description": "Local UI + Tailscale proxy for Clawd/Claude session monitoring via iii-sdk",
   "scripts": {
     "dev": "tsx src/index.ts",
     "start": "node --loader tsx src/index.ts"

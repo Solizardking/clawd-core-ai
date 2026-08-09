@@ -17,6 +17,7 @@ This monorepo contains Helius developer tools wrapped for Clawd Code:
 | `clawd-code/` | Full Solana-native AI CLI — xAI/Anthropic/DeepSeek/OpenRouter, voice, web, arena |
 | `clawd-grok/` | Bun-native REPL + audio + LSP + MCP + wallet runtime |
 | `clawd-agents/` | Perps agents: Phoenix Rise, Vulcan, Imperial, TWAMM, on-chain MM, Telegram |
+| `tailclawd/` | Local UI + Tailscale proxy for Clawd/Claude session monitoring |
 | `ai-training/` | LoRA fine-tuning platform, HF Jobs, W&B, wiki ingest, Solana benchmark |
 
 ## Clawd Code Setup
