@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
@@ -88,6 +88,10 @@ const ROUTER_LEGACY_ALLOWLIST = [
 ];
 
 function collectAuditFiles(target: string): string[] {
+  if (!existsSync(target)) {
+    return [];
+  }
+
   const stats = statSync(target);
   if (!stats.isDirectory()) {
     return target.endsWith('.md') || target.endsWith('.ts') ? [target] : [];
@@ -252,7 +256,7 @@ describe('Router Legacy Audit', () => {
       path.join(REPO_ROOT, 'AGENTS.md'),
       path.join(REPO_ROOT, 'README.md'),
       path.join(REPO_ROOT, 'CLAWD.md'),
-      path.join(REPO_ROOT, 'helius-mcp', 'README.md'),
+      path.join(REPO_ROOT, 'clawd-mcp', 'README.md'),
       path.join(REPO_ROOT, 'helius-plugin', 'README.md'),
       path.join(REPO_ROOT, 'helius-cursor', 'README.md'),
       path.join(REPO_ROOT, 'helius-skills', 'helius', 'SKILL.md'),
@@ -264,9 +268,8 @@ describe('Router Legacy Audit', () => {
       path.join(REPO_ROOT, 'helius-cursor', 'skills', 'build', 'SKILL.md'),
       path.join(REPO_ROOT, 'helius-cursor', 'skills', 'dflow', 'SKILL.md'),
       path.join(REPO_ROOT, 'helius-cursor', 'skills', 'phantom', 'SKILL.md'),
-      path.join(REPO_ROOT, '.agents', 'skills'),
-      path.join(REPO_ROOT, 'helius-mcp', 'system-prompts'),
-      path.join(REPO_ROOT, 'helius-mcp', 'src', 'router'),
+      path.join(REPO_ROOT, 'clawd-mcp', 'system-prompts'),
+      path.join(REPO_ROOT, 'clawd-mcp', 'src', 'router'),
     ];
 
     const violations: string[] = [];

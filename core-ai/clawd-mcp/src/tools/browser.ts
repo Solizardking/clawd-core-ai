@@ -198,8 +198,8 @@ export class BrowserTool {
   async extractLinks(): Promise<{ text: string; href: string }[]> {
     if (!this.page) throw new Error("Browser not started");
 
-    return await this.page.$$eval("a[href]", (links) =>
-      links.map((a) => ({
+    return await this.page.$$eval("a[href]", (links: Element[]) =>
+      links.map((a: Element) => ({
         text: a.textContent?.trim() ?? "",
         href: a.getAttribute("href") ?? "",
       }))
