@@ -1,27 +1,26 @@
 // biome-ignore-all assist/source/organizeImports: ANT-ONLY import markers must not be reordered
 import { randomUUID } from 'crypto';
-import { createBridgeApiClient, BridgeFatalError, isExpiredErrorType, isSuppressible403, } from './bridgeApi.js';
-import { logForDebugging } from '../utils/debug.js';
-import { logForDiagnosticsNoPII } from '../utils/diagLogs.js';
-import { logEvent, } from '../services/analytics/index.js';
-import { registerCleanup } from '../utils/cleanupRegistry.js';
-import { handleIngressMessage, handleServerControlRequest, makeResultMessage, isEligibleBridgeMessage, extractTitleText, BoundedUUIDSet, } from './bridgeMessaging.js';
-import { decodeWorkSecret, buildSdkUrl, buildCCRv2SdkUrl, sameSessionId, } from './workSecret.js';
-import { toCompatSessionId, toInfraSessionId } from './sessionIdCompat.js';
-import { updateSessionBridgeId } from '../utils/concurrentSessions.js';
-import { getTrustedDeviceToken } from './trustedDevice.js';
-import { HybridTransport } from '../cli/transports/HybridTransport.js';
-import { createV1ReplTransport, createV2ReplTransport, } from './replBridgeTransport.js';
-import { updateSessionIngressAuthToken } from '../utils/sessionIngressAuth.js';
-import { isEnvTruthy, isInProtectedNamespace } from '../utils/envUtils.js';
-import { validateBridgeId } from './bridgeApi.js';
+import { HybridTransport, } from '../../../core-ai/clawd-code/src/cli/transports/HybridTransport.js';
+import { logEvent, } from '../../../core-ai/clawd-code/src/services/analytics/index.js';
+import { registerCleanup, } from '../../../core-ai/clawd-code/src/utils/cleanupRegistry.js';
+import { updateSessionBridgeId, } from '../../../core-ai/clawd-code/src/utils/concurrentSessions.js';
+import { logForDebugging, } from '../../../core-ai/clawd-code/src/utils/debug.js';
+import { logForDiagnosticsNoPII, } from '../../../core-ai/clawd-code/src/utils/diagLogs.js';
+import { isEnvTruthy, isInProtectedNamespace, } from '../../../core-ai/clawd-code/src/utils/envUtils.js';
+import { errorMessage } from '../../../core-ai/clawd-code/src/utils/errors.js';
+import { updateSessionIngressAuthToken, } from '../../../core-ai/clawd-code/src/utils/sessionIngressAuth.js';
+import { sleep } from '../../../core-ai/clawd-code/src/utils/sleep.js';
+import { BridgeFatalError, createBridgeApiClient, isExpiredErrorType, isSuppressible403, validateBridgeId, } from './bridgeApi.js';
+import { clearBridgeDebugHandle, injectBridgeFault, registerBridgeDebugHandle, wrapApiForFaultInjection, } from './bridgeDebug.js';
+import { BoundedUUIDSet, extractTitleText, handleIngressMessage, handleServerControlRequest, isEligibleBridgeMessage, makeResultMessage, } from './bridgeMessaging.js';
+import { createCapacityWake, } from './capacityWake.js';
 import { describeAxiosError, extractHttpStatus, logBridgeSkip, } from './debugUtils.js';
-import { createCapacityWake } from './capacityWake.js';
 import { FlushGate } from './flushGate.js';
 import { DEFAULT_POLL_CONFIG, } from './pollConfigDefaults.js';
-import { errorMessage } from '../utils/errors.js';
-import { sleep } from '../utils/sleep.js';
-import { wrapApiForFaultInjection, registerBridgeDebugHandle, clearBridgeDebugHandle, injectBridgeFault, } from './bridgeDebug.js';
+import { createV1ReplTransport, createV2ReplTransport, } from './replBridgeTransport.js';
+import { toCompatSessionId, toInfraSessionId, } from './sessionIdCompat.js';
+import { getTrustedDeviceToken } from './trustedDevice.js';
+import { buildCCRv2SdkUrl, buildSdkUrl, decodeWorkSecret, sameSessionId, } from './workSecret.js';
 /**
  * Poll error recovery constants. When the work poll starts failing (e.g.
  * server 500s), we use exponential backoff and give up after this timeout.
@@ -1716,5 +1715,5 @@ async function startWorkPollLoop({ api, getCredentials, signal, onStateChange, o
     logForDebugging(`[bridge:repl] Work poll loop ended (aborted=${signal.aborted}) env=${getCredentials().environmentId}`);
 }
 // Exported for testing only
-export { startWorkPollLoop as _startWorkPollLoopForTesting, POLL_ERROR_INITIAL_DELAY_MS as _POLL_ERROR_INITIAL_DELAY_MS_ForTesting, POLL_ERROR_MAX_DELAY_MS as _POLL_ERROR_MAX_DELAY_MS_ForTesting, POLL_ERROR_GIVE_UP_MS as _POLL_ERROR_GIVE_UP_MS_ForTesting, };
+export { POLL_ERROR_GIVE_UP_MS as _POLL_ERROR_GIVE_UP_MS_ForTesting, POLL_ERROR_INITIAL_DELAY_MS as _POLL_ERROR_INITIAL_DELAY_MS_ForTesting, POLL_ERROR_MAX_DELAY_MS as _POLL_ERROR_MAX_DELAY_MS_ForTesting, startWorkPollLoop as _startWorkPollLoopForTesting, };
 //# sourceMappingURL=replBridge.js.map

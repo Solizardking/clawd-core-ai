@@ -27,24 +27,26 @@
  * Gated by `tengu_bridge_repl_v2` GrowthBook flag in initReplBridge.ts.
  * REPL-only — daemon/print stay on env-based.
  */
-import { feature } from 'bun:bundle';
 import axios from 'axios';
-import { createV2ReplTransport, } from './replBridgeTransport.js';
-import { buildCCRv2SdkUrl } from './workSecret.js';
-import { toCompatSessionId } from './sessionIdCompat.js';
+import { feature } from 'bun:bundle';
+import { logEvent, } from '../../../core-ai/clawd-code/src/services/analytics/index.js';
+import { registerCleanup, } from '../../../core-ai/clawd-code/src/utils/cleanupRegistry.js';
+import { logForDebugging, } from '../../../core-ai/clawd-code/src/utils/debug.js';
+import { logForDiagnosticsNoPII, } from '../../../core-ai/clawd-code/src/utils/diagLogs.js';
+import { isInProtectedNamespace, } from '../../../core-ai/clawd-code/src/utils/envUtils.js';
+import { errorMessage } from '../../../core-ai/clawd-code/src/utils/errors.js';
+import { sleep } from '../../../core-ai/clawd-code/src/utils/sleep.js';
+import { getBridgeBaseUrlOverride } from './bridgeConfig.js';
+import { BoundedUUIDSet, extractTitleText, handleIngressMessage, handleServerControlRequest, isEligibleBridgeMessage, makeResultMessage, } from './bridgeMessaging.js';
+import { createCodeSession, fetchRemoteCredentials as fetchRemoteCredentialsRaw, } from './codeSessionApi.js';
+import { logBridgeSkip } from './debugUtils.js';
+import { getEnvLessBridgeConfig, } from './envLessBridgeConfig.js';
 import { FlushGate } from './flushGate.js';
 import { createTokenRefreshScheduler } from './jwtUtils.js';
+import { createV2ReplTransport, } from './replBridgeTransport.js';
+import { toCompatSessionId } from './sessionIdCompat.js';
 import { getTrustedDeviceToken } from './trustedDevice.js';
-import { getEnvLessBridgeConfig, } from './envLessBridgeConfig.js';
-import { handleIngressMessage, handleServerControlRequest, makeResultMessage, isEligibleBridgeMessage, extractTitleText, BoundedUUIDSet, } from './bridgeMessaging.js';
-import { logBridgeSkip } from './debugUtils.js';
-import { logForDebugging } from '../utils/debug.js';
-import { logForDiagnosticsNoPII } from '../utils/diagLogs.js';
-import { isInProtectedNamespace } from '../utils/envUtils.js';
-import { errorMessage } from '../utils/errors.js';
-import { sleep } from '../utils/sleep.js';
-import { registerCleanup } from '../utils/cleanupRegistry.js';
-import { logEvent, } from '../services/analytics/index.js';
+import { buildCCRv2SdkUrl } from './workSecret.js';
 const ANTHROPIC_VERSION = '2023-06-01';
 function oauthHeaders(accessToken) {
     return {
@@ -660,9 +662,7 @@ async function withRetry(fn, label, cfg) {
 }
 // Moved to codeSessionApi.ts so the SDK /bridge subpath can bundle them
 // without pulling in this file's heavy CLI tree (analytics, transport).
-export { createCodeSession, } from './codeSessionApi.js';
-import { createCodeSession, fetchRemoteCredentials as fetchRemoteCredentialsRaw, } from './codeSessionApi.js';
-import { getBridgeBaseUrlOverride } from './bridgeConfig.js';
+export { createCodeSession } from './codeSessionApi.js';
 // CLI-side wrapper that applies the CLAUDE_BRIDGE_BASE_URL dev override and
 // injects the trusted-device token (both are env/GrowthBook reads that the
 // SDK-facing codeSessionApi.ts export must stay free of).

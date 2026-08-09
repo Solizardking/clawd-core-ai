@@ -1,4 +1,4 @@
-import { logForDebugging } from '../utils/debug.js';
+import { logForDebugging, } from '../../../core-ai/clawd-code/src/utils/debug.js';
 import { BridgeFatalError } from './bridgeApi.js';
 let debugHandle = null;
 const faultQueue = [];

@@ -1,8 +1,8 @@
-import { CCRClient } from '../cli/transports/ccrClient.js';
-import { SSETransport } from '../cli/transports/SSETransport.js';
-import { logForDebugging } from '../utils/debug.js';
-import { errorMessage } from '../utils/errors.js';
-import { updateSessionIngressAuthToken } from '../utils/sessionIngressAuth.js';
+import { CCRClient, } from '../../../core-ai/clawd-code/src/cli/transports/ccrClient.js';
+import { SSETransport, } from '../../../core-ai/clawd-code/src/cli/transports/SSETransport.js';
+import { logForDebugging, } from '../../../core-ai/clawd-code/src/utils/debug.js';
+import { errorMessage } from '../../../core-ai/clawd-code/src/utils/errors.js';
+import { updateSessionIngressAuthToken, } from '../../../core-ai/clawd-code/src/utils/sessionIngressAuth.js';
 import { registerWorker } from './workSecret.js';
 /**
  * v1 adapter: HybridTransport already has the full surface (it extends

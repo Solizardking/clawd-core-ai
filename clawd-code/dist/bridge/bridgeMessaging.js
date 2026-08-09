@@ -10,13 +10,13 @@
  * as params.
  */
 import { randomUUID } from 'crypto';
-import { logEvent } from '../services/analytics/index.js';
-import { EMPTY_USAGE } from '../services/api/emptyUsage.js';
-import { normalizeControlMessageKeys } from '../utils/controlMessageCompat.js';
-import { logForDebugging } from '../utils/debug.js';
-import { stripDisplayTagsAllowEmpty } from '../utils/displayTags.js';
-import { errorMessage } from '../utils/errors.js';
-import { jsonParse } from '../utils/slowOperations.js';
+import { logEvent, } from '../../../core-ai/clawd-code/src/services/analytics/index.js';
+import { EMPTY_USAGE, } from '../../../core-ai/clawd-code/src/services/api/emptyUsage.js';
+import { normalizeControlMessageKeys, } from '../../../core-ai/clawd-code/src/utils/controlMessageCompat.js';
+import { logForDebugging, } from '../../../core-ai/clawd-code/src/utils/debug.js';
+import { stripDisplayTagsAllowEmpty, } from '../../../core-ai/clawd-code/src/utils/displayTags.js';
+import { errorMessage } from '../../../core-ai/clawd-code/src/utils/errors.js';
+import { jsonParse, } from '../../../core-ai/clawd-code/src/utils/slowOperations.js';
 // ─── Type guards ─────────────────────────────────────────────────────────────
 /** Type predicate for parsed WebSocket messages. SDKMessage is a
  *  discriminated union on `type` — validating the discriminant is

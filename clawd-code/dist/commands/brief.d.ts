@@ -4,7 +4,7 @@ declare const brief: {
     type: "local-jsx";
     name: string;
     description: string;
-    isEnabled: () => any;
+    isEnabled: () => boolean;
     immediate: true;
     load: () => Promise<{
         call(onDone: LocalJSXCommandOnDone, context: ToolUseContext & LocalJSXCommandContext): Promise<React.ReactNode>;

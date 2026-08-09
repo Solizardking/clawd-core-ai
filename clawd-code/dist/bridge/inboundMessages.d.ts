@@ -1,6 +1,6 @@
-import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
 import type { UUID } from 'crypto';
-import type { SDKMessage } from '../entrypoints/agentSdkTypes.js';
+import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
+import type { SDKMessage } from '../../../core-ai/clawd-code/src/entrypoints/agentSdkTypes.js';
 /**
  * Process an inbound user message from the bridge, extracting content
  * and UUID for enqueueing. Supports both string content and

@@ -9,9 +9,12 @@
  * Best-effort: any failure (no token, network, non-2xx, disk) logs debug and
  * skips that attachment. The message still reaches Claude, just without @path.
  */
-import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
 import { z } from 'zod/v4';
-declare const attachmentSchema: () => any;
+import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages.mjs';
+declare const attachmentSchema: () => z.ZodObject<{
+    file_uuid: z.ZodString;
+    file_name: z.ZodString;
+}, z.core.$strip>;
 export type InboundAttachment = z.infer<ReturnType<typeof attachmentSchema>>;
 /** Pull file_attachments off a loosely-typed inbound message. */
 export declare function extractInboundAttachments(msg: unknown): InboundAttachment[];

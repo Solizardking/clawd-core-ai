@@ -10,8 +10,8 @@
  * Callers that compose with a different auth source (e.g. daemon workers
  * using IPC auth) use the Override getters directly.
  */
-import { getOauthConfig } from '../constants/oauth.js';
-import { getClaudeAIOAuthTokens } from '../utils/auth.js';
+import { getOauthConfig, } from '../../../core-ai/clawd-code/src/constants/oauth.js';
+import { getClaudeAIOAuthTokens, } from '../../../core-ai/clawd-code/src/utils/auth.js';
 /** Ant-only dev override: CLAUDE_BRIDGE_OAUTH_TOKEN, else undefined. */
 export function getBridgeTokenOverride() {
     return ((process.env.USER_TYPE === 'ant' &&

@@ -1,4 +1,4 @@
-import { formatDuration, truncateToWidth } from '../utils/format.js';
+import { formatDuration, truncateToWidth } from '../../../core-ai/clawd-code/src/utils/format.js';
 /** Bridge status state machine states. */
 export type StatusState = 'idle' | 'attached' | 'titled' | 'reconnecting' | 'failed';
 /** How long a tool activity line stays visible after last tool_start (ms). */

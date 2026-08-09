@@ -1,12 +1,12 @@
 /**
  * Clawd Code — Model Registry
- * xAI Grok + Anthropic Claude + DeepSeek model definitions
+ * Moonshot Kimi + xAI Grok + Anthropic Claude + DeepSeek model definitions
  *
- * Default model: xAI Grok (grok-4.3 for code/REPL, grok-4.20-multi-agent for research).
+ * Default model: Moonshot Kimi K2 Thinking for code/REPL/trade/research.
  * Single source of truth used by cli.ts, modes/*, and the /inspect command.
  */
 
-export type ClawdProvider = 'xai' | 'anthropic' | 'deepseek' | 'openrouter';
+export type ClawdProvider = 'moonshot' | 'xai' | 'anthropic' | 'deepseek' | 'openrouter';
 
 export interface ModelDefinition {
   id: string;
@@ -28,21 +28,89 @@ export interface ModelDefinition {
 }
 
 // ─── Default model constants (single source of truth) ───────────────────────
-/** General-purpose default (code mode, REPL, trade). Grok 4.3 — reasoning, tools, streaming. */
-export const DEFAULT_MODEL = 'grok-4.3';
-/** Default for research mode — multi-agent (responses API only, no client tools). */
-export const DEFAULT_RESEARCH_MODEL = 'grok-4.20-multi-agent';
-/** Default for image generation mode. */
-export const DEFAULT_IMAGE_MODEL = 'grok-imagine-image-quality';
-/** Default for voice agent mode (realtime voice). */
+/** General-purpose default (code mode, REPL, trade, research). Kimi K2 Thinking — reasoning, tools, streaming. */
+export const DEFAULT_MODEL = 'kimi-k2-thinking';
+/** Default for research mode — also Kimi K2 Thinking (Moonshot's best model with 128K context). */
+export const DEFAULT_RESEARCH_MODEL = 'kimi-k2-thinking';
+/** Default for image generation mode (Gemini via DALL-E fallback). */
+export const DEFAULT_IMAGE_MODEL = 'gemini-2.0-flash-exp-image-gen';
+/** Default for voice agent mode (realtime voice via xAI). */
 export const DEFAULT_VOICE_MODEL = 'grok-voice-think-fast-1.0';
-/** Default for fast/cheap tasks (alt to grok-4.3). */
-export const DEFAULT_FAST_MODEL = 'grok-4.3-fast';
-/** Default provider (xAI / Grok). */
-export const DEFAULT_PROVIDER: ClawdProvider = 'xai';
+/** Default for fast/cheap tasks. */
+export const DEFAULT_FAST_MODEL = 'kimi-k2-turbo-preview';
+/** Default provider (Moonshot / Kimi). */
+export const DEFAULT_PROVIDER: ClawdProvider = 'moonshot';
 
 // ─── Model catalog ──────────────────────────────────────────────────────────
 export const MODELS: ModelDefinition[] = [
+  // ── Moonshot Kimi ⭐ default ───────────────────────────────────────────
+  {
+    id: 'kimi-k2-thinking',
+    name: 'Kimi K2 Thinking',
+    description: 'Moonshot flagship — reasoning, tools, streaming. DEFAULT for code/REPL/trade/research.',
+    contextWindow: 128_000,
+    inputPrice: 0.6,
+    outputPrice: 2.4,
+    reasoning: true,
+    supportsClientTools: true,
+    streaming: true,
+    provider: 'moonshot',
+    bestFor: 'code',
+    aliases: ['kimi', 'k2-thinking', 'moonshot', 'default', 'ms'],
+  },
+  {
+    id: 'kimi-k2-turbo-preview',
+    name: 'Kimi K2 Turbo Preview',
+    description: 'Moonshot fast model — lower latency, cost-optimized. Good for quick tasks.',
+    contextWindow: 128_000,
+    inputPrice: 0.3,
+    outputPrice: 1.2,
+    reasoning: true,
+    supportsClientTools: true,
+    streaming: true,
+    provider: 'moonshot',
+    bestFor: 'general',
+    aliases: ['kimi-turbo', 'k2-turbo', 'moonshot-fast'],
+  },
+  {
+    id: 'moonshot-v1-8k',
+    name: 'Moonshot V1 8K',
+    description: 'Moonshot legacy model — 8K context, good for simple completions.',
+    contextWindow: 8_000,
+    inputPrice: 0.6,
+    outputPrice: 2.4,
+    supportsClientTools: true,
+    streaming: true,
+    provider: 'moonshot',
+    bestFor: 'general',
+    aliases: ['moonshot-v1'],
+  },
+  {
+    id: 'moonshot-v1-32k',
+    name: 'Moonshot V1 32K',
+    description: 'Moonshot extended context model — 32K tokens.',
+    contextWindow: 32_000,
+    inputPrice: 0.6,
+    outputPrice: 2.4,
+    supportsClientTools: true,
+    streaming: true,
+    provider: 'moonshot',
+    bestFor: 'general',
+    aliases: ['moonshot-32k'],
+  },
+  {
+    id: 'moonshot-v1-128k',
+    name: 'Moonshot V1 128K',
+    description: 'Moonshot longest context model — 128K tokens.',
+    contextWindow: 128_000,
+    inputPrice: 0.6,
+    outputPrice: 2.4,
+    supportsClientTools: true,
+    streaming: true,
+    provider: 'moonshot',
+    bestFor: 'code',
+    aliases: ['moonshot-128k'],
+  },
   // ── Anthropic Claude ──────────────────────────────────────────────────
   {
     id: 'claude-sonnet-4-6',
@@ -112,11 +180,11 @@ export const MODELS: ModelDefinition[] = [
     bestFor: 'general',
     aliases: ['deepseek/flash', 'v4-flash', 'deepseek-chat', 'deepseek-reasoner'],
   },
-  // ── xAI Grok (default) ────────────────────────────────────────────────
+  // ── xAI Grok ──────────────────────────────────────────────────────────
   {
     id: 'grok-4.3',
     name: 'Grok 4.3',
-    description: 'xAI flagship reasoning model — best for agent tasks, code, and market analysis. DEFAULT for code/REPL/trade.',
+    description: 'xAI flagship reasoning model — best for agent tasks, code, and market analysis.',
     contextWindow: 256_000,
     inputPrice: 3.0,
     outputPrice: 15.0,
@@ -125,7 +193,7 @@ export const MODELS: ModelDefinition[] = [
     streaming: true,
     provider: 'xai',
     bestFor: 'code',
-    aliases: ['grok-4-1-fast', 'xai/grok-code-fast-1', 'grok', 'default'],
+    aliases: ['grok-4-1-fast', 'xai/grok-code-fast-1', 'grok'],
   },
   {
     id: 'grok-4.3-fast',
@@ -157,7 +225,7 @@ export const MODELS: ModelDefinition[] = [
   {
     id: 'grok-4.20-multi-agent',
     name: 'Grok 4.20 Multi-Agent',
-    description: 'Specialized Grok model for multi-agent orchestration — responses API only. DEFAULT for research mode.',
+    description: 'Specialized Grok model for multi-agent orchestration — responses API only.',
     contextWindow: 256_000,
     inputPrice: 2.0,
     outputPrice: 10.0,
@@ -227,7 +295,7 @@ export const MODELS: ModelDefinition[] = [
   {
     id: 'grok-imagine-image-quality',
     name: 'Grok Imagine Image Quality',
-    description: 'xAI image generation & editing model — text-to-image and image-to-image via the xAI image API. DEFAULT for image mode.',
+    description: 'xAI image generation & editing model — text-to-image and image-to-image via the xAI image API.',
     contextWindow: 0,
     inputPrice: 0,
     outputPrice: 0,
@@ -240,7 +308,7 @@ export const MODELS: ModelDefinition[] = [
   {
     id: 'grok-voice-think-fast-1.0',
     name: 'Grok Voice Think Fast 1.0',
-    description: 'xAI realtime voice model — for the voice agent REPL with Solana tools. DEFAULT for voice --agent mode.',
+    description: 'xAI realtime voice model — for the voice agent REPL with Solana tools.',
     contextWindow: 0,
     inputPrice: 0,
     outputPrice: 0,
@@ -333,16 +401,17 @@ export function resolveModelForMode(
 }
 
 export function printModelsTable(): void {
-  const providers: ClawdProvider[] = ['xai', 'anthropic', 'deepseek', 'openrouter'];
+  const providers: ClawdProvider[] = ['moonshot', 'xai', 'anthropic', 'deepseek'];
   const labels: Record<ClawdProvider, string> = {
-    xai: 'xAI Grok  ⭐ default',
+    moonshot: 'Moonshot Kimi  ⭐ default',
+    xai: 'xAI Grok',
     anthropic: 'Anthropic Claude',
     deepseek: 'DeepSeek',
     openrouter: 'OpenRouter',
   };
 
   console.log('\n╔════════════════════════════════════════════════════════════════════════════╗');
-  console.log('║  CLAWD CODE — MODEL REGISTRY (xAI Grok is the default provider)            ║');
+  console.log('║  CLAWD CODE — MODEL REGISTRY (Moonshot Kimi is the default provider)       ║');
   console.log('╠════════════════════════════════════════════════════════════════════════════╣');
   console.log('║  ID                              │  Provider   │  Ctx   │  $/1M in/out  │ M ║');
   console.log('╠════════════════════════════════════════════════════════════════════════════╣');
@@ -357,7 +426,7 @@ export function printModelsTable(): void {
         : m.contextWindow >= 1000
           ? `${(m.contextWindow / 1000).toFixed(0)}K`
           : '—';
-      const price = m.inputPrice || m.outputPrice ? `$${m.inputPrice}/$${m.outputPrice}` : 'see xAI';
+      const price = m.inputPrice || m.outputPrice ? `$${m.inputPrice}/$${m.outputPrice}` : 'see API';
       const stream = m.streaming ? '~' : ' ';
       const best = m.bestFor ? m.bestFor[0].toUpperCase() : ' ';
       console.log(`║  ${stream}${(m.id.padEnd(32))} │  ${(provider.padEnd(10))} │  ${ctx.padStart(5)} │  ${price.padStart(12)}  │ ${best} ║`);
@@ -368,6 +437,6 @@ export function printModelsTable(): void {
   console.log('  ~ = streaming supported    M = best-fit mode (C=code, R=research, V=voice, I=image, G=general)');
   console.log(`\n  Default provider: ${DEFAULT_PROVIDER}    Default model: ${DEFAULT_MODEL}`);
   console.log(`  Research default: ${DEFAULT_RESEARCH_MODEL}    Voice default: ${DEFAULT_VOICE_MODEL}    Image default: ${DEFAULT_IMAGE_MODEL}`);
-  console.log('  Override: CLAWD_MODEL=<id>  |  CLAWD_PROVIDER=xai|anthropic|openrouter|deepseek');
-  console.log('  API keys: XAI_API_KEY | ANTHROPIC_API_KEY | DEEPSEEK_API_KEY | OPENROUTER_API_KEY');
+  console.log('  Override: CLAWD_MODEL=<id>  |  CLAWD_PROVIDER=moonshot|xai|anthropic|deepseek|openrouter');
+  console.log('  API keys: MOONSHOT_API_KEY | XAI_API_KEY | ANTHROPIC_API_KEY | DEEPSEEK_API_KEY | OPENROUTER_API_KEY');
 }

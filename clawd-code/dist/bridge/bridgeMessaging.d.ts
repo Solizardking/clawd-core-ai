@@ -9,11 +9,11 @@
  * collaborators (transport, sessionId, UUID sets, callbacks) are passed
  * as params.
  */
-import type { SDKMessage } from '../entrypoints/agentSdkTypes.js';
+import type { SDKMessage } from '../../../core-ai/clawd-code/src/entrypoints/agentSdkTypes.js';
+import type { SDKResultSuccess } from '../../../core-ai/clawd-code/src/entrypoints/sdk/coreTypes.js';
+import type { Message } from '../../../core-ai/clawd-code/src/types/message.js';
+import type { PermissionMode } from '../../../core-ai/clawd-code/src/utils/permissions/PermissionMode.js';
 import type { SDKControlRequest, SDKControlResponse } from '../entrypoints/sdk/controlTypes.js';
-import type { SDKResultSuccess } from '../entrypoints/sdk/coreTypes.js';
-import type { Message } from '../types/message.js';
-import type { PermissionMode } from '../utils/permissions/PermissionMode.js';
 import type { ReplBridgeTransport } from './replBridgeTransport.js';
 /** Type predicate for parsed WebSocket messages. SDKMessage is a
  *  discriminated union on `type` — validating the discriminant is

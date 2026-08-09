@@ -1,9 +1,9 @@
 import chalk from 'chalk';
 import { toString as qrToString } from 'qrcode';
-import { BRIDGE_FAILED_INDICATOR, BRIDGE_READY_INDICATOR, BRIDGE_SPINNER_FRAMES, } from '../constants/figures.js';
-import { stringWidth } from '../ink/stringWidth.js';
-import { logForDebugging } from '../utils/debug.js';
-import { buildActiveFooterText, buildBridgeConnectUrl, buildBridgeSessionUrl, buildIdleFooterText, FAILED_FOOTER_TEXT, formatDuration, TOOL_DISPLAY_EXPIRY_MS, timestamp, truncatePrompt, wrapWithOsc8Link, } from './bridgeStatusUtil.js';
+import { BRIDGE_FAILED_INDICATOR, BRIDGE_READY_INDICATOR, BRIDGE_SPINNER_FRAMES, } from '../../../core-ai/clawd-code/src/constants/figures.js';
+import { stringWidth, } from '../../../core-ai/clawd-code/src/ink/stringWidth.js';
+import { logForDebugging, } from '../../../core-ai/clawd-code/src/utils/debug.js';
+import { buildActiveFooterText, buildBridgeConnectUrl, buildBridgeSessionUrl, buildIdleFooterText, FAILED_FOOTER_TEXT, formatDuration, timestamp, TOOL_DISPLAY_EXPIRY_MS, truncatePrompt, wrapWithOsc8Link, } from './bridgeStatusUtil.js';
 const QR_OPTIONS = {
     type: 'utf8',
     errorCorrectionLevel: 'L',
