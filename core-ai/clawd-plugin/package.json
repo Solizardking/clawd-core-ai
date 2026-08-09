@@ -1,5 +1,5 @@
 {
-  "name": "clawd-plugin",
+  "name": "@onchainai/clawd-plugin",
   "version": "1.0.0",
   "description": "Clawd Code Plugin — bundles 80+ Solana skills and auto-starts Helius, Pump, Phoenix Rise, DFlow, ZK Compression, and Clawd Code MCP servers",
   "type": "module",

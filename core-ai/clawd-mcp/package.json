@@ -1,5 +1,5 @@
 {
-  "name": "helius-mcp",
+  "name": "@onchainai/clawd-mcp",
   "version": "1.3.0",
   "description": "Clawd-wrapped Helius MCP Server - complete Solana blockchain data access for Clawd agents",
   "type": "module",
@@ -34,6 +34,9 @@
   ],
   "author": "Helius Labs",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://open-clawd.local/Solizardking/core-ai"

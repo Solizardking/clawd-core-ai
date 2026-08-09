@@ -1,5 +1,5 @@
 {
-  "name": "@openclawd/clawd-connectors",
+  "name": "@onchainai/clawd-connectors",
   "version": "0.1.0",
   "description": "Clawd connectors — MCP-powered provider integrations for DFlow, Helius, Jupiter, and Birdeye",
   "type": "module",

@@ -1,20 +1,29 @@
 <div align="center">
 
-# Clawd Cloud — Monorepo
+# 🦞 Clawd Cloud — Monorepo
+
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2600&pause=900&color=F7931A&center=true&vCenter=true&multiline=true&repeat=true&width=760&height=70&lines=Solana-native+AI+agent+stack.;Clawd+Code+CLI+%C2%B7+Clawd+Core+%C2%B7+Leaked-source+archive.)](https://github.com/Solizardking/clawd-core-ai)
 
 **Solana-native AI agent stack · Clawd Code CLI · Claude Code leaked source archive**
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-512K%2B_lines-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Bun](https://img.shields.io/badge/Runtime-Bun-f472b6?logo=bun&logoColor=white)](https://bun.sh)
-[![React + Ink](https://img.shields.io/badge/UI-React_%2B_Ink-61DAFB?logo=react&logoColor=black)](https://github.com/vadimdemedes/ink)
-[![Solana](https://img.shields.io/badge/Solana-14F195?logo=solana&logoColor=black)](https://solana.com)
-[![MCP](https://img.shields.io/badge/MCP-Model_Context_Protocol-blueviolet)](https://modelcontextprotocol.io)
+[![npm clawd-code](https://img.shields.io/npm/v/@onchainai/clawd-code?label=%40onchainai%2Fclawd-code&color=cb3837&logo=npm&style=for-the-badge)](https://www.npmjs.com/package/@onchainai/clawd-code)
+[![npm clawd-core](https://img.shields.io/npm/v/@onchainai/clawd-core?label=%40onchainai%2Fclawd-core&color=cb3837&logo=npm&style=for-the-badge)](https://www.npmjs.com/package/@onchainai/clawd-core)
+[![TypeScript](https://img.shields.io/badge/TypeScript-512K%2B_lines-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Bun](https://img.shields.io/badge/Runtime-Bun-f472b6?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
+[![React + Ink](https://img.shields.io/badge/UI-React_%2B_Ink-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://github.com/vadimdemedes/ink)
+[![Solana](https://img.shields.io/badge/Solana-14F195?style=for-the-badge&logo=solana&logoColor=black)](https://solana.com)
+[![MCP](https://img.shields.io/badge/MCP-Model_Context_Protocol-blueviolet?style=for-the-badge)](https://modelcontextprotocol.io)
+
 [![Buy $CLAWD](https://img.shields.io/badge/Buy_%24CLAWD-Phantom-blueviolet?style=flat-square)](https://phantom.com/tokens/solana/8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump)
 [![Dexscreener](https://img.shields.io/badge/Chart-Dexscreener-green?style=flat-square)](https://dexscreener.com/solana/8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump)
 
 > `$CLAWD` · `8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump`
 
 </div>
+
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=110&section=header&text=&fontSize=0" width="100%" alt="" />
+</p>
 
 ---
 
@@ -24,10 +33,11 @@ This monorepo bundles the **Clawd Cloud** ecosystem — Solana-native AI agents 
 
 | Layer | What it is |
 |-------|-----------|
-| **Clawd Code** (`clawd-code/`) | Solana-native AI coding agent CLI — code, trade, research, image, and voice modes with paper-gated perpetuals workflows. Its `src/` merges the Claude Code leaked source with Clawd-native agents (perps, arena, x402, wallet) |
-| **Clawd Core AI** (`core-ai/`) | Clawd-wrapped Helius AI tooling — Solana infrastructure, skills, MCP servers, perps agents, Grok runtime |
-| **Leaked source archive & docs** | Root `package.json` (the leaked `@anthropic-ai/claude-code` manifest), `docs/` architecture guides, and `mcp-server/` explorer |
-| **Docs & MCP** (`docs/`, `mcp-server/`) | Architecture guides and MCP explorer server for the leaked source |
+| **Clawd Code** (`clawd-code/`) | Solana-native AI coding agent CLI — code, trade, research, image, and voice modes with paper-gated perpetuals workflows. Its `src/` merges the Claude Code leaked source with Clawd-native agents (perps, arena, x402, wallet). Published as [`@onchainai/clawd-code`](https://www.npmjs.com/package/@onchainai/clawd-code) |
+| **Clawd Core AI** (`core-ai/`) | Clawd-wrapped Helius AI tooling — Solana infrastructure, skills, MCP servers, perps agents, Grok runtime. Its typed-tool foundation ships as [`@onchainai/clawd-core`](https://www.npmjs.com/package/@onchainai/clawd-core) |
+| **Clawd Connectors** (`clawd-connectors/`) | MCP-powered provider connectors (DFlow, Helius, Jupiter, Birdeye) — remote MCP + REST fallback, package `@openclawd/clawd-connectors` |
+| **Leaked source archive & docs** | Root `package.json` (the leaked `@anthropic-ai/claude-code` manifest) and `docs/` architecture guides |
+| **MCP Explorer** (`clawd-code/mcp-server/`) | MCP server exposing the leaked source itself for browsing (tools, commands, search) — deployed via root `vercel.json` |
 
 ---
 
@@ -35,42 +45,47 @@ This monorepo bundles the **Clawd Cloud** ecosystem — Solana-native AI agents 
 
 ```
 .
-├── clawd-code/                  # Clawd Code CLI + plugin + skills + router
+├── clawd-code/                  # Clawd Code CLI — package @onchainai/clawd-code
 │   ├── src/                     # CLI source — Claude Code leak foundation + Clawd-native agents
-│   │   ├── main.tsx             # Entrypoint — CLI parser + React/Ink renderer
-│   │   ├── QueryEngine.ts       # Core LLM API caller (~46K lines)
-│   │   ├── Tool.ts              # Tool type definitions (~29K lines)
-│   │   ├── commands.ts          # Command registry (~25K lines)
+│   │   ├── main.tsx             # Entrypoint — CLI parser + React/Ink renderer (~4.7K lines)
+│   │   ├── QueryEngine.ts       # Core LLM API caller (~1.3K lines)
+│   │   ├── Tool.ts              # Tool type definitions (~820 lines)
+│   │   ├── commands.ts          # Command registry
 │   │   ├── arena.ts             # Cheshire Terminal agent arena (on-chain identity)
 │   │   ├── x402.ts / wallet.ts  # x402 payments + wallet operations
 │   │   ├── xai.ts / deepseek.ts / openrouter.ts / grok-models.ts   # Multi-model providers
-│   │   ├── tools/               # ~40 agent tool implementations
-│   │   ├── commands/            # ~50 slash command implementations
-│   │   ├── components/          # ~140 Ink UI components
+│   │   ├── tools/               # ~40 agent tool implementations (184 files)
+│   │   ├── commands/            # 80+ slash command implementations (191 files)
+│   │   ├── components/          # 389 Ink UI components
 │   │   ├── services/            # External service integrations
 │   │   ├── bridge/              # IDE integration (VS Code, JetBrains)
 │   │   ├── coordinator/         # Multi-agent orchestration
 │   │   └── plugins/ · skills/ · tasks/ · state/ · voice/ · vim/ · mcp/ · payments/
+│   ├── .agents/skills/          # 97 runtime-discovered skill packages (real skill registry)
+│   ├── .clawd-plugin/           # Plugin marketplace manifest (points at an unvendored helius-plugin)
 │   ├── dist/                    # Built CLI output
-│   ├── clawd-plugin/            # Plugin — bundles skills + auto-starts MCP servers
-│   ├── clawd-skills/            # Solana/Pump/Imperial/Vulcan/DFlow skill suite
-│   ├── clawdrouter/             # LLM routing service (multi-model tiered routing)
-│   ├── mcp-server/              # Clawd MCP server
-│   ├── web/                     # Web tooling
+│   ├── agentwallet/             # Encrypted Solana + EVM keypair vault (E2B/Cloudflare deploy)
+│   ├── clawdrouter/             # LLM router — 58 models / 9 providers, x402-metered
+│   ├── mcp-server/              # This repo's own source exposed as an MCP server
+│   ├── web/                     # Next.js dashboard
 │   └── docs/ · knowledge/ · prompts/ · spinners/
 │
 ├── core-ai/                     # Clawd Core AI
+│   ├── clawd-core/              # Typed-tool foundation — package @onchainai/clawd-core
 │   ├── clawd-code/              # Clawd Code build
 │   ├── clawd-grok/              # Bun-native Clawd/Grok agent runtime
 │   ├── clawd-perps-agent/       # Perps agent (Phoenix Rise, Vulcan, Imperial WS, TWAMM)
 │   ├── clawd-mcp/ · mcp-server/ # MCP servers
-│   ├── clawd-plugin/ · clawd-skills/   # Plugins + skills
+│   ├── clawd-plugin/ · clawd-skills/   # Plugins + skills (the real bundled-plugin implementation)
 │   ├── clawd-agents/            # Agent definitions/catalog
 │   ├── clawdrouter/             # Router
 │   ├── v3/                      # Next-gen Clawd runtime scaffolding
 │   ├── tailclawd/               # Local UI + Tailscale proxy for session monitoring
+│   ├── constitution/            # Governance bundle — laws, SOUL.md, IDENTITY.md
 │   ├── knowledge/               # Knowledge base (facts, gotchas, patterns)
 │   └── zk-primitives/           # ZK primitives
+│
+├── clawd-connectors/             # MCP provider connectors (DFlow, Helius, Jupiter, Birdeye)
 │
 ├── docs/                        # Architecture guides for the leaked source
 │   ├── architecture.md          # Core pipeline, startup, state, rendering
@@ -80,7 +95,6 @@ This monorepo bundles the **Clawd Cloud** ecosystem — Solana-native AI agents 
 │   ├── exploration-guide.md     # How to navigate the codebase
 │   └── ADR-001-open-clawd-v2.md # Open-clawd v2 architecture decision record
 │
-├── mcp-server/                  # MCP explorer server for the leaked source
 └── *.root-config               # Root toolchain, deployment, and legal files (see below)
 ```
 
@@ -94,8 +108,8 @@ This monorepo bundles the **Clawd Cloud** ecosystem — Solana-native AI agents 
 | `tsconfig.json` | TypeScript config — includes `clawd-code/src/**`, maps `bun:bundle` to `clawd-code/src/types/bun-bundle.d.ts` |
 | `biome.json` | Biome linter/formatter config (tab indent, single quotes, as-needed semicolons) |
 | `Dockerfile` | Multi-stage production container for the CLI — Bun build → minimal Alpine runtime with git + ripgrep |
-| `vercel.json` | Vercel deployment — routes `/health`, `/mcp`, `/sse`, `/messages` to `mcp-server/api/index.ts` |
-| `server.json` | MCP registry manifest — publishes the explorer as `warrioraashuu-codemaster` on npm |
+| `vercel.json` | Vercel deployment — routes `/health`, `/mcp`, `/sse`, `/messages` to `mcp-server/api/index.ts`. **Note:** this path is relative to repo root, but the explorer actually lives at [`clawd-code/mcp-server/`](clawd-code/mcp-server) — verify before deploying |
+| `server.json` | MCP registry manifest — publishes the explorer as `warrioraashuu-codemaster` on npm (package not yet rebranded to Clawd) |
 | `gitpretty-apply.sh` | Per-file emoji commit helper |
 | `agent.md` | Agent operating guide — how an automated coding agent should behave in this repo |
 | `Skill.md` | Repository skill — development conventions + architecture guide for the leaked source |
@@ -106,10 +120,16 @@ This monorepo bundles the **Clawd Cloud** ecosystem — Solana-native AI agents 
 
 ## Clawd Code
 
-Clawd Code is a Solana-native AI coding agent CLI with code generation, trading, research, image, and voice modes. It ships with a plugin that auto-starts MCP servers for live blockchain access:
+Clawd Code is a Solana-native AI coding agent CLI with code generation, trading, research, image, and voice modes. Published to npm as [`@onchainai/clawd-code`](https://www.npmjs.com/package/@onchainai/clawd-code):
 
 ```bash
-clawd --plugin-dir ./clawd-plugin
+npm install -g @onchainai/clawd-code
+```
+
+It pairs with a plugin that auto-starts MCP servers for live blockchain access — the bundled implementation lives in [`core-ai/clawd-plugin/`](core-ai/clawd-plugin):
+
+```bash
+clawd --plugin-dir core-ai/clawd-plugin
 ```
 
 Configured MCP servers:
@@ -160,6 +180,7 @@ The Clawd-wrapped Helius AI tooling — Solana infrastructure, skills, MCP serve
 
 | Package | Description |
 |---|---|
+| [`clawd-core/`](core-ai/clawd-core) | Typed-tool foundation — `ToolBase`/`PluginBase`/`WalletClientBase`. Published as [`@onchainai/clawd-core`](https://www.npmjs.com/package/@onchainai/clawd-core) — `npm install @onchainai/clawd-core` |
 | `clawd-code/` | Clawd Code build |
 | `clawd-grok/` | Bun-native Clawd/Grok agent runtime — REPL, audio, LSP, MCP, payments |
 | `clawd-perps-agent/` | Perps agent — Phoenix Rise, Vulcan, Imperial WS, on-chain MM, TWAMM |
@@ -193,11 +214,11 @@ This repo preserves the leaked source of Anthropic's Claude Code CLI, leaked on 
 
 ### Explore with the MCP Server
 
-The root `mcp-server/` ships an MCP explorer server for any MCP-compatible client (Claude Code, Claude Desktop, VS Code Copilot, Cursor):
+[`clawd-code/mcp-server/`](clawd-code/mcp-server) ships an MCP explorer server (npm package `warrioraashuu-codemaster`) for any MCP-compatible client (Claude Code, Claude Desktop, VS Code Copilot, Cursor):
 
 ```bash
 # Claude Code
-claude mcp add claude-code-explorer -- node /abs/path/to/clawd-cloud/mcp-server/dist/index.js
+claude mcp add claude-code-explorer -- node /abs/path/to/clawd-cloud/clawd-code/mcp-server/dist/index.js
 ```
 
 Set `CLAUDE_CODE_SRC_ROOT` env to point at the source root (defaults to `clawd-code/src`).
@@ -296,3 +317,12 @@ Contributions to documentation, the MCP explorer server, and exploration tooling
 - [$CLAWD on Phantom](https://phantom.com/tokens/solana/8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump) · [$CLAWD on Dexscreener](https://dexscreener.com/solana/8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump)
 - [Helius](https://www.helius.dev) · [Helius Docs](https://www.helius.dev/docs)
 - [Model Context Protocol](https://modelcontextprotocol.io)
+- [`@onchainai/clawd-code` on npm](https://www.npmjs.com/package/@onchainai/clawd-code) · [`@onchainai/clawd-core` on npm](https://www.npmjs.com/package/@onchainai/clawd-core)
+
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=90&section=footer&text=&fontSize=0" width="100%" alt="" />
+</p>
+
+<div align="center">
+<sub>🦞 <i>The shell molts. The laws do not.</i></sub>
+</div>
