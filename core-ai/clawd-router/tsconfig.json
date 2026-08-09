@@ -16,15 +16,5 @@
     "sourceMap": true
   },
   "include": ["src/**/*"],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "tests",
-    "src/worker.ts",
-    "src/analytics/**/*",
-    "src/auth/crypto.ts",
-    "src/auth/keys.ts",
-    "src/auth/enroll.ts",
-    "src/stats/**/*"
-  ]
+  "exclude": ["node_modules", "dist", "tests"]
 }
