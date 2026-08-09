@@ -3,10 +3,67 @@
  */
 import { createConnectors } from './index.js';
 import { getEnvConfig } from './config.js';
+import { PaySubscriptions } from './providers/pay-subscriptions.js';
+
+function paySubscriptionsFromArgs(args: string[]): PaySubscriptions {
+  const accountIndex = args.indexOf('--account');
+  const networkIndex = args.indexOf('--network');
+  return new PaySubscriptions({
+    account: accountIndex >= 0 ? args[accountIndex + 1] : undefined,
+    network: networkIndex >= 0 ? args[networkIndex + 1] : undefined,
+  });
+}
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const command = args[0]?.toLowerCase();
+
+  if (command === 'subscriptions') {
+    const sub = args[1]?.toLowerCase();
+    const pay = paySubscriptionsFromArgs(args.slice(2));
+
+    if (sub === 'list' || !sub) {
+      const result = await pay.list();
+      console.log(result.raw || result.error || '(no subscriptions)');
+    } else if (sub === 'status') {
+      const id = args[2]?.split('--')[0]
+      if (!id) {
+        console.error('usage: clawd-connectors subscriptions status <subscription_id>');
+        process.exit(2);
+      }
+      const result = await pay.status(id);
+      console.log(result.raw || result.error ?? '(no subscription)');
+    } else if (sub === 'refresh') {
+      const result = await pay.refresh();
+      console.log(result.raw || result.error || '(refreshed)');
+    } else if (sub === 'cancel') {
+      const id = args[2]?.split('--')[0]
+      if (!id) {
+        console.error('usage: clawd-connectors subscriptions cancel <subscription_id> [--local-only]');
+        process.exit(2);
+      }
+      const result = await pay.cancel(id, { localOnly: args.includes('--local-only') });
+      console.log(result.raw || result.error || '(cancelled)');
+    } else if (sub === 'new') {
+      const get = (flag: string): string => {
+        const i = args.indexOf(flag);
+        return i >= 0 ? args[i + 1] ?? '' : '';
+      };
+      const result = await pay.new({
+        plan: get('--plan'),
+        mint: get('--mint'),
+        puller: get('--puller'),
+        recipient: get('--recipient'),
+        amount: get('--amount'),
+        period: get('--period'),
+      });
+      console.log(result.raw || result.error ?? '(activated)');
+    } else {
+      const result = await pay.help();
+      console.log(result.raw);
+    }
+    return;
+  }
 
   if (command === 'status' || command === 'doctor') {
     const env = getEnvConfig();
