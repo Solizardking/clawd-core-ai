@@ -7,8 +7,8 @@ import {
   executeRequest,
   listTools,
   removeClient,
-} from "./client";
-import { MCPClientLogger } from "./logger";
+} from "./client.js";
+import { MCPClientLogger } from "./logger.js";
 import {
   DEFAULT_MCP_CONFIG,
   McpClientData,
@@ -16,7 +16,7 @@ import {
   McpRequestMessage,
   ServerConfig,
   ServerStatusResponse,
-} from "./types";
+} from "./types.js";
 import fs from "fs/promises";
 import path from "path";
 

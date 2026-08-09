@@ -1,26 +1,27 @@
 # `prompts/`
 
-Ordered, self-contained build-out prompts used to bootstrap this repo from source into a working build — the porting log for turning the archived CLI source into a buildable, runnable Clawd Code.
+Ordered, self-contained agent guides for running Clawd Code — the Solana-native AI coding agent. Each prompt is a complete workflow for one subsystem.
 
-Run in order, each in its own chat session; each is independently verifiable.
+> **Based on** `clawd-code/clawd-skills/` — the 70+ skill stack covering Solana trading, protocol development, and agent operations.
 
-| # | File | What it does | Depends on |
-|---|---|---|---|
-| 01 | `01-install-bun-and-deps.md` | Install Bun runtime, install all dependencies | — |
-| 02 | `02-runtime-shims.md` | Create `bun:bundle` runtime shim + `MACRO` globals so code runs without Bun's bundler | 01 |
-| 03 | `03-build-config.md` | esbuild-based build system bundling the CLI to a single runnable file | 01, 02 |
-| 04 | `04-fix-mcp-server.md` | Fix TypeScript errors in `mcp-server/`, make it build | 01 |
-| 05 | `05-env-and-auth.md` | `.env` setup, API key config, OAuth stubs | 01 |
-| 06 | `06-ink-react-terminal-ui.md` | Verify/fix the Ink/React terminal rendering pipeline | 01–03 |
-| 07 | `07-tool-system.md` | Audit and wire up the 40+ tool implementations | 01–03 |
-| 08 | `08-command-system.md` | Audit and wire up the 50+ slash commands | 01–03, 07 |
-| 09 | `09-query-engine.md` | Get the core LLM call loop (QueryEngine) functional | 01–03, 05, 07 |
-| 10 | `10-context-and-prompts.md` | Wire up system prompt construction, context gathering, memory | 01–03 |
-| 11 | `11-mcp-integration.md` | MCP client/server integration — registry, tool discovery | 01–04 |
-| 12 | `12-services-layer.md` | Analytics, policy limits, remote settings, session memory | 01–03, 05 |
-| 13 | `13-bridge-ide.md` | Stub or implement the VS Code / JetBrains bridge layer | 01–03, 09 |
-| 14 | `14-dev-runner.md` | `bun run dev` script for dev-mode CLI launch | 01–03 |
-| 15 | `15-production-bundle.md` | Production build — minified bundle, platform packaging | 03 |
-| 16 | `16-testing.md` | Test infrastructure (vitest), smoke tests for core subsystems | all |
+Run in order for onboarding, or pick any for a specific task.
 
-Prompts 07–13 can run somewhat in parallel (different subsystems). If a prompt fails, fix it before moving on — see `00-overview.md` for the full index and notes.
+| # | File | Focus |
+|---|------|-------|
+| 00 | `00-overview.md` | What Clawd can do — trade, research, build, analyze |
+| 01 | `01-setup-clawd.md` | Install Bun + clawd-code + clawd-plugin + MCP servers |
+| 02 | `02-wallet-and-auth.md` | Solana wallet setup, API keys, env, $CLAWD tiers |
+| 03 | `03-trading-spot-perps.md` | Jupiter swaps, Phoenix perpetuals, Vulcan execution |
+| 04 | `04-memecoin-launches.md` | Pump.fun token lifecycle, DFlow prediction markets |
+| 05 | `05-deep-research.md` | Web search, chain analysis, Birdeye, Dexscreener, Helius DAS |
+| 06 | `06-solana-protocol-dev.md` | Anchor programs, PDAs, CPI, deployment, Solana dev tooling |
+| 07 | `07-mcp-tools-connectors.md` | MCP server wiring, clawd-connectors, remote MCP URLs |
+| 08 | `08-agent-identity.md` | Metaplex Core agent NFTs, wallet auth, SIWS, Cheshire Terminal Arena |
+| 09 | `09-x402-payments.md` | USDC micropayments, x402 protocol, MPP subscriptions |
+| 10 | `10-dflow-integration.md` | DFlow spot swaps, prediction markets, Proof KYC, platform fees |
+| 11 | `11-imperial-perpetuals.md` | Imperial routing — position mgmt, TP/SL, margin, grid, TWAP |
+| 12 | `12-vulcan-phoenix.md` | Vulcan SDK + Phoenix DEX — paper→live, market intel, OODA loops |
+| 13 | `13-zk-compression.md` | Light Protocol — compressed tokens, compressed PDAs, Helius ZK |
+| 14 | `14-telegram-voice.md` | clawd-bot Telegram, voice commands, LiveKit, stream mode |
+| 15 | `15-deploy-production.md` | Fly.io, Vercel, Docker, secret management, health checks |
+| 16 | `16-testing-observability.md` | Unit tests, E2E smoke, PostHog, error recovery, alerts |
