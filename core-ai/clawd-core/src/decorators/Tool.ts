@@ -34,7 +34,7 @@ export type StoredToolMetadata = {
 
 export type StoredToolMetadataMap = Map<string, StoredToolMetadata>;
 
-export const toolMetadataKey = Symbol("goat:tool");
+export const toolMetadataKey = Symbol("clawd:tool");
 
 /**
  * Decorator that marks a class method as a tool accessible to the LLM

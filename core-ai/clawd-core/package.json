@@ -1,6 +1,7 @@
 {
-  "name": "@goat-sdk/core",
-  "version": "0.5.0",
+  "name": "@openclawd/clawd-core",
+  "version": "1.0.0",
+  "description": "Clawd Core — Solana-native agent toolkit: typed tools, plugins, and wallet clients with reflect-metadata tool discovery",
   "sideEffects": false,
   "files": ["dist/**/*", "README.md", "package.json"],
   "scripts": {
@@ -25,14 +26,15 @@
   "peerDependencies": {
     "zod": "^3.0.0"
   },
-  "homepage": "https://ohmygoat.dev",
+  "homepage": "https://github.com/Solizardking/clawd-core-ai",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/goat-sdk/goat.git"
+    "url": "git+https://github.com/Solizardking/clawd-core-ai.git",
+    "directory": "core-ai/clawd-core"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/goat-sdk/goat/issues"
+    "url": "https://github.com/Solizardking/clawd-core-ai/issues"
   },
-  "keywords": ["ai", "agents", "web3"]
+  "keywords": ["solana", "ai", "agents", "clawd", "tools", "wallet", "web3", "claude"]
 }
