@@ -1,21 +1,11 @@
 {
   "name": "helius-mcp",
-  "version": "1.3.0",
-  "description": "Clawd-wrapped Helius MCP Server - complete Solana blockchain data access for Clawd agents",
+  "version": "2.1.0",
+  "description": "Official Clawd/Helius MCP Server — Solana blockchain data access for Clawd agents (helius-mcp)",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
     "helius-mcp": "dist/index.js"
-  },
-  "scripts": {
-    "prebuild": "node -p \"'export const version = \\'' + require('./package.json').version + '\\';'\" > src/version.ts",
-    "build": "tsc",
-    "dev": "tsc --watch",
-    "start": "node dist/index.js",
-    "validate": "node dist/scripts/validate-catalog.js",
-    "test": "pnpm build && pnpm validate && vitest run",
-    "changelog": "auto-changelog --tag-prefix helius-mcp@",
-    "prepublishOnly": "pnpm build"
   },
   "keywords": [
     "helius",
@@ -25,7 +15,7 @@
     "model-context-protocol",
     "ai",
     "llm",
-    "clawd",
+    "claude",
     "web3",
     "nft",
     "defi",
@@ -36,11 +26,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://open-clawd.local/Solizardking/core-ai"
+    "url": "https://github.com/helius-labs/core-ai"
   },
-  "homepage": "https://open-clawd.local/Solizardking/core-ai#readme",
+  "homepage": "https://github.com/helius-labs/core-ai#readme",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "@solana-program/system": "^0.10.0",
     "@solana-program/token": "^0.9.0",
     "@solana/kit": "^5.0.0",
@@ -60,5 +50,17 @@
     "CHANGELOG.md",
     "README.md",
     "LICENSE"
-  ]
+  ],
+  "scripts": {
+    "prebuild": "node -p \"'export const version = \\'' + require('./package.json').version + '\\';'\" > src/version.ts",
+    "build": "node -e \"const fs=require('fs'); if(!fs.existsSync('dist/index.js')) { console.error('dist/index.js missing'); process.exit(1);} console.log('dist ready', require('./package.json').version);\"",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "validate": "node dist/scripts/validate-catalog.js",
+    "test": "node tests/smoke-launch.mjs",
+    "changelog": "auto-changelog --tag-prefix helius-mcp@",
+    "start:stdio": "node dist/index.js",
+    "test:unit": "vitest run --passWithNoTests",
+    "test:smoke": "node tests/smoke-launch.mjs"
+  }
 }

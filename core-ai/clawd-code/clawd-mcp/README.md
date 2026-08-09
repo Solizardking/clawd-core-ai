@@ -2,15 +2,15 @@
 
 MCP server for Helius — Solana blockchain data access for AI assistants, provided by Solana's fastest, most reliable infrastructure provider
 
-See the [CHANGELOG](https://open-clawd.local/helius-labs/core-ai/blob/main/helius-mcp/CHANGELOG.md) for version history and release notes.
+See the [CHANGELOG](https://github.com/helius-labs/core-ai/blob/main/helius-mcp/CHANGELOG.md) for version history and release notes.
 
-Interested in contributing? Read the [contribution guide](https://open-clawd.local/helius-labs/core-ai/blob/main/helius-mcp/CONTRIBUTING.md) before opening a PR.
+Interested in contributing? Read the [contribution guide](https://github.com/helius-labs/core-ai/blob/main/helius-mcp/CONTRIBUTING.md) before opening a PR.
 
 ## Quick Start
 
 ### 1. Add the MCP server
 
-Add to your MCP host's config (works with Clawd, Cursor, Windsurf, and any MCP-compatible client):
+Add to your MCP host's config (works with Claude, Cursor, Windsurf, and any MCP-compatible client):
 
 ```json
 {
@@ -23,10 +23,10 @@ Add to your MCP host's config (works with Clawd, Cursor, Windsurf, and any MCP-c
 }
 ```
 
-Or if you're using Clawd Code:
+Or if you're using Claude Code:
 
 ```bash
-npx helius-mcp@latest  # configure in .clawd/settings.json or your MCP client
+claude mcp add helius npx helius-mcp@latest
 ```
 
 ### 2. Configure your API key
@@ -78,7 +78,7 @@ Helius MCP exposes 10 public tools total: 9 routed domain tools plus `expandResu
 - `heliusWallet` — wallet balances, holdings, wallet history, identity
 - `heliusAsset` — assets, NFTs, collections, token holders
 - `heliusTransaction` — transaction parsing and wallet transaction history
-- `heliusChain` — chain state, token accounts, blocks, network status, stake reads
+- `heliusChain` — chain state, token accounts, blocks, network status, stake reads, transaction simulation
 - `heliusStreaming` — webhook CRUD and subscription config
 - `heliusKnowledge` — docs, guides, pricing, troubleshooting, source, blog, SIMDs
 - `heliusWrite` — transfers and staking mutations
@@ -122,11 +122,11 @@ system-prompts/
 ```
 
 Each contains three variants:
-- `clawd.developer.md` — for OpenAI Responses/Chat Completions API (`developer` message)
-- `clawd.system.md` — for Clawd API (system prompt)
+- `openai.developer.md` — for OpenAI Responses/Chat Completions API (`developer` message)
+- `claude.system.md` — for Claude API (system prompt)
 - `full.md` — self-contained with all references inlined (Cursor Rules, ChatGPT, etc.)
 
-See [`helius-skills/SYSTEM-PROMPTS.md`](https://open-clawd.local/helius-labs/core-ai/blob/main/helius-skills/SYSTEM-PROMPTS.md) for integration guides and code examples.
+See [`helius-skills/SYSTEM-PROMPTS.md`](https://github.com/helius-labs/core-ai/blob/main/helius-skills/SYSTEM-PROMPTS.md) for integration guides and code examples.
 
 ## Networks
 

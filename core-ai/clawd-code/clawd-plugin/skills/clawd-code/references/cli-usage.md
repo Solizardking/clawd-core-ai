@@ -30,11 +30,11 @@ clawd-code trade "long ETH $50"
 - LIVE — requires `LIVE_TRADING=true`, `OPERATOR_CONFIRMED=true`, `PERPS_SIM_ONLY=false`
 
 ### RESEARCH MODE
-Multi-agent deep research with grok-4.20-multi-agent.
+Deep research with kimi-k2-thinking.
 
 ```bash
-clawd-code research --agents 4 "Solana perps funding arb"
-clawd-code research --agents 16 "AI agent frameworks 2025"
+clawd-code research "Solana perps funding arb"
+clawd-code research "AI agent frameworks 2025"
 ```
 
 ### IMAGE MODE
@@ -67,7 +67,7 @@ clawd-code voice "Clawd Code is operational"
 | `clawd-code signals` | Composite trading signals |
 | `clawd-code strategies` | Vulcan strategy runners |
 | `clawd-code agents` | Clawd agent registry |
-| `clawd-code models` | List available Grok models |
+| `clawd-code models` | List available models |
 | `clawd-code provider` | Show/switch AI provider |
 | `clawd-code goal <text>` | Natural language intent router |
 | `clawd-code verify` | Preflight environment checks |
@@ -81,8 +81,8 @@ clawd-code voice "Clawd Code is operational"
 
 | Provider | Key | Default Model |
 |----------|-----|---------------|
-| xai | `XAI_API_KEY` | grok-4.20-multi-agent |
+| moonshot | `MOONSHOT_API_KEY` | kimi-k2-thinking |
 | openrouter | `OPENROUTER_API_KEY` | nex-agi/nex-n2-pro:free |
 | deepseek | `DEEPSEEK_API_KEY` | deepseek-v4-pro |
 
-Switch: `clawd-code /provider <xai|openrouter|deepseek>`
+Switch: `clawd-code /provider <moonshot|openrouter|deepseek>`

@@ -184,7 +184,13 @@ ENVIRONMENT:
   CLAWD_PROVIDER         moonshot (default) | anthropic | openrouter | deepseek
   CLAWD_MODEL            Default: kimi-k2-thinking
   CLAWD_STREAM           true to enable streaming by default
-  HELIUS_API_KEY         Helius API key for DAS
+  HELIUS_API_KEY         Helius API key for DAS / RPC
+  JUPITER_API_KEY        Jupiter portal API key (x-api-key)
+  DFLOW_API_KEY          DFlow trading API key
+  SOLANA_TRACKER_API_KEY Solana Tracker API key
+  BIRDEYE_API_KEY        Birdeye market data API key
+  BLOCKSCOUT_API_KEY     Blockscout explorer API key
+  CDP_API_KEY_ID         Coinbase CDP API key id
   PHOENIX_RISE_URL       Phoenix Rise endpoint
   VULCAN_MCP_URL         Vulcan MCP server URL
   LIVE_TRADING           Enable live trading (true|false)

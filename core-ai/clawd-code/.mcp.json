@@ -8,6 +8,14 @@
         "CLAWD_CODE_SRC_ROOT": "./src"
       }
     },
+    "clawd-mcp": {
+      "command": "node",
+      "args": ["clawd-mcp/dist/index.js"],
+      "env": {
+        "HELIUS_API_KEY": "${HELIUS_API_KEY}",
+        "SOLANA_RPC_URL": "${SOLANA_RPC_URL}"
+      }
+    },
     "pump-mcp": {
       "command": "node",
       "args": ["pump-mcp/dist/index.js"],

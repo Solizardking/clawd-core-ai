@@ -2,7 +2,15 @@
   "mcpServers": {
     "helius": {
       "command": "node",
-      "args": ["../../core-ai/helius-mcp/dist/index.js"],
+      "args": ["../clawd-mcp/dist/index.js"],
+      "env": {
+        "HELIUS_API_KEY": "${HELIUS_API_KEY}",
+        "SOLANA_RPC_URL": "${SOLANA_RPC_URL}"
+      }
+    },
+    "clawd-mcp": {
+      "command": "node",
+      "args": ["../clawd-mcp/dist/index.js"],
       "env": {
         "HELIUS_API_KEY": "${HELIUS_API_KEY}",
         "SOLANA_RPC_URL": "${SOLANA_RPC_URL}"
