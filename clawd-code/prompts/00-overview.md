@@ -1,35 +1,42 @@
-# Build-Out Prompt Index
+# 00 — Overview: What Clawd Can Do
 
-Run these prompts **in order** in separate chat sessions. Each one is self-contained.
+Clawd Code is a **Solana-native AI coding agent** — the CLI that ships with 70+ skills for trading, research, protocol development, and autonomous agent operations.
 
-| # | File | What It Does | Depends On |
-|---|------|-------------|------------|
-| 01 | `01-install-bun-and-deps.md` | Install Bun runtime, install all dependencies | — |
-| 02 | `02-runtime-shims.md` | Create `bun:bundle` runtime shim + `MACRO` globals so code runs without Bun's bundler | 01 |
-| 03 | `03-build-config.md` | Create esbuild-based build system that bundles the CLI to a single runnable file | 01, 02 |
-| 04 | `04-fix-mcp-server.md` | Fix TypeScript errors in `mcp-server/` and make it build | 01 |
-| 05 | `05-env-and-auth.md` | Set up `.env` file, API key config, OAuth stubs | 01 |
-| 06 | `06-ink-react-terminal-ui.md` | Verify and fix the Ink/React terminal rendering pipeline | 01, 02, 03 |
-| 07 | `07-tool-system.md` | Audit and wire up the 40+ tool implementations (BashTool, FileEditTool, etc.) | 01–03 |
-| 08 | `08-command-system.md` | Audit and wire up the 50+ slash commands (/commit, /review, etc.) | 01–03, 07 |
-| 09 | `09-query-engine.md` | Get the core LLM call loop (QueryEngine) functional — streaming, tool calls, retries | 01–03, 05, 07 |
-| 10 | `10-context-and-prompts.md` | Wire up system prompt construction, context gathering, memory system | 01–03 |
-| 11 | `11-mcp-integration.md` | Get MCP client/server integration working — registry, tool discovery | 01–04 |
-| 12 | `12-services-layer.md` | Wire up analytics, policy limits, remote settings, session memory | 01–03, 05 |
-| 13 | `13-bridge-ide.md` | Stub out or implement the VS Code / JetBrains bridge layer | 01–03, 09 |
-| 14 | `14-dev-runner.md` | Create `npm run dev` / `bun run dev` script that launches the CLI in dev mode | 01–03 |
-| 15 | `15-production-bundle.md` | Create production build: minified bundle, platform-specific packaging | 03 |
-| 16 | `16-testing.md` | Add test infrastructure (vitest), write smoke tests for core subsystems | All |
+## Capabilities
 
-## Quick Start
+| Domain | What you can do | Core skills |
+|--------|----------------|-------------|
+| **Trading** | Spot swaps, perpetuals, memecoin launches, prediction markets | `jupiter`, `imperial`, `vulcan`, `dflow-spot-trading`, `pumpfun-trading`, `dflow-kalshi-trading` |
+| **Deep Research** | Web search, on-chain analytics, token screening, wallet intelligence | `scanner`, `dex-screener-scanner`, `helius`, `birdeye`, `onchain` |
+| **Payments** | x402 USDC micropayments, MPP subscription delegations, per-request billing | `x402`, `pay-subscriptions`, `sponge-wallet` |
+| **Protocol Dev** | Anchor programs, compressed tokens/PDAs, Solana architecture | `solana-dev`, `svm`, `compressed-pda`, `compressed-token`, `zk` |
+| **Agent Identity** | On-chain agent NFTs (Metaplex Core), SIWS auth, Cheshire Terminal Arena | `agent-auth`, `cheshire-terminal`, `clawd-agent-launchpad` |
+| **Infra & Deploy** | Fly.io, Vercel, Docker, MCP servers, health checks | `clawd-code/deploy`, `clawd-code/build` |
+| **Voice & Telegram** | clawd-bot, voice commands, LiveKit streaming | `voice-call`, `clawd-telegram` |
 
-1. Open a new Copilot chat
-2. Paste the contents of `01-install-bun-and-deps.md`
-3. Follow the instructions / let the agent run
-4. Repeat for `02`, `03`, etc.
+## Key workflows
 
-## Notes
+1. **Setup** → `01-setup-clawd.md`
+2. **Wallet + auth** → `02-wallet-and-auth.md`
+3. **Trading** → `03-trading-spot-perps.md`, `04-memecoin-launches.md`
+4. **Research** → `05-deep-research.md`
+5. **Build** → `06-solana-protocol-dev.md`
+6. **Deploy** → `15-deploy-production.md`
 
-- Prompts 07–13 can be run somewhat in **parallel** (they touch different subsystems)
-- If a prompt fails, fix the issue before moving to the next one
-- Each prompt is designed to be **independently verifiable** — it tells you how to confirm it worked
+## Skill discovery
+
+Skills are auto-discovered based on your intent. Prefix commands with the skill slug:
+
+```
+/clawd:jupiter swap SOL to USDC on mainnet with 1% slippage
+/clawd:trade open a long on SOL-PERP at $150 with 10x via Vulcan
+/clawd:research analyze the top 10 wallets holding $CLAWD
+/clawd:build scaffold an Anchor program for a staking vault
+```
+
+## Prerequisites
+
+- [Bun](https://bun.sh) ≥ 1.1
+- `clawd-code` installed (see `01-setup-clawd.md`)
+- `clawd-plugin/` loaded (auto-starts Helius MCP, Pump MCP, Phoenix Rise, DFlow, ZK Compression)
+- A Solana wallet with USDC or $CLAWD for paid operations
