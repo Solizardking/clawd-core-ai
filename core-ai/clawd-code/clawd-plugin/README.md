@@ -47,7 +47,7 @@ Deep documentation bundled with each skill covering DAS API, Sender, Priority Fe
 Set in `~/.clawd-code/.env`:
 
 ```bash
-XAI_API_KEY=your-xai-key
+MOONSHOT_API_KEY=your-moonshot-key
 HELIUS_API_KEY=your-helius-key
 SOLANA_RPC_URL=https://mainnet.helius-rpc.com/?api-key=your-helius-key
 ```

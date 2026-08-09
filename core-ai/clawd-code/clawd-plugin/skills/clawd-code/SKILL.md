@@ -20,7 +20,7 @@ Clawd Code operates in 5 modes. Route user requests accordingly:
 |------|-----------------|---------|
 | CODE | "write code", "build", "deploy program", "create bot" | `clawd-code code "<prompt>"` |
 | TRADE | "short", "long", "funding", "perp", "position", "trade" | `clawd-code trade "<intent>"` |
-| RESEARCH | "research", "analyze", "compare", "deep dive" | `clawd-code research --agents <4|16> "<prompt>"` |
+| RESEARCH | "research", "analyze", "compare", "deep dive" | `clawd-code research "<prompt>"` |
 | IMAGE | "generate image", "create image", "draw" | `clawd-code image "<prompt>" --model <dall-e-3|gemini>` |
 | VOICE | "speak", "say", "tts", "voice" | `clawd-code voice "<text>"` |
 
@@ -44,11 +44,11 @@ Required in `~/.clawd-code/.env`:
 
 | Variable | Required | Default |
 |----------|----------|---------|
-| `XAI_API_KEY` | Yes (Grok mode) | — |
+| `MOONSHOT_API_KEY` | Yes (Moonshot mode) | — |
 | `HELIUS_API_KEY` | Yes | — |
 | `SOLANA_RPC_URL` | No | Helius mainnet |
-| `CLAWD_PROVIDER` | No | `xai` |
-| `CLAWD_MODEL` | No | `grok-4.20-multi-agent` |
+| `CLAWD_PROVIDER` | No | `moonshot` |
+| `CLAWD_MODEL` | No | `kimi-k2-thinking` |
 | `LIVE_TRADING` | No | `false` |
 | `PERPS_SIM_ONLY` | No | `true` |
 

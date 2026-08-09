@@ -5,7 +5,7 @@
 
 import { mkdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
-import { DEFAULT_IMAGE_MODEL } from '../grok-models.js';
+import { DEFAULT_IMAGE_MODEL } from '../model-registry.js';
 
 export class ImageMode {
   constructor(private config: any) {}
@@ -15,7 +15,7 @@ export class ImageMode {
 
     console.log('\n[IMAGE MODE] Initiating image generation...\n');
 
-    // Default to xAI Grok Imagine. Fall back to DALL-E / Gemini if user overrides.
+    // Default to Gemini. Fall back to DALL-E if user overrides.
     let size = '1024x1024';
     let model = DEFAULT_IMAGE_MODEL;
 

@@ -14,7 +14,7 @@
     },
     "pump-mcp": {
       "command": "node",
-      "args": ["../../mcp-server/dist/index.js"],
+      "args": ["../pump-mcp/dist/index.js"],
       "env": {
         "SOLANA_RPC_URL": "${SOLANA_RPC_URL}",
         "HELIUS_API_KEY": "${HELIUS_API_KEY}"

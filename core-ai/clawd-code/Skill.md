@@ -19,7 +19,7 @@ Clawd Code is the Solana-native AI coding CLI for the Clawd ecosystem. It suppor
 | Runtime          | Bun (JSX support, `bun:bundle` feature flags)  |
 | Terminal UI      | React + Ink (React for CLI)                    |
 | CLI Parser       | Commander.js (`@commander-js/extra-typings`)   |
-| API Client       | `@anthropic-ai/sdk` (Claude), native fetch (Grok, DeepSeek, OpenRouter) |
+| API Client       | `@anthropic-ai/sdk` (Claude), native fetch (Moonshot, DeepSeek, OpenRouter) |
 | Validation       | Zod v4                                         |
 | Linter/Formatter | Biome                                          |
 | Analytics        | PostHog (self-hosted analytics)                |
@@ -71,7 +71,7 @@ Clawd Code is the Solana-native AI coding CLI for the Clawd ecosystem. It suppor
 | `src/commands.ts`   | Command registry                                     |
 | `src/context.ts`    | System/user context collection (git status, memory)  |
 | `src/cost-tracker.ts`| Token cost tracking                                 |
-| `src/env.ts`        | Multi-provider env loader (Grok, Claude, DeepSeek)  |
+| `src/env.ts`        | Multi-provider env loader (Moonshot, Claude, DeepSeek)  |
 | `src/arena.ts`      | Metaplex Agent Arena on-chain identity               |
 
 ### Entry Points & Initialization Sequence
@@ -189,7 +189,7 @@ Notable flags: `PROACTIVE`, `KAIROS`, `BRIDGE_MODE`, `VOICE_MODE`, `COORDINATOR_
 
 | Service             | Path                          | Purpose                           |
 |--------------------|-------------------------------|-----------------------------------|
-| API                | `services/api/`               | Multi-provider AI client (Grok/Claude/DeepSeek) |
+| API                | `services/api/`               | Multi-provider AI client (Moonshot/Claude/DeepSeek) |
 | MCP                | `services/mcp/`               | MCP client, tool/resource discovery|
 | OAuth              | `services/oauth/`             | OAuth 2.0 auth flow               |
 | LSP                | `services/lsp/`               | Language Server Protocol manager   |
@@ -206,13 +206,13 @@ Notable flags: `PROACTIVE`, `KAIROS`, `BRIDGE_MODE`, `VOICE_MODE`, `COORDINATOR_
 - **Global:** `~/.clawd-code/config.json`, `~/.clawd-code/settings.json`
 - **Project:** `.clawd/config.json`, `.clawd/settings.json`
 - **System:** macOS Keychain
-- **Config:** Also reads `~/.grok/config.toml` and `./.grok/config.toml` for xAI Grok-style settings
+- **Config:** Also reads `~/.grok/config.toml` and `./.grok/config.toml` for model-alias settings (legacy path, provider-agnostic)
 
 ## Environment Variables
 
 | Variable           | Purpose                           |
 |--------------------|-----------------------------------|
-| `XAI_API_KEY`    | xAI Grok API key (default provider)|
+| `MOONSHOT_API_KEY` | Moonshot Kimi API key (default provider)|
 | `ANTHROPIC_API_KEY` | Anthropic Claude API key       |
 | `DEEPSEEK_API_KEY` | DeepSeek API key               |
 | `OPENROUTER_API_KEY` | OpenRouter API key            |

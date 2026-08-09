@@ -50,7 +50,7 @@ const DEFAULT_HELIUS_RPC = process.env.HELIUS_RPC_URL ||
 function loadConfig(): ClawdCodeConfig {
   const env = loadClawdEnv();
   const provider = normalizeProvider(env.CLAWD_PROVIDER || process.env.CLAWD_PROVIDER || DEFAULT_PROVIDER);
-  // Default model is the registry default (grok-4.3). If user sets CLAWD_MODE=research
+  // Default model is the registry default (kimi-k2-thinking). If user sets CLAWD_MODE=research
   // without CLAWD_MODEL, the modes will resolve to DEFAULT_RESEARCH_MODEL internally.
   return {
     mode: (env.CLAWD_MODE as Mode) || 'CODE',
@@ -58,25 +58,25 @@ function loadConfig(): ClawdCodeConfig {
     liveTrading: env.LIVE_TRADING === 'true',
     operatorConfirmed: env.OPERATOR_CONFIRMED === 'true',
     rpcUrl: env.SOLANA_RPC_URL || env.HELIUS_RPC_URL || process.env.SOLANA_RPC_URL || DEFAULT_HELIUS_RPC,
-    xaiApiKey: env.XAI_API_KEY || process.env.XAI_API_KEY || '',
+    moonshotApiKey: env.MOONSHOT_API_KEY || process.env.MOONSHOT_API_KEY || '',
     anthropicApiKey: env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY || '',
     deepSeekApiKey: env.DEEPSEEK_API_KEY || process.env.DEEPSEEK_API_KEY || '',
     deepSeekBaseUrl: env.DEEPSEEK_BASE_URL || process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com',
     heliusApiKey: env.HELIUS_API_KEY || process.env.HELIUS_API_KEY || '',
     phoenixRiseUrl: env.PHOENIX_RISE_URL || 'https://api.phoenix.gg/enclave',
     vulcanMcpUrl: env.VULCAN_MCP_URL || 'http://localhost:3001',
-    agentCount: parseInt(env.CLAWD_AGENT_COUNT || '4', 10) as 4 | 16,
     model: env.CLAWD_MODEL || DEFAULT_MODEL,
     stream: env.CLAWD_STREAM === 'true',
   };
 }
 
-function normalizeProvider(provider: string): 'xai' | 'openrouter' | 'deepseek' | 'anthropic' {
+function normalizeProvider(provider: string): 'moonshot' | 'openrouter' | 'deepseek' | 'anthropic' {
   const normalized = provider.toLowerCase();
   if (normalized === 'or') return 'openrouter';
   if (normalized === 'ds') return 'deepseek';
   if (normalized === 'claude' || normalized === 'ant') return 'anthropic';
-  if (normalized === 'anthropic' || normalized === 'deepseek' || normalized === 'openrouter' || normalized === 'xai') return normalized;
+  if (normalized === 'ms' || normalized === 'kimi' || normalized === 'xai') return 'moonshot';
+  if (normalized === 'anthropic' || normalized === 'deepseek' || normalized === 'openrouter' || normalized === 'moonshot') return normalized;
   return DEFAULT_PROVIDER;
 }
 
@@ -115,8 +115,8 @@ function printBanner(): void {
 ╔═══════════════════════════════════════════════════════════╗
 ║  🦞 CLAWD CODE                                           ║
 ║  Lobster-native headless AI coding agent                  ║
-║  Default: xAI Grok 4.3 (code) · Grok 4.20-multi (research)║
-║  xAI · Anthropic · DeepSeek · Solana · Phoenix · Vulcan  ║
+║  Default: Moonshot Kimi K2 Thinking (code + research)     ║
+║  Moonshot · Anthropic · DeepSeek · Solana · Phoenix · Vulcan ║
 ╚═══════════════════════════════════════════════════════════╝
 `);
 }
@@ -128,26 +128,24 @@ USAGE:
   clawd-code [mode] [command] [options]
 
 DEFAULT MODEL:
-  Provider:  xAI (Grok)
-  Code/REPL: grok-4.3  (reasoning, tools, streaming)
-  Research:  grok-4.20-multi-agent  (4 or 16 sub-agents, web/x search)
-  Voice:     grok-voice-think-fast-1.0  (realtime voice agent)
-  Image:     grok-imagine-image-quality  (text/image-to-image)
+  Provider:  Moonshot (Kimi)
+  Code/REPL/Research: kimi-k2-thinking  (reasoning, tools, streaming)
+  Image:     gemini-2.0-flash-exp-image-gen (falls back to DALL-E)
 
 MODES:
   code       Write, review, and ship production code (streaming)
   trade      Perpetuals trading with Phoenix Rise + Vulcan MCP
-  research   Multi-agent deep research with grok-4.20-multi-agent
-  image      Generate images via Grok Imagine, DALL-E, or Gemini
-  voice      Text-to-speech, sherpa-onnx, or xAI voice agent REPL
+  research   Deep research with kimi-k2-thinking
+  image      Generate images via DALL-E or Gemini
+  voice      Text-to-speech via sherpa-onnx or sag CLI
   repl       Interactive multi-turn conversation REPL
 
 GLOBAL COMMANDS:
-  /verify                 Run preflight checks (now pings xAI /models)
-  /models                 List all available models (Grok + Claude + DeepSeek)
+  /verify                 Run preflight checks (now pings Moonshot /models)
+  /models                 List all available models (Moonshot + Claude + DeepSeek)
   /models <id>            Switch to a specific model (alias or canonical id)
   /provider               Show current AI provider + API key status
-  /provider <name>        Switch provider: xai | anthropic | openrouter | deepseek
+  /provider <name>        Switch provider: moonshot | anthropic | openrouter | deepseek
   /inspect                Print discovered config, models, and provider health
 
 COMMANDS:
@@ -160,32 +158,31 @@ COMMANDS:
 
 OPTIONS:
   --mode <mode>          Set mode (code|trade|research|image|voice|repl)
-  --agents <n>           Number of agents for research (4|16)
   --live                 Enable live trading (requires ARM flags)
   --paper                Paper trading mode (default)
-  --model <model>        Override model (grok-4.3 | grok-4.20-multi-agent | ...)
+  --model <model>        Override model (kimi-k2-thinking | kimi-k2-turbo-preview | ...)
   --provider <name>      Override provider for this session
   --stream               Stream output token-by-token (code + research modes)
   --format <fmt>         Output format: text (default) | json (JSONL)
 
 EXAMPLES:
   clawd-code trade "short SOL $100"
-  clawd-code research --agents 16 --model grok-4.20-multi-agent "Solana perps funding arb"
-  clawd-code code --stream --model grok-4.3 "Build an Anchor staking program"
+  clawd-code research --model kimi-k2-thinking "Solana perps funding arb"
+  clawd-code code --stream --model kimi-k2-thinking "Build an Anchor staking program"
   clawd-code code --provider anthropic "Review this TypeScript for bugs"
   clawd-code repl
   clawd-code inspect
 
 ENVIRONMENT:
   SOLANA_RPC_URL         Solana RPC endpoint (default: Helius)
-  XAI_API_KEY            xAI API key for Grok (required for default)
+  MOONSHOT_API_KEY       Moonshot API key for Kimi (required for default)
   ANTHROPIC_API_KEY      Anthropic API key for Claude models
   DEEPSEEK_API_KEY       DeepSeek API key for deepseek-v4-pro/flash
   DEEPSEEK_BASE_URL      Default: https://api.deepseek.com
   OPENROUTER_API_KEY     OpenRouter API key (free models supported)
   OPENROUTER_FREE_MODEL  Default: nex-agi/nex-n2-pro:free
-  CLAWD_PROVIDER         xai (default) | anthropic | openrouter | deepseek
-  CLAWD_MODEL            Default: grok-4.3  (grok-4.20-multi-agent for research)
+  CLAWD_PROVIDER         moonshot (default) | anthropic | openrouter | deepseek
+  CLAWD_MODEL            Default: kimi-k2-thinking
   CLAWD_STREAM           true to enable streaming by default
   HELIUS_API_KEY         Helius API key for DAS
   PHOENIX_RISE_URL       Phoenix Rise endpoint
@@ -193,11 +190,10 @@ ENVIRONMENT:
   LIVE_TRADING           Enable live trading (true|false)
   OPERATOR_CONFIRMED     Operator confirmed (true|false)
   CLAWD_MODE             Default mode (code|trade|research|image|voice|repl)
-  CLAWD_AGENT_COUNT      Agent count for research (4|16)
 
-GROK CONFIG (optional):
-  ~/.grok/config.toml    xAI-style config — see parseGrokConfigToml() in src/env.ts
-  ./.grok/config.toml    Project-level Grok config (overrides user)
+MODEL ALIAS CONFIG (optional):
+  ~/.grok/config.toml    TOML model-alias config — see parseGrokConfigToml() in src/env.ts
+  ./.grok/config.toml    Project-level config (overrides user)
 
 First run: cp .env.example ~/.clawd-code/.env
 `);
@@ -237,16 +233,16 @@ async function cmdInspect(): Promise<void> {
   // 3. API key health
   console.log('║                                                                      ║');
   console.log('║  API KEY STATUS                                                      ║');
-  console.log(`║    xai         ${maskSecret(env.XAI_API_KEY).padEnd(58)}║`);
+  console.log(`║    moonshot    ${maskSecret(env.MOONSHOT_API_KEY).padEnd(58)}║`);
   console.log(`║    anthropic   ${maskSecret(env.ANTHROPIC_API_KEY).padEnd(58)}║`);
   console.log(`║    deepseek    ${maskSecret(env.DEEPSEEK_API_KEY).padEnd(58)}║`);
   console.log(`║    openrouter  ${maskSecret(env.OPENROUTER_API_KEY).padEnd(58)}║`);
 
-  // 4. xAI live ping
-  const xai = createXaiClient(env.XAI_API_KEY);
-  if (xai) {
-    process.stdout.write('║    xai /v1/models  … ');
-    const ping = await xai.ping();
+  // 4. Moonshot live ping
+  const moonshot = createMoonshotClient(env.MOONSHOT_API_KEY);
+  if (moonshot) {
+    process.stdout.write('║    moonshot /v1/models  … ');
+    const ping = await moonshot.ping();
     if (ping.ok) {
       const sample = (ping.models ?? []).slice(0, 4).join(', ');
       console.log(`online (${ping.models?.length ?? 0} models, e.g. ${sample})`.padEnd(34) + '║');
@@ -254,17 +250,16 @@ async function cmdInspect(): Promise<void> {
       console.log(`offline (${ping.error ?? 'unknown'})`.padEnd(48) + '║');
     }
   } else {
-    console.log('║    xai /v1/models  · (skipped — no XAI_API_KEY)                       ║');
+    console.log('║    moonshot /v1/models  · (skipped — no MOONSHOT_API_KEY)              ║');
   }
 
   // 5. Per-mode defaults
   console.log('║                                                                      ║');
   console.log('║  PER-MODE DEFAULTS                                                   ║');
-  const modes: Array<['code' | 'research' | 'voice' | 'image' | 'repl' | 'trade' | 'general', string]> = [
+  const modes: Array<['code' | 'research' | 'image' | 'repl' | 'trade' | 'general', string]> = [
     ['code', 'code/REPL/trade default'],
-    ['research', 'research (multi-agent)'],
+    ['research', 'research'],
     ['image', 'image generation'],
-    ['voice', 'voice agent'],
   ];
   for (const [mode, label] of modes) {
     const m = defaultModelFor(mode);
@@ -276,7 +271,7 @@ async function cmdInspect(): Promise<void> {
   // 6. Provider model summary
   console.log('║                                                                      ║');
   console.log('║  AVAILABLE MODELS BY PROVIDER                                        ║');
-  for (const prov of ['xai', 'anthropic', 'deepseek', 'openrouter'] as const) {
+  for (const prov of ['moonshot', 'anthropic', 'deepseek', 'openrouter'] as const) {
     const ms = listModelsByProvider(prov);
     if (ms.length === 0) continue;
     const ids = ms.map((m) => m.id).join(', ');
@@ -328,18 +323,18 @@ async function main(): Promise<void> {
     process.exit(0);
   }
 
-  // /provider command — switch between xai and openrouter
+  // /provider command — switch between moonshot, anthropic, openrouter, deepseek
   if (args[0] === '/provider' || args[0] === 'provider') {
     const env = loadClawdEnv();
     const current = normalizeProvider(env.CLAWD_PROVIDER || DEFAULT_PROVIDER);
     if (args[1]) {
       const normalized = normalizeProvider(args[1]);
-      const valid = ['xai', 'anthropic', 'openrouter', 'deepseek'];
+      const valid = ['moonshot', 'anthropic', 'openrouter', 'deepseek'];
       if (valid.includes(normalized)) {
         console.log(`\n[CLAWD CODE] Switched provider: ${current} -> ${normalized}`);
         console.log(`Set CLAWD_PROVIDER=${normalized} in ~/.clawd-code/.env to persist.`);
-        if (normalized === 'xai') {
-          console.log(`Set XAI_API_KEY=<key> and (optionally) CLAWD_MODEL=${DEFAULT_MODEL} (default).`);
+        if (normalized === 'moonshot') {
+          console.log(`Set MOONSHOT_API_KEY=<key> and (optionally) CLAWD_MODEL=${DEFAULT_MODEL} (default).`);
         } else if (normalized === 'anthropic') {
           console.log('Set ANTHROPIC_API_KEY=<key> and CLAWD_MODEL=claude-sonnet-4-6 (or opus/haiku).');
         } else if (normalized === 'deepseek') {
@@ -347,7 +342,7 @@ async function main(): Promise<void> {
         }
       } else {
         console.log(`\n[CLAWD CODE] Unknown provider: ${args[1]}`);
-        console.log('Available: xai (default), anthropic (claude), openrouter (or), deepseek (ds)');
+        console.log('Available: moonshot (default), anthropic (claude), openrouter (or), deepseek (ds)');
       }
     } else {
       console.log('\n╔═════════════════════════════════════════════════════════════════════╗');
@@ -355,12 +350,12 @@ async function main(): Promise<void> {
       console.log('╠═════════════════════════════════════════════════════════════════════╣');
       console.log(`║  Current: ${current.padEnd(56)}║`);
       console.log('╠═════════════════════════════════════════════════════════════════════╣');
-      console.log('║  xai         xAI Grok 4.x models ⭐ default                       ║');
+      console.log('║  moonshot    Moonshot Kimi K2 models ⭐ default                    ║');
       console.log('║  anthropic   Claude Sonnet/Opus/Haiku — streaming native            ║');
       console.log('║  openrouter  Free + paid models via OpenRouter                      ║');
       console.log('║  deepseek    deepseek-v4-pro / v4-flash                             ║');
       console.log('╚═════════════════════════════════════════════════════════════════════╝');
-      console.log(`\n  xai        key=${maskSecret(env.XAI_API_KEY)}`);
+      console.log(`\n  moonshot   key=${maskSecret(env.MOONSHOT_API_KEY)}`);
       console.log(`  anthropic  key=${maskSecret(env.ANTHROPIC_API_KEY)}`);
       console.log(`  deepseek   key=${maskSecret(env.DEEPSEEK_API_KEY)}`);
       console.log(`  openrouter key=${maskSecret(env.OPENROUTER_API_KEY)}  free model: ${DEFAULT_FREE_MODEL}`);
@@ -422,10 +417,6 @@ async function main(): Promise<void> {
   if (args.includes('--paper')) config.liveTrading = false;
   if (args.includes('--stream')) config.stream = true;
 
-  if (args.includes('--agents')) {
-    const idx = args.indexOf('--agents');
-    config.agentCount = parseInt(args[idx + 1], 10) as 4 | 16;
-  }
   if (args.includes('--model')) {
     const idx = args.indexOf('--model');
     config.model = args[idx + 1];

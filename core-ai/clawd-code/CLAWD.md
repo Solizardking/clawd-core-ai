@@ -36,7 +36,7 @@ Set in `~/.clawd-code/.env` or project `.env`:
 
 | Variable | Description |
 | --- | --- |
-| `XAI_API_KEY` | xAI API key for Grok models + Voice Agent API |
+| `MOONSHOT_API_KEY` | Moonshot API key for Kimi models |
 | `ANTHROPIC_API_KEY` | Anthropic API key for Claude models (streaming) |
 | `DEEPSEEK_API_KEY` | DeepSeek API key |
 | `OPENROUTER_API_KEY` | OpenRouter API key (free models available) |
@@ -59,40 +59,6 @@ Skills are in `clawd-plugin/skills/`. Each provides expert routing, rules, and r
 | **Phantom** | `skills/phantom/` | Frontend Solana apps with Phantom wallet |
 | **Jupiter** | `skills/jupiter/` | DeFi apps with Jupiter APIs |
 | **SVM** | `skills/svm/` | Solana protocol internals |
-
-## xAI Voice Agent
-
-Clawd Code integrates the xAI Voice Agent API for real-time Solana voice interactions powered by `grok-voice-think-fast-1.0`.
-
-```bash
-# Start voice agent (text REPL, requires XAI_API_KEY, Node 22+)
-clawd-code voice --agent
-
-# Choose a voice (eve, ara, rex, sal, leo)
-clawd-code voice --agent --voice ara
-
-# Pin to a specific voice model
-clawd-code voice --agent --model grok-voice-think-fast-1.0
-```
-
-Built-in Solana function tools available to the voice agent:
-
-| Tool | Description |
-| --- | --- |
-| `check_sol_balance` | Get SOL balance for any wallet address |
-| `get_token_price` | Current price of any Solana token in USD |
-| `get_funding_rate` | Phoenix DEX perps funding rate for a symbol |
-| `check_positions` | Open perpetuals positions |
-| `paper_trade` | Paper trade on Phoenix (no real funds) |
-| `send_sol` | Send SOL — paper mode unless `LIVE_TRADING=true` |
-| `get_market_overview` | SOL price, trending tokens, 24h change |
-
-For ephemeral token generation (browser/mobile clients):
-
-```typescript
-import { VoiceAgentClient } from '@solana-clawd/clawd-code/voice-agent';
-const token = await VoiceAgentClient.fetchEphemeralToken(process.env.XAI_API_KEY, 300);
-```
 
 ## Agent Arena (Cheshire Terminal)
 

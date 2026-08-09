@@ -16,8 +16,6 @@ curl -fsSL https://raw.githubusercontent.com/Solizardking/solana-clawd/main/claw
 The installer checks for Node.js 18+, installs the `clawd-code` binary, and
 creates `~/.clawd-code/.env` if one does not already exist.
 
-> **Note:** The xAI Voice Agent (`clawd-code voice --agent`) requires Node.js 22+ for native WebSocket support.
-
 Manual install:
 
 ```bash
@@ -38,7 +36,7 @@ clawd-code wallet list
 clawd-code perps
 clawd-code funding
 clawd-code trade "funding rate on SOL perps"
-clawd-code research --agents 16 "Solana perps funding arb"
+clawd-code research "Solana perps funding arb"
 clawd-code repl
 clawd-code arena status
 ```
@@ -53,10 +51,9 @@ clawd-code arena status
 | `clawd-code wallet list` | List local wallet public keys |
 | `clawd-code perps` | Show perps dashboard |
 | `clawd-code funding` | Show funding-rate dashboard |
-| `clawd-code research "<prompt>"` | Run multi-agent research (streaming with `--stream`) |
+| `clawd-code research "<prompt>"` | Run deep research (streaming with `--stream`) |
 | `clawd-code image "<prompt>"` | Generate images when configured |
-| `clawd-code voice "<text>"` | Generate voice via local TTS or xAI Voice Agent API |
-| `clawd-code voice --agent` | Real-time Solana voice agent (requires `XAI_API_KEY`, Node 22+) |
+| `clawd-code voice "<text>"` | Generate voice via local TTS (sherpa-onnx or sag CLI) |
 | `clawd-code repl` | Interactive multi-turn conversation REPL |
 | `clawd-code arena <subcommand>` | Agent Arena — on-chain identity, discovery, reputation |
 | `clawd-code verify` | Run environment checks |
@@ -71,9 +68,9 @@ Runtime configuration lives in `~/.clawd-code/.env`. Start from
 
 | Variable | Description | Default |
 | --- | --- | --- |
-| `CLAWD_PROVIDER` | AI provider: `xai`, `anthropic`, `openrouter`, or `deepseek` | `xai` |
-| `CLAWD_MODEL` | Model used by the selected provider | `grok-4.3` |
-| `XAI_API_KEY` | xAI API key for Grok models + Voice Agent API | empty |
+| `CLAWD_PROVIDER` | AI provider: `moonshot`, `anthropic`, `openrouter`, or `deepseek` | `moonshot` |
+| `CLAWD_MODEL` | Model used by the selected provider | `kimi-k2-thinking` |
+| `MOONSHOT_API_KEY` | Moonshot API key for Kimi models | empty |
 | `ANTHROPIC_API_KEY` | Anthropic API key for Claude models (streaming) | empty |
 | `DEEPSEEK_API_KEY` | DeepSeek API key | empty |
 | `OPENROUTER_API_KEY` | OpenRouter API key (free models supported) | empty |
@@ -85,21 +82,21 @@ Runtime configuration lives in `~/.clawd-code/.env`. Start from
 | `OPERATOR_CONFIRMED` | Required operator acknowledgement for live trading | `false` |
 | `PERPS_SIM_ONLY` | Keeps perps execution simulated | `true` |
 
-### Default models per mode (Grok-first)
+### Default models per mode (Moonshot-first)
 
 | Mode | Default model | Notes |
 | --- | --- | --- |
-| `code` / `repl` / `trade` | `grok-4.3` | xAI flagship reasoning, SSE streaming, client tools |
-| `research` | `grok-4.20-multi-agent` | 4 (default) or 16 sub-agents with `web_search` + `x_search` + `code_interpreter` |
-| `image` | `grok-imagine-image-quality` | xAI Imagine text/image-to-image; falls back to DALL-E / Gemini |
-| `voice --agent` | `grok-voice-think-fast-1.0` | xAI realtime voice agent API with Solana tools |
+| `code` / `repl` / `trade` / `research` | `kimi-k2-thinking` | Moonshot flagship reasoning, SSE streaming, client tools |
+| `image` | `gemini-2.0-flash-exp-image-gen` | Falls back to DALL-E if `OPENAI_API_KEY` is set |
 
 Override per-session with `--model <id>` or `--provider <name>`, or globally
 with `CLAWD_MODEL=` / `CLAWD_PROVIDER=` in `~/.clawd-code/.env`.
 
-### Optional Grok-style config (`~/.grok/config.toml`)
+### Optional model-alias config (`~/.grok/config.toml`)
 
-Clawd Code also reads the standard xAI Grok config locations:
+Clawd Code also reads these TOML config locations (the path is a legacy
+holdover from the original Grok-CLI-style config format, but the loader is
+provider-agnostic):
 
 - `~/.grok/config.toml` (user)
 - `./.grok/config.toml` (project, overrides user)
@@ -109,13 +106,13 @@ Supported subset of TOML (see `parseGrokConfigToml()` in `src/env.ts`):
 ```toml
 # ~/.grok/config.toml
 [models]
-default = "grok-4.3"
+default = "kimi-k2-thinking"
 
-[model.grok-fast]
-model = "grok-4.3-fast"
-base_url = "https://api.x.ai/v1"
-name = "Grok Fast"
-env_key = "XAI_API_KEY"
+[model.kimi-turbo]
+model = "kimi-k2-turbo-preview"
+base_url = "https://api.moonshot.ai/v1"
+name = "Kimi Turbo"
+env_key = "MOONSHOT_API_KEY"
 
 [ui]
 permission_mode = "ask"
@@ -136,7 +133,7 @@ clawd-code /inspect
 clawd-code inspect
 ```
 
-Prints: config sources, active provider/model, API key health, live xAI
+Prints: config sources, active provider/model, API key health, live Moonshot
 `/v1/models` reachability, per-mode defaults, and the model catalog grouped
 by provider.
 
@@ -176,7 +173,7 @@ Clawd Code supports four AI providers with unified streaming:
 
 | Provider | Alias | Models | Streaming |
 | --- | --- | --- | --- |
-| `xai` | *(default)* | `grok-4.3`, `grok-4.3-fast`, `grok-4.20-multi-agent`, `grok-voice-think-fast-1.0`, `grok-imagine-image-quality`, … | native SSE |
+| `moonshot` | *(default)* | `kimi-k2-thinking`, `kimi-k2-turbo-preview`, `kimi-k2-0711-preview` | native SSE |
 | `anthropic` | `claude`, `ant` | `claude-sonnet-4-6`, `claude-opus-4-8`, `claude-haiku-4-5-20251001` | native SSE |
 | `openrouter` | `or` | `nex-agi/nex-n2-pro:free` + any OR model | native SSE |
 | `deepseek` | `ds` | `deepseek-v4-pro`, `deepseek-v4-flash` | blocking |
@@ -206,46 +203,12 @@ An interactive multi-turn conversation session. Dot commands:
 | Command | Action |
 | --- | --- |
 | `.mode code\|research\|trade\|general` | Switch conversation mode |
-| `.provider xai\|anthropic\|openrouter\|deepseek` | Switch AI provider |
+| `.provider moonshot\|anthropic\|openrouter\|deepseek` | Switch AI provider |
 | `.model <id>` | Switch model mid-session |
 | `.clear` | Clear message history |
 | `.history` | Print conversation history |
 | `.help` | Show all dot commands |
 | `.exit` / `.quit` | End session |
-
-## xAI Voice Agent
-
-Real-time Solana voice interactions powered by `grok-voice-think-fast-1.0` via the xAI Voice Agent API. Requires `XAI_API_KEY` and Node.js 22+.
-
-```bash
-# Start voice agent REPL (text I/O over WebSocket)
-clawd-code voice --agent
-
-# Choose a voice persona (eve, ara, rex, sal, leo)
-clawd-code voice --agent --voice ara
-
-# Pin to a specific model
-clawd-code voice --agent --model grok-voice-think-fast-1.0
-```
-
-Built-in Solana function tools:
-
-| Tool | Description |
-| --- | --- |
-| `check_sol_balance` | Get SOL balance for any wallet address |
-| `get_token_price` | Current price of any Solana token in USD |
-| `get_funding_rate` | Phoenix DEX perps funding rate for a symbol |
-| `check_positions` | Open perpetuals positions |
-| `paper_trade` | Paper trade on Phoenix (no real funds) |
-| `send_sol` | Send SOL — paper mode unless `LIVE_TRADING=true` |
-| `get_market_overview` | SOL price, trending tokens, 24h change |
-
-For ephemeral token generation (browser/mobile clients):
-
-```typescript
-import { VoiceAgentClient } from '@solana-clawd/clawd-code/voice-agent';
-const token = await VoiceAgentClient.fetchEphemeralToken(process.env.XAI_API_KEY, 300);
-```
 
 ## Agent Arena
 

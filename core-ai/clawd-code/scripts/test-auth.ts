@@ -2,8 +2,8 @@
 // Quick test that API keys are configured and can reach the AI providers
 // Usage: bun scripts/test-auth.ts
 //
-// Tests Grok (xAI) by default, with optional Claude (Anthropic) fallback.
-// Set XAI_API_KEY or ANTHROPIC_API_KEY in environment.
+// Tests Moonshot (Kimi) by default, with optional Claude (Anthropic) fallback.
+// Set MOONSHOT_API_KEY or ANTHROPIC_API_KEY in environment.
 
 import { readFileSync, existsSync } from 'fs'
 import { resolve, dirname } from 'path'
@@ -39,22 +39,22 @@ function loadEnv() {
 
 loadEnv()
 
-async function testGrok() {
-  const apiKey = process.env.XAI_API_KEY
+async function testMoonshot() {
+  const apiKey = process.env.MOONSHOT_API_KEY
   if (!apiKey) {
-    console.log('  ⚠️  XAI_API_KEY not set — skipping Grok test')
+    console.log('  ⚠️  MOONSHOT_API_KEY not set — skipping Moonshot test')
     return false
   }
 
   try {
-    const response = await fetch('https://api.x.ai/v1/chat/completions', {
+    const response = await fetch('https://api.moonshot.ai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: process.env.XAI_MODEL || 'grok-4.3',
+        model: process.env.MOONSHOT_MODEL || 'kimi-k2-thinking',
         messages: [{ role: 'user', content: 'Say "hello from Clawd Code" and nothing else.' }],
         max_tokens: 50,
       }),
@@ -67,11 +67,11 @@ async function testGrok() {
 
     const data = await response.json() as any
     const content = data?.choices?.[0]?.message?.content || '(unexpected format)'
-    console.log('✅ Grok/xAI connection successful!')
+    console.log('✅ Moonshot connection successful!')
     console.log('   Response:', content)
     return true
   } catch (err: any) {
-    console.error('❌ Grok/xAI connection failed:', err.message)
+    console.error('❌ Moonshot connection failed:', err.message)
     return false
   }
 }
@@ -117,14 +117,14 @@ async function testClaude() {
 async function main() {
   console.log('Clawd Code Auth Test\n')
 
-  const grokOk = await testGrok()
+  const moonshotOk = await testMoonshot()
   const claudeOk = await testClaude()
 
   console.log('')
-  if (grokOk || claudeOk) {
+  if (moonshotOk || claudeOk) {
     console.log('✅ At least one provider is configured and reachable.')
   } else {
-    console.log('❌ No providers are configured. Set XAI_API_KEY or ANTHROPIC_API_KEY.')
+    console.log('❌ No providers are configured. Set MOONSHOT_API_KEY or ANTHROPIC_API_KEY.')
     console.log('   Copy .env.example to .env and fill in your keys.')
     process.exit(1)
   }

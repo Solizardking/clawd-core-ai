@@ -1,26 +1,29 @@
 /**
  * Clawd Code — RESEARCH MODE
- * Multi-agent deep research. Default: xAI Grok (grok-4.20-multi-agent) with
- * web_search + x_search + code_interpreter. Streaming supported for all four
- * providers.
+ * Deep research with extended reasoning. Default: Moonshot Kimi K2 Thinking.
+ * Streaming supported for all four providers.
  */
 
 import { createAnthropicClient, DEFAULT_CLAUDE_MODEL, isClaudeModel } from '../anthropic.js';
 import { createDeepSeekClient } from '../deepseek.js';
 import { loadClawdEnv } from '../env.js';
-import { DEFAULT_RESEARCH_MODEL, normalizeModelId } from '../grok-models.js';
+import { DEFAULT_RESEARCH_MODEL, normalizeModelId } from '../model-registry.js';
 import { createOpenRouterClient } from '../openrouter.js';
-import { createXaiClient, type XaiTextResponse } from '../xai.js';
+import { createMoonshotClient } from '../moonshot.js';
 
 interface ResearchConfig {
   provider?: string;
   model?: string;
   stream?: boolean;
-  agentCount?: 4 | 16;
-  xaiApiKey?: string;
+  moonshotApiKey?: string;
   anthropicApiKey?: string;
   deepSeekApiKey?: string;
   deepSeekBaseUrl?: string;
+}
+
+interface ResearchResult {
+  content: string;
+  citations: string[];
 }
 
 const RESEARCH_SYSTEM = `You are Clawd Research — a precise, source-aware technical researcher. Synthesize findings across sources. Cite evidence. Flag what requires live verification. Be concise and structured.`;
@@ -37,21 +40,20 @@ export class ResearchMode {
     }
 
     const provider = this.resolveProvider();
-    const agentCount = this.config.agentCount ?? 4;
     const requested = this.config.model ?? DEFAULT_RESEARCH_MODEL;
     const model = normalizeModelId(requested) || DEFAULT_RESEARCH_MODEL;
 
-    console.log('\n[RESEARCH MODE] Initiating multi-agent research...\n');
-    console.log(`[RESEARCH MODE] Provider: ${provider} | Agents: ${agentCount}`);
+    console.log('\n[RESEARCH MODE] Initiating research...\n');
+    console.log(`[RESEARCH MODE] Provider: ${provider}`);
     console.log(`[RESEARCH MODE] Model: ${model}`);
     console.log(`[RESEARCH MODE] Query: ${query}\n`);
 
-    this.printHeader(query, agentCount, model);
+    this.printHeader(query, model);
 
     if (this.config.stream) {
-      await this.runStreaming(query, provider, agentCount, model);
+      await this.runStreaming(query, provider, model);
     } else {
-      const result = await this.runBlocking(query, provider, agentCount, model);
+      const result = await this.runBlocking(query, provider, model);
       console.log(`\n${result.content || 'No research output returned.'}`);
       if (result.citations.length > 0) {
         console.log('\nCitations:');
@@ -63,24 +65,23 @@ export class ResearchMode {
   }
 
   private resolveProvider(): string {
-    const p = this.config.provider ?? 'xai';
+    const p = this.config.provider ?? 'moonshot';
     if (p === 'anthropic' || isClaudeModel(this.config.model ?? '')) return 'anthropic';
     if (p === 'deepseek' || String(this.config.model ?? '').startsWith('deepseek-')) return 'deepseek';
     if (p === 'openrouter') return 'openrouter';
-    return 'xai';
+    return 'moonshot';
   }
 
-  private printHeader(query: string, agentCount: number, model: string): void {
-    const label = `${model} · ${agentCount} agents`;
+  private printHeader(query: string, model: string): void {
     const q = query.substring(0, 52).padEnd(52);
     console.log('╔══════════════════════════════════════════════════════════════╗');
-    console.log(`║  RESEARCH MODE — ${label.padEnd(45)}║`);
+    console.log(`║  RESEARCH MODE — ${model.padEnd(45)}║`);
     console.log('╠══════════════════════════════════════════════════════════════╣');
     console.log(`║  ${q}  ║`);
     console.log('╚══════════════════════════════════════════════════════════════╝\n');
   }
 
-  private async runStreaming(query: string, provider: string, agentCount: 4 | 16, model: string): Promise<void> {
+  private async runStreaming(query: string, provider: string, model: string): Promise<void> {
     process.stdout.write('[RESEARCH MODE] Streaming findings:\n\n');
 
     try {
@@ -103,22 +104,20 @@ export class ResearchMode {
         return;
       }
 
-      if (provider === 'xai') {
-        const client = createXaiClient(this.config.xaiApiKey);
+      if (provider === 'moonshot') {
+        const client = createMoonshotClient(this.config.moonshotApiKey);
         if (!client) {
-          console.error('[RESEARCH MODE] XAI_API_KEY not set.');
+          console.error('[RESEARCH MODE] MOONSHOT_API_KEY not set.');
           return;
         }
-        for await (const chunk of client.streamResponses({
+        for await (const chunk of client.streamChat({
           model,
-          input: [{ role: 'user', content: query }],
-          tools: [{ type: 'web_search' }, { type: 'x_search' }, { type: 'code_interpreter' }],
-          reasoning: { effort: agentCount === 16 ? 'high' : 'low' },
-          agentCount,
+          messages: [
+            { role: 'system', content: RESEARCH_SYSTEM },
+            { role: 'user', content: query },
+          ],
+          maxTokens: 8096,
         })) {
-          if (chunk.reasoning) {
-            process.stdout.write(`\x1b[2m${chunk.reasoning}\x1b[0m`);
-          }
           if (chunk.text) process.stdout.write(chunk.text);
         }
         process.stdout.write('\n');
@@ -154,9 +153,8 @@ export class ResearchMode {
   private async runBlocking(
     query: string,
     provider: string,
-    agentCount: 4 | 16,
     model: string,
-  ): Promise<XaiTextResponse> {
+  ): Promise<ResearchResult> {
     try {
       if (provider === 'anthropic') {
         const client = createAnthropicClient(this.config.anthropicApiKey);
@@ -179,10 +177,10 @@ export class ResearchMode {
         if (!client) return { content: 'DEEPSEEK_API_KEY not set.', citations: [] };
 
         const useModel = String(model).startsWith('deepseek-') ? model : 'deepseek-v4-pro';
-        console.log(`[RESEARCH MODE] Running DeepSeek ${useModel} (effort: ${agentCount === 16 ? 'high' : 'medium'})...`);
+        console.log(`[RESEARCH MODE] Running DeepSeek ${useModel} (extended thinking)...`);
         const response = await client.chat({
           model: useModel,
-          reasoningEffort: agentCount === 16 ? 'high' : 'medium',
+          reasoningEffort: 'high',
           thinking: true,
           messages: [
             { role: 'system', content: RESEARCH_SYSTEM },
@@ -209,17 +207,19 @@ export class ResearchMode {
         return { content: result.content, citations: [] };
       }
 
-      // xAI — use responses API with web_search + x_search + code_interpreter tools
-      const client = createXaiClient(this.config.xaiApiKey);
-      if (!client) return { content: 'XAI_API_KEY not set.', citations: [] };
+      // Moonshot (default)
+      const client = createMoonshotClient(this.config.moonshotApiKey);
+      if (!client) return { content: 'MOONSHOT_API_KEY not set.', citations: [] };
 
-      console.log(`[RESEARCH MODE] Running ${model} with ${agentCount} agents, web_search + x_search...`);
-      return await client.responses({
+      console.log(`[RESEARCH MODE] Running ${model}...`);
+      return await client.chat({
         model,
-        reasoning: { effort: agentCount === 16 ? 'high' : 'low' },
-        input: [{ role: 'user', content: query }],
-        tools: [{ type: 'web_search' }, { type: 'x_search' }, { type: 'code_interpreter' }],
-        agentCount,
+        messages: [
+          { role: 'system', content: RESEARCH_SYSTEM },
+          { role: 'user', content: query },
+        ],
+        maxTokens: 8096,
+        temperature: 0.2,
       });
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);

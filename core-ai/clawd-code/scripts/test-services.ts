@@ -161,7 +161,7 @@ async function testInit() {
 async function main() {
   console.log('=== Clawd Code Services Layer Smoke Test ===')
   console.log(`Environment: NODE_ENV=${process.env.NODE_ENV}`)
-  console.log(`Auth: XAI_API_KEY=${process.env.XAI_API_KEY ? '(set)' : '(not set)'}, ANTHROPIC_API_KEY=${process.env.ANTHROPIC_API_KEY ? '(set)' : '(not set)'}`)
+  console.log(`Auth: MOONSHOT_API_KEY=${process.env.MOONSHOT_API_KEY ? '(set)' : '(not set)'}, ANTHROPIC_API_KEY=${process.env.ANTHROPIC_API_KEY ? '(set)' : '(not set)'}`)
 
   // Test individual services first (order: least-dependent → most-dependent)
   await testAnalyticsSink()
