@@ -30,7 +30,7 @@ import { formatProfileTable } from './router/profiles.js';
 import { getTierCostBreakdown } from './router/tiers.js';
 import { scoreRequest } from './router/scorer.js';
 import { CLAWD_TOKEN_MINT } from './token/clawd-gate.js';
-import { LOBSTER_BANNER, showLobsterBanner, showLobsterWelcome } from './utils/lobster-ascii.js';
+import { LOBSTER_BANNER, showLobsterBanner, showWelcome } from './utils/lobster-ascii.js';
 
 // ── Default Configuration ───────────────────────────────────────────
 
