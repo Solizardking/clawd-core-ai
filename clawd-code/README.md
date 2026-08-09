@@ -223,22 +223,28 @@ Clawd Code pays its own way. Every external API call — image generation, compu
 
 ## Repository Layout
 
-```
-clawd-code/
-├── src/                  CLI source — QueryEngine, tools, commands, UI (React/Ink)
-├── clawd-plugin/         Bundled plugin: skills + auto-started MCP servers
-├── clawd-skills/         100+ domain skill packages (Solana, DFlow, Pump, Imperial…)
-├── mcp-server/           Clawd Code exposed as its own MCP server
-├── web/                  Next.js 14 dashboard (Zustand, Radix, SWR)
-├── docker/               Containerized deployment
-├── docs/                 architecture · commands · tools · subsystems · exploration guide
-├── prompts/              System prompt fragments
-├── scripts/              Build, bundle, packaging, test scripts
-├── knowledge/            Reference knowledge base
-├── spinners/             Terminal spinner assets
-├── character/            Agent persona definition
-└── clawd.json            Catalog entry — bio, lore, message examples
-```
+Every folder below has its own `README.md` explaining what it is and how it fits together — this table is the index.
+
+| Folder | What's there |
+|---|---|
+| [`src/`](src/README.md) | CLI source — QueryEngine, tools, commands, UI (React/Ink) |
+| [`clawd-plugin/`](clawd-plugin/README.md) | Bundled plugin: skills + auto-started MCP servers |
+| [`clawd-skills/`](clawd-skills/README.md) | 100+ domain skill packages (Solana, DFlow, Pump, Imperial…) |
+| [`.agents/`](.agents/README.md) | Runtime-discovered skill registry (97 skill packages) |
+| [`.clawd-plugin/`](.clawd-plugin/README.md) | Plugin marketplace manifest (`clawd-helius`) |
+| [`mcp-server/`](mcp-server/README.md) | Clawd Code exposed as its own MCP server (STDIO/HTTP/SSE) |
+| [`clawdrouter/`](clawdrouter/README.md) | Model router service |
+| [`web/`](web/README.md) | Next.js 14 dashboard (Zustand, Radix, SWR) |
+| [`docker/`](docker/README.md) | Containerized deployment (Dockerfile, compose, entrypoint) |
+| [`docs/`](docs/README.md) | architecture · commands · tools · subsystems · exploration guide · bridge · ADR-001 |
+| [`prompts/`](prompts/README.md) | Ordered build-out prompt log (bootstrapping this repo to a working build) |
+| [`scripts/`](scripts/README.md) | Build, bundle, packaging, test-runner scripts |
+| [`knowledge/`](knowledge/README.md) | Reference knowledge base — agent memory + conventions |
+| [`spinners/`](spinners/README.md) | Themed terminal spinner verb packs |
+| [`character/`](character/README.md) | Reserved location for persona/avatar/voice assets (currently empty — persona lives in `SOUL.md`/`IDENTITY.md`) |
+| [`dist/`](dist/README.md) | Generated build output — do not hand-edit |
+
+Plus root-level files: [`clawd.json`](clawd.json) (catalog entry — bio, lore, message examples), [`.env.example`](.env.example) / `.env.local` (local config).
 
 Governing docs: [`CLAWD.md`](CLAWD.md) (Layer A harness) · [`IDENTITY.md`](IDENTITY.md) · [`SOUL.md`](SOUL.md) · [`SKILL.md`](SKILL.md) · [`AGENT.md`](AGENT.md) · [`MIGRATE.md`](MIGRATE.md).
 
