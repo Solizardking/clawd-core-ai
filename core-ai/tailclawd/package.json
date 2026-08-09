@@ -6,7 +6,8 @@
   "description": "Local UI + Tailscale proxy for Clawd/Claude session monitoring via iii-sdk",
   "scripts": {
     "dev": "tsx src/index.ts",
-    "start": "node --loader tsx src/index.ts"
+    "start": "node --loader tsx src/index.ts",
+    "test": "node --import tsx --test --test-force-exit tests/package-integration.test.mjs"
   },
   "dependencies": {
     "iii-sdk": "^0.3.0",
