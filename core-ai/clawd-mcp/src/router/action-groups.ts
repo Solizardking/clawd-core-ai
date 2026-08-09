@@ -8,6 +8,16 @@ import {
   HELIUS_TRANSACTION_ACTIONS,
   HELIUS_WALLET_ACTIONS,
   HELIUS_WRITE_ACTIONS,
+  IMPERIAL_ACTIONS,
+  PHOENIX_ACTIONS,
+  SOL_GPT_AGENTS_ACTIONS,
+  SOL_GPT_BROWSER_ACTIONS,
+  SOL_GPT_MARKET_ACTIONS,
+  SOL_GPT_OHLCV_ACTIONS,
+  SOL_GPT_PREDICTION_ACTIONS,
+  SOL_GPT_TRADING_ACTIONS,
+  SOL_GPT_WALLET_ACTIONS,
+  SOLANA_TRACKER_ACTIONS,
   type ActionName,
 } from './actions.js';
 
@@ -21,6 +31,16 @@ export const PUBLIC_TOOL_NAMES = [
   'heliusKnowledge',
   'heliusWrite',
   'heliusCompression',
+  'solGptPhoenix',
+  'solGptImperial',
+  'solGptMarket',
+  'solGptOhlcv',
+  'solGptWallet',
+  'solGptSolanaTracker',
+  'solGptTrading',
+  'solGptPrediction',
+  'solGptBrowser',
+  'solGptAgents',
   'expandResult',
 ] as const;
 
@@ -37,6 +57,16 @@ export const ACTION_GROUPS: Record<RoutedPublicToolName, readonly ActionName[]> 
   heliusKnowledge: HELIUS_KNOWLEDGE_ACTIONS,
   heliusWrite: HELIUS_WRITE_ACTIONS,
   heliusCompression: HELIUS_COMPRESSION_ACTIONS,
+  solGptPhoenix: PHOENIX_ACTIONS,
+  solGptImperial: IMPERIAL_ACTIONS,
+  solGptMarket: SOL_GPT_MARKET_ACTIONS,
+  solGptOhlcv: SOL_GPT_OHLCV_ACTIONS,
+  solGptWallet: SOL_GPT_WALLET_ACTIONS,
+  solGptSolanaTracker: SOLANA_TRACKER_ACTIONS,
+  solGptTrading: SOL_GPT_TRADING_ACTIONS,
+  solGptPrediction: SOL_GPT_PREDICTION_ACTIONS,
+  solGptBrowser: SOL_GPT_BROWSER_ACTIONS,
+  solGptAgents: SOL_GPT_AGENTS_ACTIONS,
 };
 
 export function findPublicToolForAction(action: ActionName): RoutedPublicToolName {

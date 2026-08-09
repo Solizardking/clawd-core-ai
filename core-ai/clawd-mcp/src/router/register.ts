@@ -12,6 +12,16 @@ import {
   HELIUS_TRANSACTION_SCHEMA,
   HELIUS_WALLET_SCHEMA,
   HELIUS_WRITE_SCHEMA,
+  IMPERIAL_SCHEMA,
+  PHOENIX_SCHEMA,
+  SOL_GPT_AGENTS_SCHEMA,
+  SOL_GPT_BROWSER_SCHEMA,
+  SOL_GPT_MARKET_SCHEMA,
+  SOL_GPT_OHLCV_SCHEMA,
+  SOL_GPT_PREDICTION_SCHEMA,
+  SOL_GPT_TRADING_SCHEMA,
+  SOL_GPT_WALLET_SCHEMA,
+  SOLANA_TRACKER_SCHEMA,
 } from './schemas.js';
 
 export function registerRouterTools(server: McpServer): void {
@@ -76,6 +86,76 @@ export function registerRouterTools(server: McpServer): void {
     'Compressed account, proof, balance, and compression history queries. Use for zk-compression state, not standard DAS assets.',
     HELIUS_COMPRESSION_SCHEMA,
     withTelemetryHandler('heliusCompression', (params, extra) => dispatchRoutedTool('heliusCompression', params, extra)),
+  );
+
+  server.tool(
+    'solGptPhoenix',
+    'Phoenix Eternal perps: research (markets, mark price, orderbook, funding, trader state) and unsigned trade-prep (market/limit orders, deposit, withdraw, register). Read-only research plus unsigned tx building — never signs or submits.',
+    PHOENIX_SCHEMA,
+    withTelemetryHandler('solGptPhoenix', (params, extra) => dispatchRoutedTool('solGptPhoenix', params, extra)),
+  );
+
+  server.tool(
+    'solGptImperial',
+    'Imperial multi-venue perps router (Jupiter/Flash/Phoenix/GMTrade): funding rates, mark prices, route selection, stats, positions, orders. Read-only research.',
+    IMPERIAL_SCHEMA,
+    withTelemetryHandler('solGptImperial', (params, extra) => dispatchRoutedTool('solGptImperial', params, extra)),
+  );
+
+  server.tool(
+    'solGptMarket',
+    'Solana token market data: prices, search, trending, memes, fees, security, holder distribution, smart money. Use for token discovery and risk checks, not OHLCV history.',
+    SOL_GPT_MARKET_SCHEMA,
+    withTelemetryHandler('solGptMarket', (params, extra) => dispatchRoutedTool('solGptMarket', params, extra)),
+  );
+
+  server.tool(
+    'solGptOhlcv',
+    'Historical/live OHLCV candles and trade tape for a token or pair. Use for charting, not spot price lookups.',
+    SOL_GPT_OHLCV_SCHEMA,
+    withTelemetryHandler('solGptOhlcv', (params, extra) => dispatchRoutedTool('solGptOhlcv', params, extra)),
+  );
+
+  server.tool(
+    'solGptWallet',
+    'Wallet net worth, PnL, SOL balance, and asset holdings overview (Birdeye/Solana Tracker backed). Use for portfolio summaries, not raw token accounts.',
+    SOL_GPT_WALLET_SCHEMA,
+    withTelemetryHandler('solGptWallet', (params, extra) => dispatchRoutedTool('solGptWallet', params, extra)),
+  );
+
+  server.tool(
+    'solGptSolanaTracker',
+    'Solana Tracker data + DAS + RPC: token info, wallet portfolio/PnL, trending, graduating, bundlers, holders, search, and raw Solana RPC passthrough. Use when Helius tools are insufficient or Solana-Tracker-native data is needed.',
+    SOLANA_TRACKER_SCHEMA,
+    withTelemetryHandler('solGptSolanaTracker', (params, extra) => dispatchRoutedTool('solGptSolanaTracker', params, extra)),
+  );
+
+  server.tool(
+    'solGptTrading',
+    'Spot swap quotes and unsigned swap/transfer prep (DFlow/Jupiter). Never signs or submits — returns an unsigned transaction for the caller\'s own wallet to sign.',
+    SOL_GPT_TRADING_SCHEMA,
+    withTelemetryHandler('solGptTrading', (params, extra) => dispatchRoutedTool('solGptTrading', params, extra)),
+  );
+
+  server.tool(
+    'solGptPrediction',
+    'Prediction market data (DFlow/Kalshi-style): market snapshots, orderbook depth, search. Read-only.',
+    SOL_GPT_PREDICTION_SCHEMA,
+    withTelemetryHandler('solGptPrediction', (params, extra) => dispatchRoutedTool('solGptPrediction', params, extra)),
+  );
+
+  server.tool(
+    'solGptBrowser',
+    'Live cloud browser automation for research on external sites (DexScreener, news, listings) that no API covers. Does not spend funds.',
+    SOL_GPT_BROWSER_SCHEMA,
+    withTelemetryHandler('solGptBrowser', (params, extra) => dispatchRoutedTool('solGptBrowser', params, extra)),
+  );
+
+  server.tool(
+    'solGptAgents',
+    'Metaplex/Solana agent and asset discovery.',
+    SOL_GPT_AGENTS_SCHEMA,
+    withTelemetryHandler('solGptAgents', (params, extra) => dispatchRoutedTool('solGptAgents', params, extra)),
   );
 
   server.tool(

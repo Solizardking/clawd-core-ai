@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "Clawd Core — Solana-native agent toolkit: typed tools, plugins, and wallet clients with reflect-metadata tool discovery",
   "sideEffects": false,
-  "files": ["dist/**/*", "README.md", "package.json"],
+  "files": ["dist/**/*", "constitution/**/*", "README.md", "package.json"],
   "scripts": {
+    "sync:constitution": "rm -rf constitution && cp -R ../constitution constitution",
+    "prebuild": "npm run sync:constitution",
     "build": "tsup",
     "clean": "rm -rf dist",
     "test": "vitest run --passWithNoTests",

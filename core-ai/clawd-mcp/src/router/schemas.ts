@@ -9,6 +9,16 @@ import {
   HELIUS_TRANSACTION_ACTIONS,
   HELIUS_WALLET_ACTIONS,
   HELIUS_WRITE_ACTIONS,
+  IMPERIAL_ACTIONS,
+  PHOENIX_ACTIONS,
+  SOL_GPT_AGENTS_ACTIONS,
+  SOL_GPT_BROWSER_ACTIONS,
+  SOL_GPT_MARKET_ACTIONS,
+  SOL_GPT_OHLCV_ACTIONS,
+  SOL_GPT_PREDICTION_ACTIONS,
+  SOL_GPT_TRADING_ACTIONS,
+  SOL_GPT_WALLET_ACTIONS,
+  SOLANA_TRACKER_ACTIONS,
 } from './actions.js';
 import { withTelemetry } from './telemetry.js';
 
@@ -202,6 +212,124 @@ export const HELIUS_COMPRESSION_SCHEMA = withTelemetry({
   mint: optionalString(),
   limit: optionalNumber(),
   cursor: optionalString(),
+});
+
+// ── SOL GPT catalog schemas ──────────────────────────────────────────────
+// Generic shape: action + detail + a passthrough `args` bag, plus a handful
+// of common named fields as hints. Individual action handlers pull whatever
+// keys they need out of the merged params (see dispatch.ts buildActionParams).
+
+export const PhoenixActionSchema = z.enum(PHOENIX_ACTIONS);
+export const ImperialActionSchema = z.enum(IMPERIAL_ACTIONS);
+export const SolGptMarketActionSchema = z.enum(SOL_GPT_MARKET_ACTIONS);
+export const SolGptOhlcvActionSchema = z.enum(SOL_GPT_OHLCV_ACTIONS);
+export const SolGptWalletActionSchema = z.enum(SOL_GPT_WALLET_ACTIONS);
+export const SolanaTrackerActionSchema = z.enum(SOLANA_TRACKER_ACTIONS);
+export const SolGptTradingActionSchema = z.enum(SOL_GPT_TRADING_ACTIONS);
+export const SolGptPredictionActionSchema = z.enum(SOL_GPT_PREDICTION_ACTIONS);
+export const SolGptBrowserActionSchema = z.enum(SOL_GPT_BROWSER_ACTIONS);
+export const SolGptAgentsActionSchema = z.enum(SOL_GPT_AGENTS_ACTIONS);
+
+const solGptCommonFields = {
+  detail: detailField,
+  args: argsField,
+  symbol: optionalString(),
+  mint: optionalString(),
+  address: optionalString(),
+  wallet: optionalString(),
+  owner: optionalString(),
+  market: optionalString(),
+  ticker: optionalString(),
+  timeframe: optionalString(),
+  limit: optionalNumber(),
+  page: optionalNumber(),
+  cursor: optionalString(),
+};
+
+export const PHOENIX_SCHEMA = withTelemetry({
+  action: PhoenixActionSchema,
+  ...solGptCommonFields,
+  side: optionalString(),
+  baseUnits: optionalNumber(),
+  priceUsd: optionalNumber(),
+  subaccount: optionalNumber(),
+});
+
+export const IMPERIAL_SCHEMA = withTelemetry({
+  action: ImperialActionSchema,
+  ...solGptCommonFields,
+  asset: optionalString(),
+  venue: optionalString(),
+  underwriter: optionalString(),
+  notional: optionalNumber(),
+  period: optionalString(),
+  grouping: optionalString(),
+});
+
+export const SOL_GPT_MARKET_SCHEMA = withTelemetry({
+  action: SolGptMarketActionSchema,
+  ...solGptCommonFields,
+  query: optionalString(),
+});
+
+export const SOL_GPT_OHLCV_SCHEMA = withTelemetry({
+  action: SolGptOhlcvActionSchema,
+  ...solGptCommonFields,
+  baseMint: optionalString(),
+  quoteMint: optionalString(),
+  pairAddress: optionalString(),
+  type: optionalString(),
+  timeFrom: optionalNumber(),
+  timeTo: optionalNumber(),
+});
+
+export const SOL_GPT_WALLET_SCHEMA = withTelemetry({
+  action: SolGptWalletActionSchema,
+  ...solGptCommonFields,
+});
+
+export const SOLANA_TRACKER_SCHEMA = withTelemetry({
+  action: SolanaTrackerActionSchema,
+  ...solGptCommonFields,
+  tokenAddress: optionalString(),
+  walletAddress: optionalString(),
+  poolAddress: optionalString(),
+  poolId: optionalString(),
+  mints: stringArray(),
+  method: optionalString(),
+  params: argsField,
+  priceChanges: optionalBoolean(),
+});
+
+export const SOL_GPT_TRADING_SCHEMA = withTelemetry({
+  action: SolGptTradingActionSchema,
+  ...solGptCommonFields,
+  inputMint: optionalString(),
+  outputMint: optionalString(),
+  amount: optionalNumber(),
+  slippageBps: optionalNumber(),
+  destination: optionalString(),
+});
+
+export const SOL_GPT_PREDICTION_SCHEMA = withTelemetry({
+  action: SolGptPredictionActionSchema,
+  ...solGptCommonFields,
+  query: optionalString(),
+});
+
+export const SOL_GPT_BROWSER_SCHEMA = withTelemetry({
+  action: SolGptBrowserActionSchema,
+  ...solGptCommonFields,
+  task: optionalString(),
+  sessionId: optionalString(),
+  keepAlive: optionalBoolean(),
+  url: optionalString(),
+});
+
+export const SOL_GPT_AGENTS_SCHEMA = withTelemetry({
+  action: SolGptAgentsActionSchema,
+  ...solGptCommonFields,
+  id: optionalString(),
 });
 
 export const EXPAND_RESULT_SCHEMA = withTelemetry({

@@ -8,6 +8,16 @@ import {
   HELIUS_TRANSACTION_ACTIONS,
   HELIUS_WALLET_ACTIONS,
   HELIUS_WRITE_ACTIONS,
+  IMPERIAL_ACTIONS,
+  PHOENIX_ACTIONS,
+  SOL_GPT_AGENTS_ACTIONS,
+  SOL_GPT_BROWSER_ACTIONS,
+  SOL_GPT_MARKET_ACTIONS,
+  SOL_GPT_OHLCV_ACTIONS,
+  SOL_GPT_PREDICTION_ACTIONS,
+  SOL_GPT_TRADING_ACTIONS,
+  SOL_GPT_WALLET_ACTIONS,
+  SOLANA_TRACKER_ACTIONS,
   ACTION_NAMES,
   type ActionName,
 } from './actions.js';
@@ -127,6 +137,70 @@ addEntries(catalog, HELIUS_WRITE_ACTIONS, {
 
 addEntries(catalog, HELIUS_COMPRESSION_ACTIONS, {
   capabilityGate: gate('agent', 'Compression state queries'),
+  responseFamily: 'record',
+});
+
+// ── SOL GPT catalog (proxied via cheshireterminal.ai) ────────────────────
+// Public read-only research endpoints; no Helius plan gating applies.
+const solGptGate = gate('agent', 'Available on every plan');
+
+addEntries(catalog, PHOENIX_ACTIONS, {
+  authRequirement: 'none',
+  capabilityGate: solGptGate,
+  responseFamily: 'record',
+});
+
+addEntries(catalog, IMPERIAL_ACTIONS, {
+  authRequirement: 'none',
+  capabilityGate: solGptGate,
+  responseFamily: 'record',
+});
+
+addEntries(catalog, SOL_GPT_MARKET_ACTIONS, {
+  authRequirement: 'none',
+  capabilityGate: solGptGate,
+  responseFamily: 'record',
+});
+
+addEntries(catalog, SOL_GPT_OHLCV_ACTIONS, {
+  authRequirement: 'none',
+  capabilityGate: solGptGate,
+  responseFamily: 'list',
+});
+
+addEntries(catalog, SOL_GPT_WALLET_ACTIONS, {
+  authRequirement: 'none',
+  capabilityGate: solGptGate,
+  responseFamily: 'record',
+});
+
+addEntries(catalog, SOLANA_TRACKER_ACTIONS, {
+  authRequirement: 'none',
+  capabilityGate: solGptGate,
+  responseFamily: 'record',
+});
+
+addEntries(catalog, SOL_GPT_TRADING_ACTIONS, {
+  authRequirement: 'none',
+  capabilityGate: solGptGate,
+  responseFamily: 'record',
+});
+
+addEntries(catalog, SOL_GPT_PREDICTION_ACTIONS, {
+  authRequirement: 'none',
+  capabilityGate: solGptGate,
+  responseFamily: 'record',
+});
+
+addEntries(catalog, SOL_GPT_BROWSER_ACTIONS, {
+  authRequirement: 'none',
+  capabilityGate: solGptGate,
+  responseFamily: 'document',
+});
+
+addEntries(catalog, SOL_GPT_AGENTS_ACTIONS, {
+  authRequirement: 'none',
+  capabilityGate: solGptGate,
   responseFamily: 'record',
 });
 
