@@ -43,6 +43,7 @@
     "url": "https://github.com/x402agent/openclawd/issues"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "@solana/web3.js": "^1.98.0",
     "bs58": "^6.0.0",
     "ws": "^8.20.0"
