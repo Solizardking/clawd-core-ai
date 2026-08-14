@@ -46,7 +46,7 @@
     "@neondatabase/serverless": "^1.1.0",
     "@solana/web3.js": "^1.98.0",
     "bs58": "^6.0.0",
-    "ws": "^8.20.0"
+    "ws": "^8.21.3"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250419.0",
@@ -55,6 +55,11 @@
     "tsx": "^4.19.0",
     "typescript": "^5.9.3",
     "wrangler": "^4.15.0"
+  },
+  "overrides": {
+    "jayson": {
+      "ws": "^7.5.11"
+    }
   },
   "engines": {
     "node": ">=20.0.0"
