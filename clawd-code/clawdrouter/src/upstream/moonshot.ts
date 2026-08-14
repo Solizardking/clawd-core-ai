@@ -21,7 +21,7 @@ export interface MoonshotConfig {
 
 export interface MoonshotChatRequest {
   model: string;
-  messages: Array<{ role: string; content: string }>;
+  messages: ChatCompletionRequest['messages'];
   stream?: boolean;
   temperature?: number;
   max_tokens?: number;

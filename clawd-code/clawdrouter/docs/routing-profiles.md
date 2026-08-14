@@ -69,7 +69,7 @@ Requests are classified into 4 tiers based on 15-dimension scoring:
 /model eco        # Switch to maximum savings
 /model premium    # Switch to best quality
 /model free       # Show free models
-/model grok       # Pin to Grok 4.1 Fast Reasoning
+/model grok       # Pin to Grok 4.20 Beta (auto-profile default)
 /model claude     # Pin to Claude Sonnet 4.6
 /model opus       # Pin to Claude Opus 4.6
 ```
