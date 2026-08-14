@@ -14,7 +14,8 @@ Build on Solana with Helius — one install gives you live blockchain tools and 
 ### Local testing
 
 ```bash
-clawd --plugin-dir ./helius-plugin
+# from clawd-cloud repo root
+clawd --plugin-dir ./core-ai/clawd-plugin
 ```
 
 ## What's included

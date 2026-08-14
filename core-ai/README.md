@@ -1,6 +1,15 @@
 # Clawd Core AI
 
-The Clawd-wrapped Helius AI tooling repository — live Solana infrastructure, Helius skills, MCP tooling, and Clawd Code integration for lobster-native agents.
+The Clawd-wrapped Helius AI tooling — live Solana infrastructure, Helius skills, MCP tooling, and Clawd Code integration for lobster-native agents.
+
+This directory is the **Core AI** layer of the [Clawd Cloud monorepo](../README.md). It talks to [`clawd-code`](../clawd-code) through `--plugin-dir core-ai/clawd-plugin` and to [`clawd-connectors`](../clawd-connectors) through the shared root [`.mcp.json`](../.mcp.json).
+
+```bash
+# from repo root — prove the three layers can see each other
+bun run stack:doctor
+clawd --plugin-dir core-ai/clawd-plugin
+```
+
 
 [![Buy $CLAWD](https://img.shields.io/badge/Buy_%24CLAWD-Phantom-blueviolet?style=flat-square)](https://phantom.com/tokens/solana/8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump)
 [![Dexscreener](https://img.shields.io/badge/Chart-Dexscreener-green?style=flat-square)](https://dexscreener.com/solana/8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump)

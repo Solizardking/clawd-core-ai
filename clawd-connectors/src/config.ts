@@ -5,7 +5,8 @@
 import { config as loadEnv } from 'dotenv';
 
 // Load .env from the package directory or project root
-loadEnv();
+loadEnv({ path: '.env' });
+loadEnv({ path: '.env.local' });
 
 function getEnv(name: string): string {
   return process.env[name] ?? '';
@@ -30,9 +31,9 @@ export function getEnvConfig(): EnvConfig {
     jupiterApiKey: getEnv('JUPITER_API_KEY'),
     birdeyeApiKey: getEnv('BIRDEYE_API_KEY'),
     dflowMcpUrl: getEnv('DFLOW_MCP_URL') || 'https://api.paybox.sh/mcp?app=dflow',
-    heliusMcpUrl: getEnv('HELIUS_MCP_URL'),
-    jupiterMcpUrl: getEnv('JUPITER_MCP_URL'),
-    birdeyeMcpUrl: getEnv('BIRDEYE_MCP_URL'),
+    heliusMcpUrl: getEnv('HELIUS_MCP_URL') || 'https://api.helius.dev/mcp',
+    jupiterMcpUrl: getEnv('JUPITER_MCP_URL') || 'https://api.jup.ag/mcp',
+    birdeyeMcpUrl: getEnv('BIRDEYE_MCP_URL') || 'https://public-api.birdeye.so/mcp',
     timeoutMs: parseInt(getEnv('CLAWD_CONNECTORS_TIMEOUT_MS') || '15000', 10),
   };
 }

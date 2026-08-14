@@ -1,9 +1,5 @@
 {
   "mcpServers": {
-    "helius": {
-      "command": "npx",
-      "args": ["-y", "helius-mcp@latest"]
-    },
     "DFlow": {
       "type": "http",
       "url": "https://api.paybox.sh/mcp?app=dflow"
@@ -23,6 +19,22 @@
     "zkcompression": {
       "type": "http",
       "url": "https://www.zkcompression.com/mcp"
+    },
+    "clawd-mcp": {
+      "command": "npx",
+      "args": ["-y", "helius-mcp@latest"],
+      "env": {
+        "HELIUS_API_KEY": "${HELIUS_API_KEY}",
+        "SOLANA_RPC_URL": "${SOLANA_RPC_URL}"
+      }
+    },
+    "clawd-code-explorer": {
+      "command": "node",
+      "args": ["clawd-code/mcp-server/dist/index.js"],
+      "env": {
+        "CLAUDE_CODE_SRC_ROOT": "./clawd-code/src",
+        "CLAWD_CODE_SRC_ROOT": "./clawd-code/src"
+      }
     }
   }
 }

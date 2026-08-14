@@ -409,6 +409,8 @@ async function main(): Promise<void> {
     'agents':      C.cmdAgents,
     '/goal':       C.cmdGoal,
     'goal':        C.cmdGoal,
+    '/stack':      C.cmdStack,
+    'stack':       C.cmdStack,
     '/help':       C.cmdHelp,
     'help':        C.cmdHelp,
   };

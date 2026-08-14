@@ -1,4 +1,4 @@
 # bunfig.toml — Bun configuration for development mode
-# The plugin intercepts `bun:bundle` imports → src/shims/bun-bundle.ts
+# The plugin intercepts `bun:bundle` imports → clawd-code/src/shims/bun-bundle.ts
 
-preload = ["./scripts/bun-plugin-shims.ts"]
+preload = ["./clawd-code/scripts/bun-plugin-shims.ts"]

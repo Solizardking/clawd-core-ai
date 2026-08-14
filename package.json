@@ -1,26 +1,40 @@
 {
   "name": "@anthropic-ai/claude-code",
   "version": "0.0.0-leaked",
-  "description": "Anthropic Claude Code CLI — leaked source (2026-03-31). Not an official release.",
+  "description": "Clawd Cloud monorepo — Clawd Code CLI, Clawd Connectors, and Clawd Core AI. Root manifest preserves the leaked Claude Code archive identity.",
   "license": "UNLICENSED",
   "private": true,
   "type": "module",
-  "main": "src/entrypoints/cli.tsx",
+  "main": "clawd-code/src/entrypoints/cli.tsx",
   "bin": {
-    "claude": "src/entrypoints/cli.tsx"
+    "claude": "clawd-code/src/entrypoints/cli.tsx",
+    "clawd": "clawd-code/src/cli.ts"
   },
+  "workspaces": [
+    "clawd-code",
+    "clawd-connectors",
+    "clawd-code/mcp-server",
+    "core-ai/clawd-core",
+    "core-ai/clawd-plugin"
+  ],
   "scripts": {
-    "build": "bun scripts/build-bundle.ts",
-    "build:watch": "bun scripts/build-bundle.ts --watch",
-    "build:prod": "bun scripts/build-bundle.ts --minify",
-    "build:web": "bun scripts/build-web.ts",
-    "build:web:watch": "bun scripts/build-web.ts --watch",
-    "build:web:prod": "bun scripts/build-web.ts --minify",
-    "typecheck": "tsc --noEmit",
-    "lint": "biome check src/",
-    "lint:fix": "biome check --write src/",
-    "format": "biome format --write src/",
-    "check": "biome check src/ && tsc --noEmit"
+    "build": "bun run --cwd clawd-code build",
+    "build:watch": "bun run --cwd clawd-code build:watch",
+    "build:prod": "bun run --cwd clawd-code build:prod",
+    "build:web": "bun run --cwd clawd-code build:web",
+    "build:web:watch": "bun run --cwd clawd-code build:web:watch",
+    "build:web:prod": "bun run --cwd clawd-code build:web:prod",
+    "typecheck": "bun run --cwd clawd-code typecheck",
+    "lint": "bun run --cwd clawd-code lint",
+    "lint:fix": "bun run --cwd clawd-code lint:fix",
+    "format": "bun run --cwd clawd-code format",
+    "check": "bun run --cwd clawd-code check",
+    "stack:doctor": "bun scripts/stack-doctor.ts",
+    "stack:connectors": "bun run --cwd clawd-connectors doctor",
+    "connectors:build": "bun run --cwd clawd-connectors build",
+    "connectors:test": "bun run --cwd clawd-connectors test",
+    "core:skills": "bun run --cwd core-ai compile-skills",
+    "plugin:doctor": "node core-ai/clawd-plugin/cli.js doctor"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

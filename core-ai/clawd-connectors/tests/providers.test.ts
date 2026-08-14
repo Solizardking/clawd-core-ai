@@ -29,7 +29,12 @@ describe('Clawd Connectors', () => {
   });
 
   it('status reports configured=false when keys+urls missing', async () => {
-    const connectors = createConnectors({});
+    const connectors = createConnectors({
+      dflowMcpUrl: '',
+      heliusMcpUrl: '',
+      jupiterMcpUrl: '',
+      birdeyeMcpUrl: '',
+    });
     for (const key of ['dflow', 'helius', 'jupiter', 'birdeye'] as const) {
       const s = await connectors[key].status();
       assert.equal(s.provider, key);
@@ -43,6 +48,7 @@ describe('Clawd Connectors', () => {
       heliusApiKey: 'test-helius',
       jupiterApiKey: 'test-jupiter',
       birdeyeApiKey: 'test-birdeye',
+      heliusMcpUrl: '',
     });
     const s = await connectors.helius.status();
     assert.equal(s.configured, true);
@@ -52,7 +58,12 @@ describe('Clawd Connectors', () => {
   });
 
   it('listTools without MCP URL throws a clear error', async () => {
-    const connectors = createConnectors({});
+    const connectors = createConnectors({
+      dflowMcpUrl: '',
+      heliusMcpUrl: '',
+      jupiterMcpUrl: '',
+      birdeyeMcpUrl: '',
+    });
     await assert.rejects(() => connectors.jupiter.listTools(), /no MCP URL configured/);
   });
 });

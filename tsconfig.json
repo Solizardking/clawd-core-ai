@@ -18,10 +18,17 @@
     "types": ["node"],
     "baseUrl": ".",
     "paths": {
-      "bun:bundle": ["clawd-code/src/types/bun-bundle.d.ts"]
+      "bun:bundle": ["clawd-code/src/types/bun-bundle.d.ts"],
+      "@openclawd/clawd-connectors": ["clawd-connectors/src/index.ts"],
+      "@onchainai/clawd-core": ["core-ai/clawd-core/src/index.ts"]
     }
   },
-  "include": ["clawd-code/src/**/*.ts", "clawd-code/src/**/*.tsx"],
+  "include": [
+    "clawd-code/src/**/*.ts",
+    "clawd-code/src/**/*.tsx",
+    "clawd-connectors/src/**/*.ts",
+    "scripts/**/*.ts"
+  ],
   "exclude": ["node_modules", "dist"]
 }
 

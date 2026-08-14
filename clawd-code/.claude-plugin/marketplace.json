@@ -1,6 +1,6 @@
 {
-  "name": "clawd-helius",
-  "description": "Clawd-wrapped Helius developer tools for building on Solana",
+  "name": "clawd-code",
+  "description": "Clawd Code local marketplace — Core AI plugin for this package checkout",
   "owner": {
     "name": "Clawd",
     "email": "support@helius.xyz"
@@ -10,10 +10,10 @@
       "name": "helius",
       "source": "../core-ai/clawd-plugin",
       "description": "Build on Solana with Clawd Code and Helius — live blockchain tools, expert coding patterns, and autonomous account signup",
-      "version": "1.0.0",
-      "author": { "name": "Clawd", "url": "https://open-clawd.local/core-ai" },
+      "version": "1.1.0",
+      "author": { "name": "Clawd", "url": "https://github.com/Solizardking/clawd-core-ai" },
       "homepage": "https://www.helius.dev/docs",
-      "repository": "https://open-clawd.local/core-ai",
+      "repository": "https://github.com/Solizardking/clawd-core-ai",
       "license": "MIT",
       "keywords": ["solana", "blockchain", "rpc", "nft", "defi", "web3", "helius", "clawd", "clawd-code", "lobster"]
     }

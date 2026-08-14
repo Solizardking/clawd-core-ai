@@ -2,19 +2,24 @@
   "version": 2,
   "builds": [
     {
-      "src": "mcp-server/api/index.ts",
+      "src": "clawd-code/mcp-server/api/index.ts",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["src/**", "mcp-server/src/**", "mcp-server/dist/**", "README.md"]
+        "includeFiles": [
+          "clawd-code/src/**",
+          "clawd-code/mcp-server/src/**",
+          "clawd-code/mcp-server/dist/**",
+          "README.md"
+        ]
       }
     }
   ],
   "routes": [
-    { "src": "/health", "dest": "mcp-server/api/index.ts" },
-    { "src": "/mcp", "dest": "mcp-server/api/index.ts" },
-    { "src": "/sse", "dest": "mcp-server/api/index.ts" },
-    { "src": "/messages", "dest": "mcp-server/api/index.ts" },
-    { "src": "/api", "dest": "mcp-server/api/index.ts" },
-    { "src": "/(.*)", "dest": "mcp-server/api/index.ts" }
+    { "src": "/health", "dest": "clawd-code/mcp-server/api/index.ts" },
+    { "src": "/mcp", "dest": "clawd-code/mcp-server/api/index.ts" },
+    { "src": "/sse", "dest": "clawd-code/mcp-server/api/index.ts" },
+    { "src": "/messages", "dest": "clawd-code/mcp-server/api/index.ts" },
+    { "src": "/api", "dest": "clawd-code/mcp-server/api/index.ts" },
+    { "src": "/(.*)", "dest": "clawd-code/mcp-server/api/index.ts" }
   ]
 }

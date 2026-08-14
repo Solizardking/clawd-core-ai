@@ -1,6 +1,6 @@
 /**
  * Clawd Code — Solana CLI Commands
- * /perps /wallet /send /price /balance /goal /positions /strategies /agents /funding /scan /signals /arena
+ * /perps /wallet /send /price /balance /goal /positions /strategies /agents /funding /scan /signals /arena /stack
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -291,6 +291,28 @@ export async function cmdFunding(args: string[]): Promise<void> {
   console.log('╚════════════════════════════════════════════════════════╝\n');
 }
 
+export async function cmdStack(_args: string[]): Promise<void> {
+  const { formatStackDiagnosis, loadConnectors } = await import('./services/clawdStack.js');
+  process.stdout.write(formatStackDiagnosis());
+  try {
+    const connectors = await loadConnectors();
+    if (!connectors) {
+      console.log('  → Connectors not importable. From repo root: bun install && bun run --cwd clawd-connectors build');
+      return;
+    }
+    const instances = connectors.createConnectors();
+    console.log(`  → Connectors: ${Object.keys(instances).join(', ')}`);
+    for (const [id, connector] of Object.entries(instances)) {
+      const status = await connector.status();
+      const mark = status.configured ? '✓' : '·';
+      console.log(`     ${mark} ${id.padEnd(9)} mcp=${status.mcpUrl ?? '(none)'}${status.error ? `  (${status.error})` : ''}`);
+    }
+  } catch (error) {
+    console.log(`  → Connectors probe skipped: ${error instanceof Error ? error.message : error}`);
+  }
+  console.log('');
+}
+
 export async function cmdHelp(args: string[]): Promise<void> {
   console.log('\n╔════════════════════════════════════════════════════════╗');
   console.log('║  CLAWD CODE — Help                                     ║');
@@ -312,6 +334,7 @@ export async function cmdHelp(args: string[]): Promise<void> {
   console.log('║  models          Model registry (Grok+Claude+DeepSeek) ║');
   console.log('║  provider        Switch xai/anthropic/openrouter/ds    ║');
   console.log('║  goal [text]     Natural language intent router        ║');
+  console.log('║  stack           Clawd Cloud layer link status         ║');
   console.log('║  verify          Preflight environment checks          ║');
   console.log('║                                                       ║');
   console.log('║  Slash aliases still work: /perps, /wallet, /arena    ║');

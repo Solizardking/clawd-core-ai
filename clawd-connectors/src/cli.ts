@@ -104,6 +104,7 @@ async function main(): Promise<void> {
 
   USAGE:
     clawd-connectors status         Show API key + MCP status for all providers
+    clawd-connectors doctor         Alias for status
     clawd-connectors list-tools <p> List MCP tools for a provider
     clawd-connectors help           Show this help
 
