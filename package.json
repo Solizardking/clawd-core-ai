@@ -5,6 +5,8 @@
   "scripts": {
     "compile-skills": "npx tsx scripts/compile-skills.ts",
     "plugin:doctor": "node clawd-plugin/cli.js doctor",
-    "stack:doctor": "bun ../scripts/stack-doctor.ts"
+    "stack:doctor": "bun ../scripts/stack-doctor.ts",
+    "test": "node --test scripts/readme-map.test.mjs",
+    "smoke": "bash scripts/smoke.sh"
   }
 }
