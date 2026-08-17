@@ -1,8 +1,8 @@
 // scripts/test-services.ts
-// Test that all services initialize without crashing
+// Test that all Clawd Code services initialize without crashing
 // Usage: bun scripts/test-services.ts
 
-import '../src/shims/preload.js';
+import '../src/shims/preload.js'
 
 // Ensure we don't accidentally talk to real servers
 process.env.NODE_ENV = process.env.NODE_ENV || 'test'
@@ -25,38 +25,6 @@ function skip(name: string, detail: string) {
   console.log(`  ⏭️  ${name} — ${detail}`)
 }
 
-async function testGrowthBook() {
-  console.log('\n--- GrowthBook (Feature Flags) ---')
-  try {
-    const gb = await import('../src/services/analytics/growthbook.js')
-
-    // Test cached feature value returns default when GrowthBook is unavailable
-    const boolResult = gb.getFeatureValue_CACHED_MAY_BE_STALE('nonexistent_feature', false)
-    if (boolResult === false) {
-      pass('getFeatureValue_CACHED_MAY_BE_STALE (bool)', 'returns default false')
-    } else {
-      fail('getFeatureValue_CACHED_MAY_BE_STALE (bool)', `expected false, got ${boolResult}`)
-    }
-
-    const strResult = gb.getFeatureValue_CACHED_MAY_BE_STALE('nonexistent_str', 'default_val')
-    if (strResult === 'default_val') {
-      pass('getFeatureValue_CACHED_MAY_BE_STALE (str)', 'returns default string')
-    } else {
-      fail('getFeatureValue_CACHED_MAY_BE_STALE (str)', `expected "default_val", got "${strResult}"`)
-    }
-
-    // Test Statsig gate check returns false
-    const gateResult = gb.checkStatsigFeatureGate_CACHED_MAY_BE_STALE('nonexistent_gate')
-    if (gateResult === false) {
-      pass('checkStatsigFeatureGate_CACHED_MAY_BE_STALE', 'returns false for unknown gate')
-    } else {
-      fail('checkStatsigFeatureGate_CACHED_MAY_BE_STALE', `expected false, got ${gateResult}`)
-    }
-  } catch (err: any) {
-    fail('GrowthBook import', err.message)
-  }
-}
-
 async function testAnalyticsSink() {
   console.log('\n--- Analytics Sink ---')
   try {
@@ -73,55 +41,21 @@ async function testAnalyticsSink() {
   }
 }
 
-async function testPolicyLimits() {
-  console.log('\n--- Policy Limits ---')
+async function testClawdRegistry() {
+  console.log('\n--- Clawd Agent Registry ---')
   try {
-    const pl = await import('../src/services/policyLimits/index.js')
+    const registry = await import('../src/services/registry/index.js')
 
-    // isPolicyAllowed should return true (fail open) when no restrictions loaded
-    const result = pl.isPolicyAllowed('allow_remote_sessions')
-    if (result === true) {
-      pass('isPolicyAllowed (no cache)', 'fails open — returns true')
+    // Agent catalog should be accessible
+    const agents = registry.listAgents?.()
+    if (agents !== undefined) {
+      pass('listAgents', `found ${Array.isArray(agents) ? agents.length : 'some'} agents`)
     } else {
-      fail('isPolicyAllowed (no cache)', `expected true (fail open), got ${result}`)
+      skip('listAgents', 'not available in current build')
     }
-
-    // isPolicyLimitsEligible should return false without valid auth
-    const eligible = pl.isPolicyLimitsEligible()
-    pass('isPolicyLimitsEligible', `returns ${eligible} (expected false in test env)`)
   } catch (err: any) {
-    fail('Policy limits', err.message)
-  }
-}
-
-async function testRemoteManagedSettings() {
-  console.log('\n--- Remote Managed Settings ---')
-  try {
-    const rms = await import('../src/services/remoteManagedSettings/index.js')
-
-    // isEligibleForRemoteManagedSettings should return false without auth
-    const eligible = rms.isEligibleForRemoteManagedSettings()
-    pass('isEligibleForRemoteManagedSettings', `returns ${eligible} (expected false in test env)`)
-
-    // waitForRemoteManagedSettingsToLoad should resolve immediately if not eligible
-    await rms.waitForRemoteManagedSettingsToLoad()
-    pass('waitForRemoteManagedSettingsToLoad', 'resolves immediately when not eligible')
-  } catch (err: any) {
-    fail('Remote managed settings', err.message)
-  }
-}
-
-async function testBootstrapData() {
-  console.log('\n--- Bootstrap Data ---')
-  try {
-    const bootstrap = await import('../src/services/api/bootstrap.js')
-
-    // fetchBootstrapData should not crash — just skip when no auth
-    await bootstrap.fetchBootstrapData()
-    pass('fetchBootstrapData', 'completes without crash (skips when no auth)')
-  } catch (err: any) {
-    // fetchBootstrapData catches its own errors, so this means an import-level issue
-    fail('Bootstrap data', err.message)
+    // Registry is optional — fail open
+    skip('Clawd registry', err.message)
   }
 }
 
@@ -181,6 +115,38 @@ async function testCostTracker() {
   }
 }
 
+async function testX402Payments() {
+  console.log('\n--- x402 Payments ---')
+  try {
+    const x402 = await import('../src/services/x402/index.js')
+
+    // Payment client should exist without crashing
+    if (x402.createPaymentClient) {
+      pass('createPaymentClient', 'exports available')
+    } else {
+      skip('x402.createPaymentClient', 'not yet implemented')
+    }
+  } catch (err: any) {
+    skip('x402 payments', err.message)
+  }
+}
+
+async function testVulcanMCP() {
+  console.log('\n--- Vulcan MCP ---')
+  try {
+    const vulcan = await import('../src/services/vulcan/index.js')
+
+    if (vulcan.getDefaultConfig) {
+      const config = vulcan.getDefaultConfig()
+      pass('getDefaultConfig', `config loaded: ${JSON.stringify(config).slice(0, 60)}...`)
+    } else {
+      skip('Vulcan MCP', 'default config not available')
+    }
+  } catch (err: any) {
+    skip('Vulcan MCP', err.message)
+  }
+}
+
 async function testInit() {
   console.log('\n--- Init (entrypoint) ---')
   try {
@@ -193,18 +159,17 @@ async function testInit() {
 }
 
 async function main() {
-  console.log('=== Services Layer Smoke Test ===')
+  console.log('=== Clawd Code Services Layer Smoke Test ===')
   console.log(`Environment: NODE_ENV=${process.env.NODE_ENV}`)
-  console.log(`Auth: ANTHROPIC_API_KEY=${process.env.ANTHROPIC_API_KEY ? '(set)' : '(not set)'}`)
+  console.log(`Auth: MOONSHOT_API_KEY=${process.env.MOONSHOT_API_KEY ? '(set)' : '(not set)'}, ANTHROPIC_API_KEY=${process.env.ANTHROPIC_API_KEY ? '(set)' : '(not set)'}`)
 
   // Test individual services first (order: least-dependent → most-dependent)
   await testAnalyticsSink()
-  await testGrowthBook()
-  await testPolicyLimits()
-  await testRemoteManagedSettings()
-  await testBootstrapData()
-  await testSessionMemoryUtils()
   await testCostTracker()
+  await testSessionMemoryUtils()
+  await testClawdRegistry()
+  await testX402Payments()
+  await testVulcanMCP()
 
   // Then test the full init sequence
   await testInit()

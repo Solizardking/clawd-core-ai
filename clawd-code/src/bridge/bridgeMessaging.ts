@@ -10,42 +10,23 @@
  * as params.
  */
 
-import { randomUUID } from 'crypto';
-
-import type {
-  SDKMessage,
-} from '../../../core-ai/clawd-code/src/entrypoints/agentSdkTypes.js';
-import type {
-  SDKResultSuccess,
-} from '../../../core-ai/clawd-code/src/entrypoints/sdk/coreTypes.js';
-import {
-  logEvent,
-} from '../../../core-ai/clawd-code/src/services/analytics/index.js';
-import {
-  EMPTY_USAGE,
-} from '../../../core-ai/clawd-code/src/services/api/emptyUsage.js';
-import type { Message } from '../../../core-ai/clawd-code/src/types/message.js';
-import {
-  normalizeControlMessageKeys,
-} from '../../../core-ai/clawd-code/src/utils/controlMessageCompat.js';
-import {
-  logForDebugging,
-} from '../../../core-ai/clawd-code/src/utils/debug.js';
-import {
-  stripDisplayTagsAllowEmpty,
-} from '../../../core-ai/clawd-code/src/utils/displayTags.js';
-import { errorMessage } from '../../../core-ai/clawd-code/src/utils/errors.js';
-import type {
-  PermissionMode,
-} from '../../../core-ai/clawd-code/src/utils/permissions/PermissionMode.js';
-import {
-  jsonParse,
-} from '../../../core-ai/clawd-code/src/utils/slowOperations.js';
+import { randomUUID } from 'crypto'
+import type { SDKMessage } from '../entrypoints/agentSdkTypes.js'
 import type {
   SDKControlRequest,
   SDKControlResponse,
-} from '../entrypoints/sdk/controlTypes.js';
-import type { ReplBridgeTransport } from './replBridgeTransport.js';
+} from '../entrypoints/sdk/controlTypes.js'
+import type { SDKResultSuccess } from '../entrypoints/sdk/coreTypes.js'
+import { logEvent } from '../services/analytics/index.js'
+import { EMPTY_USAGE } from '../services/api/emptyUsage.js'
+import type { Message } from '../types/message.js'
+import { normalizeControlMessageKeys } from '../utils/controlMessageCompat.js'
+import { logForDebugging } from '../utils/debug.js'
+import { stripDisplayTagsAllowEmpty } from '../utils/displayTags.js'
+import { errorMessage } from '../utils/errors.js'
+import type { PermissionMode } from '../utils/permissions/PermissionMode.js'
+import { jsonParse } from '../utils/slowOperations.js'
+import type { ReplBridgeTransport } from './replBridgeTransport.js'
 
 // ─── Type guards ─────────────────────────────────────────────────────────────
 

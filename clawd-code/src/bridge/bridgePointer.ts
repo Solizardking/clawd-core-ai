@@ -1,34 +1,15 @@
-import {
-  mkdir,
-  readFile,
-  stat,
-  unlink,
-  writeFile,
-} from 'fs/promises';
-import {
-  dirname,
-  join,
-} from 'path';
-import { z } from 'zod/v4';
-
-import {
-  logForDebugging,
-} from '../../../core-ai/clawd-code/src/utils/debug.js';
-import { isENOENT } from '../../../core-ai/clawd-code/src/utils/errors.js';
-import {
-  getWorktreePathsPortable,
-} from '../../../core-ai/clawd-code/src/utils/getWorktreePathsPortable.js';
-import {
-  lazySchema,
-} from '../../../core-ai/clawd-code/src/utils/lazySchema.js';
+import { mkdir, readFile, stat, unlink, writeFile } from 'fs/promises'
+import { dirname, join } from 'path'
+import { z } from 'zod/v4'
+import { logForDebugging } from '../utils/debug.js'
+import { isENOENT } from '../utils/errors.js'
+import { getWorktreePathsPortable } from '../utils/getWorktreePathsPortable.js'
+import { lazySchema } from '../utils/lazySchema.js'
 import {
   getProjectsDir,
   sanitizePath,
-} from '../../../core-ai/clawd-code/src/utils/sessionStoragePortable.js';
-import {
-  jsonParse,
-  jsonStringify,
-} from '../../../core-ai/clawd-code/src/utils/slowOperations.js';
+} from '../utils/sessionStoragePortable.js'
+import { jsonParse, jsonStringify } from '../utils/slowOperations.js'
 
 /**
  * Upper bound on worktree fanout. git worktree list is naturally bounded

@@ -1,21 +1,9 @@
-import { feature } from 'bun:bundle';
-
-import type {
-  Task,
-  TaskType,
-} from '../../core-ai/clawd-code/src/Task.js';
-import {
-  DreamTask,
-} from '../../core-ai/clawd-code/src/tasks/DreamTask/DreamTask.js';
-import {
-  LocalAgentTask,
-} from '../../core-ai/clawd-code/src/tasks/LocalAgentTask/LocalAgentTask.js';
-import {
-  LocalShellTask,
-} from '../../core-ai/clawd-code/src/tasks/LocalShellTask/LocalShellTask.js';
-import {
-  RemoteAgentTask,
-} from '../../core-ai/clawd-code/src/tasks/RemoteAgentTask/RemoteAgentTask.js';
+import { feature } from 'bun:bundle'
+import type { Task, TaskType } from './Task.js'
+import { DreamTask } from './tasks/DreamTask/DreamTask.js'
+import { LocalAgentTask } from './tasks/LocalAgentTask/LocalAgentTask.js'
+import { LocalShellTask } from './tasks/LocalShellTask/LocalShellTask.js'
+import { RemoteAgentTask } from './tasks/RemoteAgentTask/RemoteAgentTask.js'
 
 /* eslint-disable @typescript-eslint/no-require-imports */
 const LocalWorkflowTask: Task | null = feature('WORKFLOW_SCRIPTS')

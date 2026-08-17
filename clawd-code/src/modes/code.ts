@@ -1,7 +1,7 @@
 /**
  * Clawd Code — CODE MODE
  * Write, review, and ship production code
- * Default provider: xAI Grok (grok-4.3). Streams via SSE like Anthropic & OpenRouter.
+ * Default provider: Moonshot Kimi (kimi-k2-thinking). Streams via SSE like Anthropic & OpenRouter.
  */
 
 import { execSync } from 'node:child_process';
@@ -12,12 +12,11 @@ import { createDeepSeekClient } from '../deepseek.js';
 import { loadClawdEnv } from '../env.js';
 import {
   DEFAULT_MODEL,
-  isResponsesOnlyModel,
   normalizeModelId,
   resolveModelForMode,
-} from '../grok-models.js';
+} from '../model-registry.js';
 import { createOpenRouterClient } from '../openrouter.js';
-import { createXaiClient } from '../xai.js';
+import { createMoonshotClient } from '../moonshot.js';
 
 const CODE_SYSTEM = `You are Clawd Code. Ship production TypeScript/Solana code only. No prose. Just code with brief inline comments. Include imports, types, error handling. Format for .ts files.`;
 
@@ -25,7 +24,7 @@ interface CodeConfig {
   provider?: string;
   model?: string;
   stream?: boolean;
-  xaiApiKey?: string;
+  moonshotApiKey?: string;
   anthropicApiKey?: string;
   deepSeekApiKey?: string;
   deepSeekBaseUrl?: string;
@@ -42,9 +41,6 @@ export class CodeMode {
     const provider = this.resolveProvider();
     const requested = this.config.model ?? DEFAULT_MODEL;
     const model = resolveModelForMode(requested, 'code');
-    if (isResponsesOnlyModel(requested) && model !== requested) {
-      console.log(`[CODE MODE] ${requested} is responses-only — falling back to ${model} for tool use.`);
-    }
 
     if (!command.trim()) {
       console.error('[CODE MODE] No prompt given. Usage: clawd-code code "Build a Jupiter swap bot"');
@@ -80,7 +76,7 @@ export class CodeMode {
     if (p === 'anthropic' || isClaudeModel(this.config.model ?? '')) return 'anthropic';
     if (p === 'deepseek' || String(this.config.model ?? '').startsWith('deepseek-')) return 'deepseek';
     if (p === 'openrouter') return 'openrouter';
-    return 'xai';
+    return 'moonshot';
   }
 
   private async generateStreaming(prompt: string, provider: string, model: string): Promise<string> {
@@ -108,9 +104,9 @@ export class CodeMode {
         return chunks.join('');
       }
 
-      if (provider === 'xai') {
-        const client = createXaiClient(this.config.xaiApiKey);
-        if (!client) return this.fallbackCode(prompt, 'XAI_API_KEY not set');
+      if (provider === 'moonshot') {
+        const client = createMoonshotClient(this.config.moonshotApiKey);
+        if (!client) return this.fallbackCode(prompt, 'MOONSHOT_API_KEY not set');
 
         for await (const chunk of client.streamChat({
           model,
@@ -136,7 +132,7 @@ export class CodeMode {
         if (!client) return this.fallbackCode(prompt, 'OPENROUTER_API_KEY not set');
 
         for await (const chunk of client.stream({
-          model: this.config.model?.startsWith('grok-') ? client.getDefaultModel() : (this.config.model ?? client.getDefaultModel()),
+          model: this.config.model?.startsWith('kimi-') ? client.getDefaultModel() : (this.config.model ?? client.getDefaultModel()),
           messages: [
             { role: 'system', content: CODE_SYSTEM },
             { role: 'user', content: prompt },
@@ -202,7 +198,7 @@ export class CodeMode {
         const client = createOpenRouterClient(env);
         if (!client) return this.fallbackCode(prompt, 'OPENROUTER_API_KEY not set');
 
-        const useModel = this.config.model?.startsWith('grok-') ? client.getDefaultModel() : (this.config.model ?? client.getDefaultModel());
+        const useModel = this.config.model?.startsWith('kimi-') ? client.getDefaultModel() : (this.config.model ?? client.getDefaultModel());
         console.log(`[CODE MODE] Generating with OpenRouter/${useModel}...`);
         const result = await client.prompt(prompt, {
           model: useModel,
@@ -212,9 +208,9 @@ export class CodeMode {
         return result.content || this.fallbackCode(prompt, 'empty response');
       }
 
-      // xAI default
-      const client = createXaiClient(this.config.xaiApiKey);
-      if (!client) return this.fallbackCode(prompt, 'XAI_API_KEY not set');
+      // Moonshot default
+      const client = createMoonshotClient(this.config.moonshotApiKey);
+      if (!client) return this.fallbackCode(prompt, 'MOONSHOT_API_KEY not set');
 
       const useModel = normalizeModelId(model || DEFAULT_MODEL);
       console.log(`[CODE MODE] Generating with ${useModel}...`);

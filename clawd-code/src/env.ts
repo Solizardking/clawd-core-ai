@@ -48,7 +48,7 @@ export function parseEnvFile(path: string): Record<string, string> {
  *   model = "grok-4.3-fast"
  *   base_url = "https://api.x.ai/v1"
  *   name = "Grok Fast"
- *   env_key = "XAI_API_KEY"
+ *   env_key = "MOONSHOT_API_KEY"
  *
  * Quotes, single-line comments (`#`), and `[section]` headers are handled.
  * Returns a flat record of resolved env-var-style keys plus a list of model

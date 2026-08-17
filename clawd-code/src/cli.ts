@@ -18,28 +18,27 @@ import {
   listModelsByProvider,
   normalizeModelId,
   printModelsTable,
-} from './grok-models.js';
+} from './model-registry.js';
 import { DEFAULT_FREE_MODEL } from './openrouter.js';
 import { createMoonshotClient } from './moonshot.js';
+import { getProviderStatus } from './providers/index.js';
 import { EnvironmentVerifier } from './verify.js';
 
 type Mode = 'CODE' | 'TRADE' | 'RESEARCH' | 'IMAGE' | 'VOICE' | 'REPL';
 
 interface ClawdCodeConfig {
   mode: Mode;
-  provider: 'moonshot' | 'xai' | 'openrouter' | 'deepseek' | 'anthropic';
+  provider: 'moonshot' | 'openrouter' | 'deepseek' | 'anthropic';
   liveTrading: boolean;
   operatorConfirmed: boolean;
   rpcUrl: string;
   moonshotApiKey: string;
-  xaiApiKey: string;
   anthropicApiKey: string;
   deepSeekApiKey: string;
   deepSeekBaseUrl: string;
   heliusApiKey: string;
   phoenixRiseUrl: string;
   vulcanMcpUrl: string;
-  agentCount: 4 | 16;
   model: string;
   stream: boolean;
 }
@@ -61,20 +60,18 @@ function loadConfig(): ClawdCodeConfig {
     operatorConfirmed: env.OPERATOR_CONFIRMED === 'true',
     rpcUrl: env.SOLANA_RPC_URL || env.HELIUS_RPC_URL || process.env.SOLANA_RPC_URL || DEFAULT_HELIUS_RPC,
     moonshotApiKey: env.MOONSHOT_API_KEY || process.env.MOONSHOT_API_KEY || '',
-    xaiApiKey: env.XAI_API_KEY || process.env.XAI_API_KEY || '',
     anthropicApiKey: env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY || '',
     deepSeekApiKey: env.DEEPSEEK_API_KEY || process.env.DEEPSEEK_API_KEY || '',
     deepSeekBaseUrl: env.DEEPSEEK_BASE_URL || process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com',
     heliusApiKey: env.HELIUS_API_KEY || process.env.HELIUS_API_KEY || '',
     phoenixRiseUrl: env.PHOENIX_RISE_URL || 'https://api.phoenix.gg/enclave',
     vulcanMcpUrl: env.VULCAN_MCP_URL || 'http://localhost:3001',
-    agentCount: parseInt(env.CLAWD_AGENT_COUNT || '4', 10) as 4 | 16,
     model: env.CLAWD_MODEL || DEFAULT_MODEL,
     stream: env.CLAWD_STREAM === 'true',
   };
 }
 
-function normalizeProvider(provider: string): 'moonshot' | 'xai' | 'openrouter' | 'deepseek' | 'anthropic' {
+function normalizeProvider(provider: string): 'moonshot' | 'openrouter' | 'deepseek' | 'anthropic' {
   const normalized = provider.toLowerCase();
   if (normalized === 'or') return 'openrouter';
   if (normalized === 'ds') return 'deepseek';
@@ -135,22 +132,21 @@ DEFAULT MODEL:
   Provider:  Moonshot (Kimi)
   Code/REPL/Research: kimi-k2-thinking  (reasoning, tools, streaming)
   Image:     gemini-2.0-flash-exp-image-gen (falls back to DALL-E)
-  Voice:     grok-voice-think-fast-1.0 (realtime voice agent)
 
 MODES:
   code       Write, review, and ship production code (streaming)
   trade      Perpetuals trading with Phoenix Rise + Vulcan MCP
   research   Deep research with kimi-k2-thinking
   image      Generate images via DALL-E or Gemini
-  voice      Text-to-speech via sherpa-onnx or xAI voice agent
+  voice      Text-to-speech via sherpa-onnx or sag CLI
   repl       Interactive multi-turn conversation REPL
 
 GLOBAL COMMANDS:
   /verify                 Run preflight checks (now pings Moonshot /models)
-  /models                 List all available models (Moonshot + Claude + DeepSeek + Grok)
+  /models                 List all available models (Moonshot + Claude + DeepSeek)
   /models <id>            Switch to a specific model (alias or canonical id)
   /provider               Show current AI provider + API key status
-  /provider <name>        Switch provider: moonshot | xai | anthropic | openrouter | deepseek
+  /provider <name>        Switch provider: moonshot | anthropic | openrouter | deepseek
   /inspect                Print discovered config, models, and provider health
 
 COMMANDS:
@@ -163,7 +159,6 @@ COMMANDS:
 
 OPTIONS:
   --mode <mode>          Set mode (code|trade|research|image|voice|repl)
-  --agents <n>           Number of agents for research (4|16)
   --live                 Enable live trading (requires ARM flags)
   --paper                Paper trading mode (default)
   --model <model>        Override model (kimi-k2-thinking | kimi-k2-turbo-preview | ...)
@@ -182,13 +177,12 @@ EXAMPLES:
 ENVIRONMENT:
   SOLANA_RPC_URL         Solana RPC endpoint (default: Helius)
   MOONSHOT_API_KEY       Moonshot API key for Kimi (required for default)
-  XAI_API_KEY            xAI API key for Grok
   ANTHROPIC_API_KEY      Anthropic API key for Claude models
   DEEPSEEK_API_KEY       DeepSeek API key for deepseek-v4-pro/flash
   DEEPSEEK_BASE_URL      Default: https://api.deepseek.com
   OPENROUTER_API_KEY     OpenRouter API key (free models supported)
   OPENROUTER_FREE_MODEL  Default: nex-agi/nex-n2-pro:free
-  CLAWD_PROVIDER         moonshot (default) | xai | anthropic | openrouter | deepseek
+  CLAWD_PROVIDER         moonshot (default) | anthropic | openrouter | deepseek
   CLAWD_MODEL            Default: kimi-k2-thinking
   CLAWD_STREAM           true to enable streaming by default
   HELIUS_API_KEY         Helius API key for DAS / RPC
@@ -204,9 +198,9 @@ ENVIRONMENT:
   OPERATOR_CONFIRMED     Operator confirmed (true|false)
   CLAWD_MODE             Default mode (code|trade|research|image|voice|repl)
 
-GROK CONFIG (optional):
-  ~/.grok/config.toml    xAI-style config — see parseGrokConfigToml() in src/env.ts
-  ./.grok/config.toml    Project-level Grok config (overrides user)
+MODEL ALIAS CONFIG (optional):
+  ~/.grok/config.toml    TOML model-alias config — see parseGrokConfigToml() in src/env.ts
+  ./.grok/config.toml    Project-level config (overrides user)
 
 First run: cp .env.example ~/.clawd-code/.env
 `);
@@ -247,16 +241,23 @@ async function cmdInspect(): Promise<void> {
   console.log('║                                                                      ║');
   console.log('║  API KEY STATUS                                                      ║');
   console.log(`║    moonshot    ${maskSecret(env.MOONSHOT_API_KEY).padEnd(58)}║`);
-  console.log(`║    xai         ${maskSecret(env.XAI_API_KEY).padEnd(58)}║`);
   console.log(`║    anthropic   ${maskSecret(env.ANTHROPIC_API_KEY).padEnd(58)}║`);
   console.log(`║    deepseek    ${maskSecret(env.DEEPSEEK_API_KEY).padEnd(58)}║`);
   console.log(`║    openrouter  ${maskSecret(env.OPENROUTER_API_KEY).padEnd(58)}║`);
 
+  // 3b. Solana / data API providers (masked only — see src/providers)
+  console.log('║                                                                      ║');
+  console.log('║  DATA PROVIDER KEYS                                                  ║');
+  for (const row of getProviderStatus(env)) {
+    const label = row.envKey.replace(/_API_KEY(_ID)?$/, '').toLowerCase().padEnd(14);
+    console.log(`║    ${label} ${row.masked.padEnd(58)}║`);
+  }
+
   // 4. Moonshot live ping
-  const ms = createMoonshotClient(env.MOONSHOT_API_KEY);
-  if (ms) {
+  const moonshot = createMoonshotClient(env.MOONSHOT_API_KEY);
+  if (moonshot) {
     process.stdout.write('║    moonshot /v1/models  … ');
-    const ping = await ms.ping();
+    const ping = await moonshot.ping();
     if (ping.ok) {
       const sample = (ping.models ?? []).slice(0, 4).join(', ');
       console.log(`online (${ping.models?.length ?? 0} models, e.g. ${sample})`.padEnd(34) + '║');
@@ -264,17 +265,16 @@ async function cmdInspect(): Promise<void> {
       console.log(`offline (${ping.error ?? 'unknown'})`.padEnd(48) + '║');
     }
   } else {
-    console.log('║    moonshot /v1/models  · (skipped — no MOONSHOT_API_KEY)             ║');
+    console.log('║    moonshot /v1/models  · (skipped — no MOONSHOT_API_KEY)              ║');
   }
 
   // 5. Per-mode defaults
   console.log('║                                                                      ║');
   console.log('║  PER-MODE DEFAULTS                                                   ║');
-  const modes: Array<['code' | 'research' | 'voice' | 'image' | 'repl' | 'trade' | 'general', string]> = [
+  const modes: Array<['code' | 'research' | 'image' | 'repl' | 'trade' | 'general', string]> = [
     ['code', 'code/REPL/trade default'],
-    ['research', 'research default'],
+    ['research', 'research'],
     ['image', 'image generation'],
-    ['voice', 'voice agent'],
   ];
   for (const [mode, label] of modes) {
     const m = defaultModelFor(mode);
@@ -286,11 +286,11 @@ async function cmdInspect(): Promise<void> {
   // 6. Provider model summary
   console.log('║                                                                      ║');
   console.log('║  AVAILABLE MODELS BY PROVIDER                                        ║');
-  for (const prov of ['moonshot', 'xai', 'anthropic', 'deepseek'] as const) {
-    const ms2 = listModelsByProvider(prov);
-    if (ms2.length === 0) continue;
-    const ids = ms2.map((m) => m.id).join(', ');
-    console.log(`║    ${prov.padEnd(11)} (${String(ms2.length).padStart(2)})  ${ids.substring(0, 50).padEnd(52)}║`);
+  for (const prov of ['moonshot', 'anthropic', 'deepseek', 'openrouter'] as const) {
+    const ms = listModelsByProvider(prov);
+    if (ms.length === 0) continue;
+    const ids = ms.map((m) => m.id).join(', ');
+    console.log(`║    ${prov.padEnd(11)} (${String(ms.length).padStart(2)})  ${ids.substring(0, 50).padEnd(52)}║`);
   }
 
   // 7. Footer
@@ -332,26 +332,24 @@ async function main(): Promise<void> {
     process.exit(report.ok ? 0 : 1);
   }
 
-  // /inspect command
+  // /inspect command — grok inspect equivalent
   if (args[0] === '/inspect' || args[0] === 'inspect') {
     await cmdInspect();
     process.exit(0);
   }
 
-  // /provider command
+  // /provider command — switch between moonshot, anthropic, openrouter, deepseek
   if (args[0] === '/provider' || args[0] === 'provider') {
     const env = loadClawdEnv();
     const current = normalizeProvider(env.CLAWD_PROVIDER || DEFAULT_PROVIDER);
     if (args[1]) {
       const normalized = normalizeProvider(args[1]);
-      const valid = ['moonshot', 'xai', 'anthropic', 'openrouter', 'deepseek'];
+      const valid = ['moonshot', 'anthropic', 'openrouter', 'deepseek'];
       if (valid.includes(normalized)) {
         console.log(`\n[CLAWD CODE] Switched provider: ${current} -> ${normalized}`);
         console.log(`Set CLAWD_PROVIDER=${normalized} in ~/.clawd-code/.env to persist.`);
         if (normalized === 'moonshot') {
           console.log(`Set MOONSHOT_API_KEY=<key> and (optionally) CLAWD_MODEL=${DEFAULT_MODEL} (default).`);
-        } else if (normalized === 'xai') {
-          console.log('Set XAI_API_KEY=<key> and CLAWD_MODEL=grok-4.3 (or other grok model).');
         } else if (normalized === 'anthropic') {
           console.log('Set ANTHROPIC_API_KEY=<key> and CLAWD_MODEL=claude-sonnet-4-6 (or opus/haiku).');
         } else if (normalized === 'deepseek') {
@@ -359,7 +357,7 @@ async function main(): Promise<void> {
         }
       } else {
         console.log(`\n[CLAWD CODE] Unknown provider: ${args[1]}`);
-        console.log('Available: moonshot ⭐ default, xai (grok), anthropic (claude), openrouter (or), deepseek (ds)');
+        console.log('Available: moonshot (default), anthropic (claude), openrouter (or), deepseek (ds)');
       }
     } else {
       console.log('\n╔═════════════════════════════════════════════════════════════════════╗');
@@ -367,18 +365,16 @@ async function main(): Promise<void> {
       console.log('╠═════════════════════════════════════════════════════════════════════╣');
       console.log(`║  Current: ${current.padEnd(56)}║`);
       console.log('╠═════════════════════════════════════════════════════════════════════╣');
-      console.log('║  moonshot    Moonshot Kimi K2 Thinking ⭐ default                    ║');
-      console.log('║  xai         xAI Grok 4.x models                                    ║');
+      console.log('║  moonshot    Moonshot Kimi K2 models ⭐ default                    ║');
       console.log('║  anthropic   Claude Sonnet/Opus/Haiku — streaming native            ║');
       console.log('║  openrouter  Free + paid models via OpenRouter                      ║');
       console.log('║  deepseek    deepseek-v4-pro / v4-flash                             ║');
       console.log('╚═════════════════════════════════════════════════════════════════════╝');
       console.log(`\n  moonshot   key=${maskSecret(env.MOONSHOT_API_KEY)}`);
-      console.log(`  xai        key=${maskSecret(env.XAI_API_KEY)}`);
       console.log(`  anthropic  key=${maskSecret(env.ANTHROPIC_API_KEY)}`);
       console.log(`  deepseek   key=${maskSecret(env.DEEPSEEK_API_KEY)}`);
       console.log(`  openrouter key=${maskSecret(env.OPENROUTER_API_KEY)}  free model: ${DEFAULT_FREE_MODEL}`);
-      console.log('\n  Switch: clawd-code /provider moonshot');
+      console.log('\n  Switch: clawd-code /provider anthropic');
     }
     process.exit(0);
   }
@@ -409,8 +405,6 @@ async function main(): Promise<void> {
     'agents':      C.cmdAgents,
     '/goal':       C.cmdGoal,
     'goal':        C.cmdGoal,
-    '/stack':      C.cmdStack,
-    'stack':       C.cmdStack,
     '/help':       C.cmdHelp,
     'help':        C.cmdHelp,
   };
@@ -438,10 +432,6 @@ async function main(): Promise<void> {
   if (args.includes('--paper')) config.liveTrading = false;
   if (args.includes('--stream')) config.stream = true;
 
-  if (args.includes('--agents')) {
-    const idx = args.indexOf('--agents');
-    config.agentCount = parseInt(args[idx + 1], 10) as 4 | 16;
-  }
   if (args.includes('--model')) {
     const idx = args.indexOf('--model');
     config.model = args[idx + 1];

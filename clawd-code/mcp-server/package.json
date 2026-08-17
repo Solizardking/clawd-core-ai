@@ -18,10 +18,11 @@
     "warrioraashuu-codemaster": "dist/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node -e \"const fs=require('fs');const path=require('path');const src=path.join('dist','src');for(const f of fs.readdirSync(src)){fs.cpSync(path.join(src,f),path.join('dist',f),{recursive:true})}\"",
     "start": "node dist/index.js",
     "start:http": "node dist/http.js",
-    "dev": "npx tsx src/index.ts"
+    "dev": "npx tsx src/index.ts",
+    "test": "node --import tsx --test tests/*.test.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",

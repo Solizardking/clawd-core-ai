@@ -1,20 +1,14 @@
+import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  test,
-} from 'node:test';
-
-import { EnvironmentVerifier } from '../../core-ai/clawd-code/src/verify.js';
+import { EnvironmentVerifier } from './verify.js';
 
 /**
- * Focused on the synchronous, side-effect-free checks. checkXaiReachable()
+ * Focused on the synchronous, side-effect-free checks. checkMoonshotReachable()
  * hits the network and is intentionally excluded — it's exercised manually
  * via `clawd-code verify`, not in unit tests.
  */
 
-const ENV_KEYS = ['LIVE_TRADING', 'OPERATOR_CONFIRMED', 'PERPS_SIM_ONLY', 'XAI_API_KEY', 'HELIUS_RPC_URL', 'SOLANA_RPC_URL'] as const;
+const ENV_KEYS = ['LIVE_TRADING', 'OPERATOR_CONFIRMED', 'PERPS_SIM_ONLY', 'MOONSHOT_API_KEY', 'HELIUS_RPC_URL', 'SOLANA_RPC_URL'] as const;
 const savedEnv: Record<string, string | undefined> = {};
 
 beforeEach(() => {

@@ -1,17 +1,10 @@
 import {
   getClaudeAiBaseUrl,
   getRemoteSessionUrl,
-} from '../../../core-ai/clawd-code/src/constants/product.js';
-import {
-  stringWidth,
-} from '../../../core-ai/clawd-code/src/ink/stringWidth.js';
-import {
-  formatDuration,
-  truncateToWidth,
-} from '../../../core-ai/clawd-code/src/utils/format.js';
-import {
-  getGraphemeSegmenter,
-} from '../../../core-ai/clawd-code/src/utils/intl.js';
+} from '../constants/product.js'
+import { stringWidth } from '../ink/stringWidth.js'
+import { formatDuration, truncateToWidth } from '../utils/format.js'
+import { getGraphemeSegmenter } from '../utils/intl.js'
 
 /** Bridge status state machine states. */
 export type StatusState =
@@ -35,7 +28,7 @@ export function timestamp(): string {
   return `${h}:${m}:${s}`
 }
 
-export { formatDuration, truncateToWidth as truncatePrompt };
+export { formatDuration, truncateToWidth as truncatePrompt }
 
 /** Abbreviate a tool activity summary for the trail display. */
 export function abbreviateActivity(summary: string): string {

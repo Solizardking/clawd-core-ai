@@ -1,25 +1,12 @@
-import type { StdoutMessage } from 'src/entrypoints/sdk/controlTypes.js';
-
-import {
-  CCRClient,
-} from '../../../core-ai/clawd-code/src/cli/transports/ccrClient.js';
-import type {
-  HybridTransport,
-} from '../../../core-ai/clawd-code/src/cli/transports/HybridTransport.js';
-import {
-  SSETransport,
-} from '../../../core-ai/clawd-code/src/cli/transports/SSETransport.js';
-import {
-  logForDebugging,
-} from '../../../core-ai/clawd-code/src/utils/debug.js';
-import { errorMessage } from '../../../core-ai/clawd-code/src/utils/errors.js';
-import {
-  updateSessionIngressAuthToken,
-} from '../../../core-ai/clawd-code/src/utils/sessionIngressAuth.js';
-import type {
-  SessionState,
-} from '../../../core-ai/clawd-code/src/utils/sessionState.js';
-import { registerWorker } from './workSecret.js';
+import type { StdoutMessage } from 'src/entrypoints/sdk/controlTypes.js'
+import { CCRClient } from '../cli/transports/ccrClient.js'
+import type { HybridTransport } from '../cli/transports/HybridTransport.js'
+import { SSETransport } from '../cli/transports/SSETransport.js'
+import { logForDebugging } from '../utils/debug.js'
+import { errorMessage } from '../utils/errors.js'
+import { updateSessionIngressAuthToken } from '../utils/sessionIngressAuth.js'
+import type { SessionState } from '../utils/sessionState.js'
+import { registerWorker } from './workSecret.js'
 
 /**
  * Transport abstraction for replBridge. Covers exactly the surface that

@@ -53,7 +53,7 @@ async function main() {
     args: [serverScript],
     env: {
       ...process.env,
-      CLAUDE_CODE_SRC_ROOT: srcRoot,
+      CLAWD_CODE_SRC_ROOT: srcRoot,
     } as Record<string, string>,
     stderr: "pipe",
   });

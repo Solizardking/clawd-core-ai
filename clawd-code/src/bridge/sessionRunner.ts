@@ -1,30 +1,17 @@
-import {
-  type ChildProcess,
-  spawn,
-} from 'child_process';
-import {
-  createWriteStream,
-  type WriteStream,
-} from 'fs';
-import { tmpdir } from 'os';
-import {
-  dirname,
-  join,
-} from 'path';
-import { createInterface } from 'readline';
-
-import {
-  jsonParse,
-  jsonStringify,
-} from '../../../core-ai/clawd-code/src/utils/slowOperations.js';
-import { debugTruncate } from './debugUtils.js';
+import { type ChildProcess, spawn } from 'child_process'
+import { createWriteStream, type WriteStream } from 'fs'
+import { tmpdir } from 'os'
+import { dirname, join } from 'path'
+import { createInterface } from 'readline'
+import { jsonParse, jsonStringify } from '../utils/slowOperations.js'
+import { debugTruncate } from './debugUtils.js'
 import type {
   SessionActivity,
   SessionDoneStatus,
   SessionHandle,
   SessionSpawner,
   SessionSpawnOpts,
-} from './types.js';
+} from './types.js'
 
 const MAX_ACTIVITIES = 10
 const MAX_STDERR_LINES = 10
@@ -560,4 +547,6 @@ export function createSessionSpawner(deps: SessionSpawnerDeps): SessionSpawner {
   }
 }
 
-export { extractActivities as _extractActivitiesForTesting };
+export { extractActivities as _extractActivitiesForTesting }
+
+

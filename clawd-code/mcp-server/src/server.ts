@@ -27,7 +27,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export const SRC_ROOT = path.resolve(
-  process.env.CLAUDE_CODE_SRC_ROOT ?? path.join(__dirname, "..", "..", "src")
+  process.env.CLAUDE_CODE_SRC_ROOT ??
+    process.env.CLAWD_CODE_SRC_ROOT ??
+    path.join(__dirname, "..", "..", "src")
 );
 
 // ---------------------------------------------------------------------------
@@ -949,7 +951,7 @@ export async function validateSrcRoot(): Promise<void> {
       `Error: Claude Code src/ directory not found at ${SRC_ROOT}`
     );
     console.error(
-      "Set CLAUDE_CODE_SRC_ROOT environment variable to the src/ directory path."
+      "Set CLAUDE_CODE_SRC_ROOT or CLAWD_CODE_SRC_ROOT to the src/ directory path."
     );
     process.exit(1);
   }

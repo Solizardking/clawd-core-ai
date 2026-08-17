@@ -1,10 +1,10 @@
 export const MODELS = [
-  { id: "claude-opus-4-6", label: "Claude Opus 4.6", description: "Most capable" },
-  { id: "claude-sonnet-4-6", label: "Claude Sonnet 4.6", description: "Balanced" },
-  { id: "claude-haiku-4-5-20251001", label: "Claude Haiku 4.5", description: "Fastest" },
+  { id: "openrouter/free", label: "Auto (Free)", description: "OpenRouter picks a free model automatically" },
+  { id: "deepseek/deepseek-r1:free", label: "DeepSeek R1", description: "Free, strong reasoning" },
+  { id: "meta-llama/llama-3.2-3b-instruct:free", label: "Llama 3.2 3B", description: "Free, fastest" },
 ] as const;
 
-export const DEFAULT_MODEL = "claude-sonnet-4-6";
+export const DEFAULT_MODEL = "openrouter/free";
 
 export const API_ROUTES = {
   chat: "/api/chat",

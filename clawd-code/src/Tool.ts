@@ -1,46 +1,34 @@
-import type { UUID } from 'crypto';
-import type { z } from 'zod/v4';
-
 import type {
   ToolResultBlockParam,
   ToolUseBlockParam,
-} from '@anthropic-ai/sdk/resources/index.mjs';
+} from '@anthropic-ai/sdk/resources/index.mjs'
 import type {
   ElicitRequestURLParams,
   ElicitResult,
-} from '@modelcontextprotocol/sdk/types.js';
+} from '@modelcontextprotocol/sdk/types.js'
+import type { UUID } from 'crypto'
+import type { z } from 'zod/v4'
+import type { Command } from './commands.js'
+import type { CanUseToolFn } from './hooks/useCanUseTool.js'
+import type { ThinkingConfig } from './utils/thinking.js'
 
-import type { Command } from '../../core-ai/clawd-code/src/commands.js';
-import type {
-  SpinnerMode,
-} from '../../core-ai/clawd-code/src/components/Spinner.js';
-import type {
-  QuerySource,
-} from '../../core-ai/clawd-code/src/constants/querySource.js';
-import type {
-  Notification,
-} from '../../core-ai/clawd-code/src/context/notifications.js';
-import type {
-  SDKStatus,
-} from '../../core-ai/clawd-code/src/entrypoints/agentSdkTypes.js';
-import type {
-  CanUseToolFn,
-} from '../../core-ai/clawd-code/src/hooks/useCanUseTool.js';
+export type ToolInputJSONSchema = {
+  [x: string]: unknown
+  type: 'object'
+  properties?: {
+    [x: string]: unknown
+  }
+}
+
+import type { Notification } from './context/notifications.js'
 import type {
   MCPServerConnection,
   ServerResource,
-} from '../../core-ai/clawd-code/src/services/mcp/types.js';
-import type { AppState } from '../../core-ai/clawd-code/src/state/AppState.js';
+} from './services/mcp/types.js'
 import type {
   AgentDefinition,
   AgentDefinitionsResult,
-} from '../../core-ai/clawd-code/src/tools/AgentTool/loadAgentsDir.js';
-import type {
-  HookProgress,
-  PromptRequest,
-  PromptResponse,
-} from '../../core-ai/clawd-code/src/types/hooks.js';
-import type { AgentId } from '../../core-ai/clawd-code/src/types/ids.js';
+} from './tools/AgentTool/loadAgentsDir.js'
 import type {
   AssistantMessage,
   AttachmentMessage,
@@ -49,43 +37,14 @@ import type {
   SystemLocalCommandMessage,
   SystemMessage,
   UserMessage,
-} from '../../core-ai/clawd-code/src/types/message.js';
+} from './types/message.js'
 // Import permission types from centralized location to break import cycles
 // Import PermissionResult from centralized location to break import cycles
 import type {
   AdditionalWorkingDirectory,
   PermissionMode,
   PermissionResult,
-} from '../../core-ai/clawd-code/src/types/permissions.js';
-// Import tool permission types from centralized location to break import cycles
-import type {
-  ToolPermissionRulesBySource,
-} from '../../core-ai/clawd-code/src/types/permissions.js';
-import type {
-  AttributionState,
-} from '../../core-ai/clawd-code/src/utils/commitAttribution.js';
-import type {
-  FileHistoryState,
-} from '../../core-ai/clawd-code/src/utils/fileHistory.js';
-import type {
-  FileStateCache,
-} from '../../core-ai/clawd-code/src/utils/fileStateCache.js';
-import type {
-  DenialTrackingState,
-} from '../../core-ai/clawd-code/src/utils/permissions/denialTracking.js';
-import type {
-  SystemPrompt,
-} from '../../core-ai/clawd-code/src/utils/systemPromptType.js';
-import type {
-  Theme,
-  ThemeName,
-} from '../../core-ai/clawd-code/src/utils/theme.js';
-import type {
-  ThinkingConfig,
-} from '../../core-ai/clawd-code/src/utils/thinking.js';
-import type {
-  ContentReplacementState,
-} from '../../core-ai/clawd-code/src/utils/toolResultStorage.js';
+} from './types/permissions.js'
 // Import tool progress types from centralized location to break import cycles
 import type {
   AgentToolProgress,
@@ -96,16 +55,11 @@ import type {
   TaskOutputProgress,
   ToolProgressData,
   WebSearchProgress,
-} from './types/tools.js';
-import type { DeepImmutable } from './types/utils.js';
-
-export type ToolInputJSONSchema = {
-  [x: string]: unknown
-  type: 'object'
-  properties?: {
-    [x: string]: unknown
-  }
-}
+} from './types/tools.js'
+import type { FileStateCache } from './utils/fileStateCache.js'
+import type { DenialTrackingState } from './utils/permissions/denialTracking.js'
+import type { SystemPrompt } from './utils/systemPromptType.js'
+import type { ContentReplacementState } from './utils/toolResultStorage.js'
 
 // Re-export progress types for backwards compatibility
 export type {
@@ -116,7 +70,22 @@ export type {
   SkillToolProgress,
   TaskOutputProgress,
   WebSearchProgress,
-};
+}
+
+import type { SpinnerMode } from './components/Spinner.js'
+import type { QuerySource } from './constants/querySource.js'
+import type { SDKStatus } from './entrypoints/agentSdkTypes.js'
+import type { AppState } from './state/AppState.js'
+import type {
+  HookProgress,
+  PromptRequest,
+  PromptResponse,
+} from './types/hooks.js'
+import type { AgentId } from './types/ids.js'
+import type { DeepImmutable } from './types/utils.js'
+import type { AttributionState } from './utils/commitAttribution.js'
+import type { FileHistoryState } from './utils/fileHistory.js'
+import type { Theme, ThemeName } from './utils/theme.js'
 
 export type QueryChainTracking = {
   chainId: string
@@ -144,8 +113,11 @@ export type SetToolJSXFn = (
   } | null,
 ) => void
 
+// Import tool permission types from centralized location to break import cycles
+import type { ToolPermissionRulesBySource } from './types/permissions.js'
+
 // Re-export for backwards compatibility
-export type { ToolPermissionRulesBySource };
+export type { ToolPermissionRulesBySource }
 
 // Apply DeepImmutable to the imported type
 export type ToolPermissionContext = DeepImmutable<{
@@ -328,7 +300,7 @@ export type ToolUseContext = {
 }
 
 // Re-export ToolProgressData from centralized location
-export type { ToolProgressData };
+export type { ToolProgressData }
 
 export type Progress = ToolProgressData | HookProgress
 

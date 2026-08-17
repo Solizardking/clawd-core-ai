@@ -1,11 +1,9 @@
 // scripts/test-commands.ts
-// Verify all commands load without errors
+// Verify all Clawd Code commands load without errors
 // Usage: bun scripts/test-commands.ts
-//
-// The bun:bundle shim is loaded automatically via bunfig.toml preload.
 
 // Load MACRO global before any app code
-import '../src/shims/macro.js';
+import '../src/shims/macro.js'
 
 async function main() {
   const { getCommands } = await import('../src/commands.js')
@@ -34,8 +32,8 @@ async function main() {
     console.log()
   }
 
-  // Verify essential commands are present
-  const essential = ['help', 'config', 'init', 'commit', 'review']
+  // Verify essential Clawd Code commands are present
+  const essential = ['help', 'wallet', 'perps', 'config', 'arena']
   const commandNames = new Set(commands.map(c => c.name))
   const missing = essential.filter(n => !commandNames.has(n))
 
@@ -46,13 +44,13 @@ async function main() {
 
   console.log(`✅ All ${essential.length} essential commands present: ${essential.join(', ')}`)
 
-  // Check moved-to-plugin commands
-  const movedToPlugin = commands.filter(
-    c => c.type === 'prompt' && c.description && c.name
-  ).filter(c => ['security-review', 'pr-comments'].includes(c.name))
+  // Check Clawd-specific commands
+  const clawdSpecific = commands.filter(
+    c => c.name.startsWith('clawd') || c.name === 'perps' || c.name === 'wallet' || c.name === 'arena'
+  )
 
-  if (movedToPlugin.length > 0) {
-    console.log(`✅ Moved-to-plugin commands present and loadable: ${movedToPlugin.map(c => c.name).join(', ')}`)
+  if (clawdSpecific.length > 0) {
+    console.log(`✅ Clawd-specific commands present: ${clawdSpecific.map(c => c.name).join(', ')}`)
   }
 
   console.log(`\n✅ Command system loaded successfully (${commands.length} commands)`)

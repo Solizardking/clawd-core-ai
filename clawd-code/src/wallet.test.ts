@@ -1,22 +1,9 @@
+import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  test,
-} from 'node:test';
-
-import {
-  mkdtempSync,
-  rmSync,
-} from 'fs';
+import { mkdtempSync, rmSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
-
-import {
-  createWallet,
-  listWallets,
-} from '../../core-ai/clawd-code/src/wallet.js';
+import { createWallet, listWallets } from './wallet.js';
 
 let tmpDir: string;
 const originalWalletDir = process.env.CLAWD_WALLET_DIR;
