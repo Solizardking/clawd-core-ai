@@ -1,8 +1,6 @@
-import {
-  logForDebugging,
-} from '../../../core-ai/clawd-code/src/utils/debug.js';
-import { BridgeFatalError } from './bridgeApi.js';
-import type { BridgeApiClient } from './types.js';
+import { logForDebugging } from '../utils/debug.js'
+import { BridgeFatalError } from './bridgeApi.js'
+import type { BridgeApiClient } from './types.js'
 
 /**
  * Ant-only fault injection for manually testing bridge recovery paths.

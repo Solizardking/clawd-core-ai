@@ -7,16 +7,11 @@
  * accessToken + baseUrl — no implicit auth or config reads.
  */
 
-import axios from 'axios';
-
-import {
-  logForDebugging,
-} from '../../../core-ai/clawd-code/src/utils/debug.js';
-import { errorMessage } from '../../../core-ai/clawd-code/src/utils/errors.js';
-import {
-  jsonStringify,
-} from '../../../core-ai/clawd-code/src/utils/slowOperations.js';
-import { extractErrorDetail } from './debugUtils.js';
+import axios from 'axios'
+import { logForDebugging } from '../utils/debug.js'
+import { errorMessage } from '../utils/errors.js'
+import { jsonStringify } from '../utils/slowOperations.js'
+import { extractErrorDetail } from './debugUtils.js'
 
 const ANTHROPIC_VERSION = '2023-06-01'
 

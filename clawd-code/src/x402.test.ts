@@ -1,20 +1,9 @@
+import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  test,
-} from 'node:test';
-
-import {
-  mkdtempSync,
-  rmSync,
-  writeFileSync,
-} from 'fs';
+import { mkdtempSync, rmSync, writeFileSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
-
-import { X402Client } from '../../core-ai/clawd-code/src/x402.js';
+import { X402Client } from './x402.js';
 
 let tmpDir: string;
 

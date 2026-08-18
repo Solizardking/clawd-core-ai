@@ -48,7 +48,7 @@ export function ApiSettings() {
 
       <SettingRow
         label="API key"
-        description="Your Anthropic API key. Stored locally and never sent to third parties."
+        description="Optional. Only needed if your backend requires an access token — leave blank to use it anonymously."
         stack
       >
         <div className="flex gap-2">
@@ -57,7 +57,7 @@ export function ApiSettings() {
               type={showKey ? "text" : "password"}
               value={settings.apiKey}
               onChange={(e) => updateSettings({ apiKey: e.target.value })}
-              placeholder="sk-ant-..."
+              placeholder="Optional access token"
               className={cn(
                 "w-full bg-surface-800 border border-surface-700 rounded-md px-3 py-1.5 pr-10 text-sm",
                 "text-surface-200 placeholder-surface-600 focus:outline-none focus:ring-1 focus:ring-brand-500 font-mono"
@@ -84,7 +84,7 @@ export function ApiSettings() {
 
       <SettingRow
         label="API base URL"
-        description="Custom endpoint for enterprise or proxy setups. Leave as default for direct Anthropic access."
+        description="Address of the backend service this app talks to. Leave as default for local development."
         stack
       >
         <input

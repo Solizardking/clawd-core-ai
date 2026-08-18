@@ -9,7 +9,7 @@
 // Bun automatically reads .env files from the project root.
 
 // Load MACRO global (version, package url, etc.) before any app code
-import '../src/shims/macro.js';
+import '../src/shims/macro.js'
 
 // Launch the CLI entrypoint
 await import('../src/entrypoints/cli.js')

@@ -1,77 +1,95 @@
 # Dependencies
 node_modules/
+.pnpm-store/
+# Dependencies
+node_modules/
 
 # Build output
 dist/
-
-# Test coverage
-coverage/
-
-# IDE
-.idea/
-.vscode/
-.claude/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-npm-debug.log*
-pnpm-debug.log*
+out/
+build/
+!clawd-plugin/skills/build/
+!clawd-plugin/skills/build/**
+*.tsbuildinfo
 
 # Environment
 .env
 .env.local
 .env.*.local
 
-# Clawd Code runtime state and artifacts
+# Prompts
+prompts/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.idea/
+*.swp
+*.swo
+*~
+.vscode/settings.json
+.vscode/launch.json
+
+# Debug & logs
+*.log
+debug-logs/
+coverage/
+
+# Bun
+bun.lockb
+
+# MCP registry tokens
+.mcpregistry_*
+
+# Temporary files
+tmp/
+temp/
+
+
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Local Clawd runtime state
 .clawd/
-.clawd-code/
-clawd-code/dist/
-clawd-code/outputs/
-clawd-code/node_modules/
-clawd-code/.clawd/
-clawd-code/*.tsbuildinfo
-clawd-code/coverage/
 
-# Clawd Grok runtime state and artifacts
-clawd-grok/dist/
-clawd-grok/node_modules/
-clawd-grok/.clawd/
-clawd-grok/*.tsbuildinfo
-clawd-grok/bun.lockb
+# Environment files — NEVER commit secrets
+.env
+.env.local
+.env.*.local
+*.env
 
-# Clawd Agents runtime state and artifacts
-clawd-agents/clawd-perps-agent/dist/
-clawd-agents/clawd-perps-agent/node_modules/
-clawd-agents/clawd-perps-agent/.clawd/
-clawd-agents/clawd-perps-agent/*.tsbuildinfo
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# MCP server runtime state and artifacts
-mcp-server/dist/
-mcp-server/node_modules/
-mcp-server/*.tsbuildinfo
+# OS
+.DS_Store
+Thumbs.db
 
-# v3 runtime state and artifacts
-v3/dist/
-v3/outputs/
-v3/node_modules/
-v3/.clawd/
-v3/*.tsbuildinfo
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# Knowledge base - keep in git (no ignores)
+# Outputs
+outputs/
+*.output
+.cache/
+tmp/
 
-# Package tarballs
-*.tgz
+# Python
+__pycache__/
+*.pyc
+.venv/
 
-# Lockfiles (not needed for published packages)
-pnpm-lock.yaml
-!helius-cli/pnpm-lock.yaml
-!helius-mcp/pnpm-lock.yaml
-
-# Project docs - keep in git now (was: docs/)
-TG.md
+# Test
+coverage/
+.nyc_output/

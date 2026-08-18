@@ -3,6 +3,9 @@
 //
 // Usage: bun scripts/package-npm.ts
 //
+// Clawd Code: adapted to produce npm packages under @solana-clawd/clawd-code.
+// All Anthropic/Claude Code naming references removed.
+//
 // Prerequisites: run `bun run build:prod` first to generate dist/cli.mjs
 
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync, chmodSync } from 'fs'
@@ -44,29 +47,24 @@ function main() {
 
   // Generate a publishable package.json
   const npmPkg = {
-    name: srcPkg.name || '@onchainai/clawd-code',
-    version: srcPkg.version || '1.0.0',
-    description: srcPkg.description || 'Clawd Code — Solana-native headless AI coding agent CLI',
+    name: srcPkg.name || '@solana-clawd/clawd-code',
+    version: srcPkg.version || '0.0.0',
+    description: srcPkg.description || 'Clawd Code — Solana-native AI coding CLI with wallet creation, perps trading, image gen, voice, and x402 payments. Powered by Grok, Claude, and the Clawd ecosystem.',
     license: 'MIT',
     type: 'module',
     main: './cli.mjs',
     bin: {
-      clawd: './cli.mjs',
+      'clawd-code': './cli.mjs',
     },
     engines: {
       node: '>=20.0.0',
     },
-    os: ['darwin', 'linux', 'win32'],
+    os: ['darwin', 'linux'],
     files: [
       'cli.mjs',
       'cli.mjs.map',
       'README.md',
     ],
-    repository: {
-      type: 'git',
-      url: 'https://github.com/Solizardking/clawd-core-ai.git',
-      directory: 'clawd-code',
-    },
   }
 
   writeFileSync(
@@ -80,12 +78,6 @@ function main() {
     copyFileSync(readme, resolve(NPM_DIR, 'README.md'))
   }
 
-  // Copy LICENSE
-  const license = resolve(ROOT, 'LICENSE')
-  if (existsSync(license)) {
-    copyFileSync(license, resolve(NPM_DIR, 'LICENSE'))
-  }
-
   // Summary
   const bundleSize = readFileSync(CLI_BUNDLE).byteLength
   const sizeMB = (bundleSize / 1024 / 1024).toFixed(2)
@@ -93,10 +85,10 @@ function main() {
   console.log('npm package generated in dist/npm/')
   console.log(`  package:  ${npmPkg.name}@${npmPkg.version}`)
   console.log(`  bundle:   cli.mjs (${sizeMB} MB)`)
-  console.log(`  bin:      clawd → ./cli.mjs`)
+  console.log(`  bin:      clawd-code → ./cli.mjs`)
   console.log('')
   console.log('To publish:')
-  console.log('  cd dist/npm && npm publish')
+  console.log('  cd dist/npm && npm publish --access public')
 }
 
 main()

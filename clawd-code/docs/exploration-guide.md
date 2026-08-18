@@ -1,6 +1,6 @@
 # Exploration Guide
 
-> How to navigate and study the Clawd Code source code.
+> How to navigate and study the Claude Code source code.
 
 ---
 
@@ -177,7 +177,7 @@ The largest files contain the most logic and are worth studying:
 3. See `bridgePermissionCallbacks.ts` for how permissions route to the IDE
 4. Check `replBridge.ts` for REPL session bridging
 
-### Path 4: "How do plugins extend Clawd Code?"
+### Path 4: "How do plugins extend Claude Code?"
 
 1. Read `src/types/plugin.ts` — the plugin API surface
 2. See `src/services/plugins/` — how plugins are loaded
@@ -188,7 +188,7 @@ The largest files contain the most logic and are worth studying:
 
 1. Read `src/services/mcp/` — the MCP client
 2. See `src/tools/MCPTool/` — how MCP tools are invoked
-3. Check `src/entrypoints/mcp.ts` — Clawd Code as an MCP server
+3. Check `src/entrypoints/mcp.ts` — Claude Code as an MCP server
 4. Look at `src/skills/mcpSkillBuilders.ts` — skills from MCP
 
 ---

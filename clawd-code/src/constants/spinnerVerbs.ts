@@ -1,4 +1,23 @@
-import { getInitialSettings } from '../utils/settings/settings.js'
+import { getInitialSettings, updateSettingsForSource } from '../utils/settings/settings.js'
+import { getSpinnerPack, listSpinnerPackSlugs, type SpinnerPack } from './spinnerPacks.js'
+
+export { getSpinnerPack, listSpinnerPackSlugs, type SpinnerPack }
+
+/**
+ * Applies a vendored spinner pack (see spinners/*.json) to the user's
+ * settings, replacing the active spinner verbs. Local equivalent of the
+ * install-spinner skill's GitHub-fetch flow, since the pack data now ships
+ * with the CLI.
+ */
+export function applySpinnerPack(slug: string): { error: Error | null } {
+  const pack = getSpinnerPack(slug)
+  if (!pack) {
+    return { error: new Error(`Unknown spinner pack: ${slug}`) }
+  }
+  return updateSettingsForSource('userSettings', {
+    spinnerVerbs: { mode: 'replace', verbs: pack.verbs },
+  })
+}
 
 export function getSpinnerVerbs(): string[] {
   const settings = getInitialSettings()

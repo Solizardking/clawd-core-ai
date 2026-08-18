@@ -1,6 +1,4 @@
-import type {
-  PermissionUpdate,
-} from '../../../core-ai/clawd-code/src/utils/permissions/PermissionUpdateSchema.js';
+import type { PermissionUpdate } from '../utils/permissions/PermissionUpdateSchema.js'
 
 type BridgePermissionResponse = {
   behavior: 'allow' | 'deny'
@@ -41,5 +39,7 @@ function isBridgePermissionResponse(
   )
 }
 
-export { isBridgePermissionResponse };
-export type { BridgePermissionCallbacks, BridgePermissionResponse };
+export { isBridgePermissionResponse }
+export type { BridgePermissionCallbacks, BridgePermissionResponse }
+
+

@@ -39,7 +39,7 @@ jobs:
         id: clawd
         uses: solizardking/clawd-code-action@v1
         with:
-          xai_api_key: \${{ secrets.XAI_API_KEY }}
+          moonshot_api_key: \${{ secrets.MOONSHOT_API_KEY }}
 
           # Optional: Allow Clawd to read CI results on PRs
           additional_permissions: |
@@ -82,7 +82,7 @@ Once this PR is merged, we'll be able to interact with Clawd by mentioning @claw
 
 ### Security
 
-- Our xAI API key is securely stored as a GitHub Actions secret
+- Our Moonshot API key is securely stored as a GitHub Actions secret
 - Only users with write access to the repository can trigger the workflow
 - All Clawd runs are stored in the GitHub Actions run history
 - Clawd's default tools are limited to reading/writing files and interacting with our repo
@@ -120,6 +120,6 @@ jobs:
         id: clawd-review
         uses: solizardking/clawd-code-action@v1
         with:
-          xai_api_key: \${{ secrets.XAI_API_KEY }}
+          moonshot_api_key: \${{ secrets.MOONSHOT_API_KEY }}
           prompt: 'Review this pull request for bugs, security issues, and code quality.'
 `

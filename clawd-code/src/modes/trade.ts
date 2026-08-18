@@ -1,12 +1,12 @@
 /**
  * Clawd Code — TRADE MODE
  * Perpetuals trading with Phoenix + Vulcan CLI + Helius RPC
- * Default model for AI analysis: xAI Grok 4.3 (grok-4.3).
+ * Default model for AI analysis: Moonshot Kimi K2 Thinking.
  */
 
 import { spawn } from 'child_process';
 import { existsSync } from 'fs';
-import { DEFAULT_MODEL } from '../grok-models.js';
+import { DEFAULT_MODEL } from '../model-registry.js';
 
 export class TradeMode {
   constructor(private config: any) {}
@@ -19,7 +19,7 @@ export class TradeMode {
     console.log(`[TRADE MODE] Live Trading: ${this.config.liveTrading}`);
     console.log(`[TRADE MODE] Operator Confirmed: ${this.config.operatorConfirmed}`);
     const analysisModel = this.config.model ?? DEFAULT_MODEL;
-    console.log(`[TRADE MODE] AI analysis model (xAI default): ${analysisModel}`);
+    console.log(`[TRADE MODE] AI analysis model (Moonshot default): ${analysisModel}`);
     // Check safety gates
     if (!this.config.liveTrading) {
       console.log('\n[TRADE MODE] ⚠ PAPER MODE — No real funds will be used');

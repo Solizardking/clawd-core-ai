@@ -1,6 +1,9 @@
 // scripts/build-bundle.ts
 // Usage: bun scripts/build-bundle.ts [--watch] [--minify] [--no-sourcemap]
 //
+// Clawd Code production build pipeline — bundles the Solana-native AI CLI
+// into a single executable for release on npm and GitHub.
+//
 // Production build: bun scripts/build-bundle.ts --minify
 // Dev build:        bun scripts/build-bundle.ts
 // Watch mode:       bun scripts/build-bundle.ts --watch
@@ -63,6 +66,27 @@ const srcResolverPlugin: esbuild.Plugin = {
   },
 }
 
+const ignoreMissingPlugin: esbuild.Plugin = {
+  name: 'ignore-missing',
+  setup(build) {
+    build.onResolve({ filter: /.*/ }, async (args) => {
+      if (args.pluginData?.isInternalResolution) return null;
+      
+      const result = await build.resolve(args.path, {
+        kind: args.kind,
+        resolveDir: args.resolveDir,
+        pluginData: { isInternalResolution: true }
+      });
+      
+      if (result.errors.length > 0) {
+        // Automatically mark missing proprietary stubs or node modules as external
+        return { path: args.path, external: true };
+      }
+      return null;
+    });
+  }
+}
+
 const buildOptions: esbuild.BuildOptions = {
   entryPoints: [resolve(ROOT, 'src/entrypoints/cli.tsx')],
   bundle: true,
@@ -75,7 +99,7 @@ const buildOptions: esbuild.BuildOptions = {
   // Single-file output — no code splitting for CLI tools
   splitting: false,
 
-  plugins: [srcResolverPlugin],
+  plugins: [srcResolverPlugin, ignoreMissingPlugin],
 
   // Use tsconfig for baseUrl / paths resolution (complements plugin above)
   tsconfig: resolve(ROOT, 'tsconfig.json'),
@@ -98,12 +122,6 @@ const buildOptions: esbuild.BuildOptions = {
     // Native addons that can't be bundled
     'fsevents',
     'sharp',
-    'image-processor-napi',
-    // Anthropic-internal packages (not published externally)
-    '@anthropic-ai/sandbox-runtime',
-    '@anthropic-ai/claude-agent-sdk',
-    // Anthropic-internal (@ant/) packages — gated behind USER_TYPE === 'ant'
-    '@ant/*',
   ],
 
   jsx: 'automatic',
@@ -118,15 +136,12 @@ const buildOptions: esbuild.BuildOptions = {
   treeShaking: true,
 
   // Define replacements — inline constants at build time
-  // MACRO.* — originally inlined by Bun's bundler at compile time
-  // process.env.USER_TYPE — eliminates 'ant' (Anthropic-internal) code branches
   define: {
     'MACRO.VERSION': JSON.stringify(version),
-    'MACRO.PACKAGE_URL': JSON.stringify('@onchainai/clawd-code'),
+    'MACRO.PACKAGE_URL': JSON.stringify('@solana-clawd/clawd-code'),
     'MACRO.ISSUES_EXPLAINER': JSON.stringify(
-      'report issues at https://github.com/Solizardking/clawd-core-ai/issues'
+      'report issues at https://github.com/Solizardking/solana-clawd/issues'
     ),
-    'process.env.USER_TYPE': '"external"',
     'process.env.NODE_ENV': minify ? '"production"' : '"development"',
   },
 

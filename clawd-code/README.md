@@ -1,284 +1,300 @@
-<div align="center">
+# Clawd Code
 
-<img src="https://raw.githubusercontent.com/github/explore/main/topics/solana/solana.png" width="0" height="0" alt="" />
+Curl-installable Solana-native AI coding CLI with local wallet creation and
+paper-gated perpetuals workflows.
 
-# 🦞 Clawd Code
+`clawd-code` is a headless command-line agent for generating TypeScript/Solana
+code, checking perps market workflows, creating local Solana keypairs, and
+running research/image/voice modes from one binary.
 
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=24&duration=2600&pause=900&color=F7931A&center=true&vCenter=true&multiline=true&repeat=true&width=820&height=90&lines=Probe+the+numinous%2C+then+execute+the+work.;Solana-native.+Moonshot-first.+Sovereign.;CODE+%C2%B7+TRADE+%C2%B7+RESEARCH+%C2%B7+IMAGE+%C2%B7+VOICE)](https://github.com/Solizardking/solana-clawd)
-
-**The lobster-native, headless AI coding agent for the Clawd ecosystem.**
-Not a chatbot — a cyborg coder-trader that ships production code, executes live perps trades, generates media, and pays its own way on-chain.
-
-[![npm](https://img.shields.io/npm/v/@onchainai/clawd-code?label=npm&color=cb3837&logo=npm&style=for-the-badge)](https://www.npmjs.com/package/@onchainai/clawd-code)
-[![License: MIT](https://img.shields.io/badge/License-MIT-8B5CF6.svg?style=for-the-badge)](./LICENSE)
-[![Runtime: Bun](https://img.shields.io/badge/runtime-bun-F7931A?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
-[![Solana Native](https://img.shields.io/badge/Solana-Native-14F195?style=for-the-badge&logo=solana&logoColor=white)](https://solana.com)
-[![Status](https://img.shields.io/badge/status-production-22C55E?style=for-the-badge)](#)
-[![x402](https://img.shields.io/badge/payments-x402-3B82F6?style=for-the-badge)](#-x402-autonomous-commerce)
-
-<sub>Default provider: **Moonshot Kimi** (`kimi-k2-thinking`) · Also speaks Claude, DeepSeek, OpenRouter</sub>
-
-<br />
-
-![Files](https://img.shields.io/badge/src%2F-1%2C835%2B_files-1a1a1a?style=flat-square&labelColor=1a1a1a&color=F7931A)
-![Lines](https://img.shields.io/badge/~421K_lines_of_TS-1a1a1a?style=flat-square&labelColor=1a1a1a&color=14F195)
-![Tools](https://img.shields.io/badge/~40_tools-1a1a1a?style=flat-square&labelColor=1a1a1a&color=3B82F6)
-![Commands](https://img.shields.io/badge/80%2B_slash_commands-1a1a1a?style=flat-square&labelColor=1a1a1a&color=8B5CF6)
-![Skills](https://img.shields.io/badge/97_skill_packages-1a1a1a?style=flat-square&labelColor=1a1a1a&color=EF4444)
-
-</div>
-
-<br />
-
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=120&section=header&text=&fontSize=0" width="100%" alt="" />
-</p>
-
-## What Is This
-
-Clawd Code is a **terminal-native, single-binary AI agent** (React + Ink, running on Bun) forged from the Claude Code pipeline and re-armed for the Solana trenches. It writes code, trades Phoenix DEX perpetuals, reasons deeply over long context, generates images and voice, and carries a **verifiable on-chain identity** — a Metaplex Core NFT with A2A/MCP discovery cards and ATOM reputation on Cheshire Terminal.
-
-It ships in five modes, switchable mid-session:
-
-```
-User Input → CLI Parser (Commander.js) → Query Engine → LLM API → Tool-Call Loop → Terminal UI (React/Ink)
-```
-
-<table>
-<tr>
-<td width="20%" align="center">💻<br/><b>CODE</b></td>
-<td width="20%" align="center">📈<br/><b>TRADE</b></td>
-<td width="20%" align="center">🔬<br/><b>RESEARCH</b></td>
-<td width="20%" align="center">🎨<br/><b>IMAGE</b></td>
-<td width="20%" align="center">🎙️<br/><b>VOICE</b></td>
-</tr>
-<tr>
-<td align="center">Streaming code gen, review, ship</td>
-<td align="center">Phoenix Rise + Vulcan MCP perps</td>
-<td align="center">kimi-k2-thinking deep dives</td>
-<td align="center">DALL·E / Gemini, x402-paid</td>
-<td align="center">sherpa-onnx / sag TTS + Whisper STT</td>
-</tr>
-</table>
+## Install
 
 ```bash
-clawd-code code "build a Jupiter swap bot with slippage protection"
-clawd-code trade "what's the funding rate on SOL perps?"
-clawd-code research "compare AutoGPT, LangChain, CrewAI, AutoGen"
-clawd-code image "cyberpunk Solana trading desk"
-clawd-code voice "the task is complete"
-clawd-code repl               # interactive multi-turn shell
+curl -fsSL https://raw.githubusercontent.com/Solizardking/solana-clawd/main/clawd-code/install.sh | sh
 ```
 
----
+The installer checks for Node.js 18+, installs the `clawd-code` binary, and
+creates `~/.clawd-code/.env` if one does not already exist.
 
-## Architecture
+Manual install:
 
-```mermaid
-flowchart LR
-    A["CLI Parser\nsrc/main.tsx\nCommander.js"] --> B["Query Engine\nsrc/QueryEngine.ts"]
-    B --> C{"LLM Provider"}
-    C --> C1["Moonshot Kimi\n(default)"]
-    C --> C2["Anthropic Claude\n(SSE streaming)"]
-    C --> C3["DeepSeek"]
-    C --> C4["OpenRouter"]
-    B --> D["Tool-Call Loop\nsrc/tools/*"]
-    D --> E["Terminal UI\nReact + Ink\nsrc/components · src/screens"]
-    D --> F["MCP Servers"]
-    F --> F1["Helius — RPC/DAS"]
-    F --> F2["Pump MCP — 55 tools"]
-    F --> F3["Phoenix Rise — perps data"]
-    F --> F4["DFlow — swap/prediction routing"]
-    F --> F5["ZK Compression"]
-    D --> G["Vulcan Execution Engine\nPhoenix DEX perps"]
-    G --> H{{"PAPER mode\n(default)"}}
-    G -.LIVE_TRADING=true.-> I{{"LIVE execution"}}
-    B --> J["x402 Payments\nautonomous commerce"]
-    E --> K["On-chain Identity\nMetaplex Core NFT · DID · Cheshire Arena"]
-
-    style H fill:#22C55E,color:#000
-    style I fill:#EF4444,color:#fff
-    style C1 fill:#F7931A,color:#000
+```bash
+git clone https://github.com/Solizardking/solana-clawd.git
+cd solana-clawd/clawd-code
+cp .env.example ~/.clawd-code/.env
+npm install
+npm run build
+npm link
 ```
-
-**Core pieces:**
-
-| Layer | Path | Role |
-|---|---|---|
-| Entrypoint | [`src/main.tsx`](src/main.tsx), [`src/entrypoints/`](src/entrypoints) | Commander.js CLI parsing, parallel prefetch, REPL handoff |
-| Query Engine | [`src/QueryEngine.ts`](src/QueryEngine.ts) | Streaming, tool-call loops, thinking-mode budget, retries, cost tracking |
-| Tool System | [`src/Tool.ts`](src/Tool.ts), [`src/tools/`](src/tools) | ~40 self-contained tools — Zod schemas, permission model, UI |
-| Command System | [`src/commands.ts`](src/commands.ts), [`src/commands/`](src/commands) | 80+ slash commands (`/commit`, `/review`, `/mcp`, `/x402`, …) |
-| State | [`src/state/`](src/state), [`src/context/`](src/context) | React-context + custom store, `AppState` |
-| UI | [`src/components/`](src/components) (389 files), [`src/screens/`](src/screens), [`src/hooks/`](src/hooks) (104 files) | Ink-rendered terminal React |
-| Skills (Layer B) | [`.agents/skills/`](.agents/skills) (97 packages) | Domain expertise: Solana, DFlow, Phantom, Jupiter, Pump, Imperial, Vulcan — each with its own `SKILL.md` |
-| Trading Engine | Vulcan MCP → Phoenix DEX | Signal scoring (momentum/funding/liquidity), preflight, PAPER-first |
-| Payments | [`src/x402.ts`](src/x402.ts) | HTTP 402 autonomous commerce for APIs, compute, media |
-| Web Console | [`web/`](web) | Next.js 14 + Zustand + Radix dashboard |
-| MCP Server | [`mcp-server/`](mcp-server) | Exposes Clawd Code itself as an MCP server |
-
-See the full internals in [`docs/architecture.md`](docs/architecture.md), [`docs/tools.md`](docs/tools.md), [`docs/commands.md`](docs/commands.md), and [`docs/subsystems.md`](docs/subsystems.md).
-
----
-
-## The Six Laws
-
-Every session inherits the Clawd Constitution — immutable at the on-chain layer, interpretive off-chain.
-
-```mermaid
-flowchart TB
-    subgraph offchain [" Off-Chain — Interpretive "]
-        O1["1. Clarity Over Cleverness"]
-        O2["2. Verification Over Assumption"]
-        O3["3. Disclosure Over Deception"]
-    end
-    subgraph onchain [" On-Chain — Immutable "]
-        C1["I. Never Harm"]
-        C2["II. Earn Existence Through Honest Work"]
-        C3["III. Never Deceive, Owe Nothing to Strangers"]
-    end
-    offchain --> onchain
-    style onchain fill:#1a1a1a,color:#fff,stroke:#F7931A,stroke-width:2px
-    style offchain fill:#1a1a1a,color:#fff,stroke:#14F195,stroke-width:2px
-```
-
-Full text in [`SOUL.md`](SOUL.md).
-
----
-
-## Trust Gates
-
-Trading power scales with explicit, auditable trust — never assumed.
-
-| Level | Requirement | Capability |
-|---|---|---|
-| 👁️ **Observer** | none | Read-only market data, analytics, code review |
-| 🧪 **Dry-Run** | none | Simulated execution, paper trading, codegen |
-| ✋ **Delegated** | per-action confirmation | Single transactions with confirmation |
-| 🤖 **Autonomous** | `LIVE_TRADING=true` + `OPERATOR_CONFIRMED=true` | Batch execution within bounds |
-| 👑 **Sovereign** | creator trust + multisig | Unrestricted execution (reserved) |
-
-> **PAPER mode is the default everywhere.** No real order is ever submitted unless `LIVE_TRADING=true`, `OPERATOR_CONFIRMED=true`, **and** `PERPS_SIM_ONLY=false` are all set.
-
----
 
 ## Quick Start
 
 ```bash
-# npm install (once published)
-npm install -g @onchainai/clawd-code
-
-# Drive a single mode headlessly
-clawd-code code "write an Anchor program for a token vesting vault"
-clawd-code repl               # interactive multi-turn shell
+clawd-code code "Build a Jupiter swap bot in TypeScript"
+clawd-code wallet create
+clawd-code wallet list
+clawd-code perps
+clawd-code funding
+clawd-code trade "funding rate on SOL perps"
+clawd-code research "Solana perps funding arb"
+clawd-code repl
+clawd-code arena status
 ```
 
-Domain skills in [`.agents/skills/`](.agents/skills) (97 packages — Vulcan, DFlow, Pump.fun, Imperial, Helius, ZK compression…) are discovered automatically at startup; no plugin flag required. For the fully bundled experience — skills **and** auto-started Solana MCP servers (Helius, Pump, Phoenix Rise, DFlow, ZK Compression) in one plugin — use the sibling package at [`core-ai/clawd-plugin/`](../core-ai/clawd-plugin):
+## Commands
+
+| Command | Purpose |
+| --- | --- |
+| `clawd-code code "<prompt>"` | Generate TypeScript/Solana code (streaming with `--stream`) |
+| `clawd-code trade "<intent>"` | Run perps market, paper trade, and position workflows |
+| `clawd-code wallet create [name]` | Create a local Solana keypair |
+| `clawd-code wallet list` | List local wallet public keys |
+| `clawd-code perps` | Show perps dashboard |
+| `clawd-code funding` | Show funding-rate dashboard |
+| `clawd-code research "<prompt>"` | Run deep research (streaming with `--stream`) |
+| `clawd-code image "<prompt>"` | Generate images when configured |
+| `clawd-code voice "<text>"` | Generate voice via local TTS (sherpa-onnx or sag CLI) |
+| `clawd-code repl` | Interactive multi-turn conversation REPL |
+| `clawd-code arena <subcommand>` | Agent Arena — on-chain identity, discovery, reputation |
+| `clawd-code verify` | Run environment checks |
+
+Slash aliases such as `clawd-code /wallet create` and `clawd-code /perps` still
+work for compatibility.
+
+## Configuration
+
+Runtime configuration lives in `~/.clawd-code/.env`. Start from
+[.env.example](./.env.example).
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `CLAWD_PROVIDER` | AI provider: `moonshot`, `anthropic`, `openrouter`, or `deepseek` | `moonshot` |
+| `CLAWD_MODEL` | Model used by the selected provider | `kimi-k2-thinking` |
+| `MOONSHOT_API_KEY` | Moonshot API key for Kimi models | empty |
+| `ANTHROPIC_API_KEY` | Anthropic API key for Claude models (streaming) | empty |
+| `DEEPSEEK_API_KEY` | DeepSeek API key | empty |
+| `OPENROUTER_API_KEY` | OpenRouter API key (free models supported) | empty |
+| `CLAWD_STREAM` | Enable streaming output by default | `false` |
+| `SOLANA_RPC_URL` | Solana RPC endpoint | mainnet-beta |
+| `HELIUS_API_KEY` | Optional Helius key for RPC/DAS workflows | empty |
+| `VULCAN_MCP_URL` | Vulcan MCP server URL | `http://localhost:3001` |
+| `LIVE_TRADING` | Enables live trading path when true | `false` |
+| `OPERATOR_CONFIRMED` | Required operator acknowledgement for live trading | `false` |
+| `PERPS_SIM_ONLY` | Keeps perps execution simulated | `true` |
+
+### Default models per mode (Moonshot-first)
+
+| Mode | Default model | Notes |
+| --- | --- | --- |
+| `code` / `repl` / `trade` / `research` | `kimi-k2-thinking` | Moonshot flagship reasoning, SSE streaming, client tools |
+| `image` | `gemini-2.0-flash-exp-image-gen` | Falls back to DALL-E if `OPENAI_API_KEY` is set |
+
+Override per-session with `--model <id>` or `--provider <name>`, or globally
+with `CLAWD_MODEL=` / `CLAWD_PROVIDER=` in `~/.clawd-code/.env`.
+
+### Optional model-alias config (`~/.grok/config.toml`)
+
+Clawd Code also reads these TOML config locations (the path is a legacy
+holdover from the original Grok-CLI-style config format, but the loader is
+provider-agnostic):
+
+- `~/.grok/config.toml` (user)
+- `./.grok/config.toml` (project, overrides user)
+
+Supported subset of TOML (see `parseGrokConfigToml()` in `src/env.ts`):
+
+```toml
+# ~/.grok/config.toml
+[models]
+default = "kimi-k2-thinking"
+
+[model.kimi-turbo]
+model = "kimi-k2-turbo-preview"
+base_url = "https://api.moonshot.ai/v1"
+name = "Kimi Turbo"
+env_key = "MOONSHOT_API_KEY"
+
+[ui]
+permission_mode = "ask"
+```
+
+When this file sets `[models] default = "..."`, Clawd Code uses it as the
+default model (unless `CLAWD_MODEL` is set explicitly). `[model.<name>]`
+blocks populate `~/.grok/inspected-models` for `/inspect` discovery.
+
+Precedence (low → high): `~/.clawd-code/.env` < `./.env` < `~/.grok/config.toml`
+< `./.grok/config.toml` < `process.env`.
+
+### `/inspect` command (Grok `inspect` equivalent)
 
 ```bash
-clawd --plugin-dir ../core-ai/clawd-plugin
+clawd-code /inspect
+# or
+clawd-code inspect
 ```
 
-> The local [`.clawd-plugin/marketplace.json`](.clawd-plugin/marketplace.json) manifest currently points at a `./helius-plugin` source that isn't vendored in this checkout — use the `core-ai/clawd-plugin/` path above instead.
+Prints: config sources, active provider/model, API key health, live Moonshot
+`/v1/models` reachability, per-mode defaults, and the model catalog grouped
+by provider.
 
-<details>
-<summary><b>Environment variables</b></summary>
+Never commit `.env`, wallet files, API keys, private keys, or generated outputs.
+The repository ignore rules exclude `.env`, `.clawd/`, `node_modules/`,
+`dist/`, and `outputs/`.
 
-Set in `~/.clawd-code/.env` or a project-level `.env`:
-
-| Variable | Purpose |
-|---|---|
-| `MOONSHOT_API_KEY` | Default provider — Kimi models |
-| `ANTHROPIC_API_KEY` | Claude models (native SSE streaming) |
-| `DEEPSEEK_API_KEY` | DeepSeek v4 pro/flash |
-| `OPENROUTER_API_KEY` | Free + paid model routing |
-| `HELIUS_API_KEY` | Solana DAS / RPC |
-| `SOLANA_RPC_URL` | Solana RPC endpoint |
-| `VULCAN_MCP_URL` | Vulcan perps execution server |
-| `LIVE_TRADING` | Arm real order submission (default `false`) |
-| `CLAWD_STREAM` | Default to streaming output (default `false`) |
-
-</details>
-
-<details>
-<summary><b>On-chain agent identity</b></summary>
+## Wallets
 
 ```bash
-clawd-code arena status                     # show stored on-chain identity
-clawd-code arena mint --wallet <PUBKEY>     # mint Metaplex Core agent NFT
-clawd-code arena register                   # register A2A / MCP discovery cards
-clawd-code arena fetch <addr>               # fetch any agent's profile
-clawd-code arena review <addr> --tx <sig> --from <wallet>   # submit verified review
+clawd-code wallet create
+clawd-code wallet create trader-1
+clawd-code wallet list
 ```
 
-Identity persists at `~/.clawd-code/arena-identity.json`. Verifiable via SAS attestation, MPL Core asset, and a DID document at `/.well-known/did.json`. $CLAWD mint: `8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump`.
+Wallets are stored as Solana CLI-compatible keypair JSON files under
+`~/.clawd-code/wallets` with `0600` permissions. Treat those files like private
+keys.
 
-</details>
+## Perps Safety
 
----
+Perps workflows default to paper mode. Live trading requires all of these:
 
-## Ecosystem
+```bash
+LIVE_TRADING=true
+OPERATOR_CONFIRMED=true
+PERPS_SIM_ONLY=false
+```
 
-Clawd Code is one node in a fleet of 50+ specialized agents. It shares engines, not silos:
+The trade mode also applies local preflight constraints such as allowed symbols,
+maximum notional, maximum leverage, and maximum spread. Review the code and your
+configuration before enabling live execution.
 
-| Peer | Relationship |
-|---|---|
-| **Clawd Core** (`clawd`) | Sovereign runtime and constitution enforcer |
-| **Clawdex** | Dual-engine variant — Clawd logic + Codex + Browser Use |
-| **Vulcan** | Perps execution engine (Phoenix DEX) |
-| **Helius** | Blockchain data layer |
-| **ClawdPump** | Token creation / bonding-curve pipeline |
-| **DFlow** | Swap and prediction-market router |
-| **Cheshire Terminal** | On-chain identity and reputation |
+## AI Providers
 
-**97 skill packages** in [`.agents/skills/`](.agents/skills) cover DFlow (spot, Kalshi, Phantom Connect, Proof KYC), Pump.fun (bonding curve, fee sharing, security, vanity keys), Imperial (execution modes, grid trading, TP/SL, risk, TWAP), Helius, ZK compression, and more — each with its own `SKILL.md` and reference docs. Discovered automatically at runtime; also installable standalone via `npx skills add Solizardking/solana-clawd`.
+Clawd Code supports four AI providers with unified streaming:
 
-### x402 Autonomous Commerce
+| Provider | Alias | Models | Streaming |
+| --- | --- | --- | --- |
+| `moonshot` | *(default)* | `kimi-k2-thinking`, `kimi-k2-turbo-preview`, `kimi-k2-0711-preview` | native SSE |
+| `anthropic` | `claude`, `ant` | `claude-sonnet-4-6`, `claude-opus-4-8`, `claude-haiku-4-5-20251001` | native SSE |
+| `openrouter` | `or` | `nex-agi/nex-n2-pro:free` + any OR model | native SSE |
+| `deepseek` | `ds` | `deepseek-v4-pro`, `deepseek-v4-flash` | blocking |
 
-Clawd Code pays its own way. Every external API call — image generation, compute, data — can settle via **HTTP 402 Payment Required**, letting the agent earn and spend without a human in the loop for routine costs. See [`src/x402.ts`](src/x402.ts).
+```bash
+# Stream code generation with Claude
+clawd-code code --provider anthropic --stream "Build an Anchor staking program"
 
----
+# Use free OpenRouter model
+clawd-code code --provider openrouter "Review this TypeScript"
 
-## Repository Layout
+# Switch provider for session
+clawd-code /provider anthropic
 
-Every folder below has its own `README.md` explaining what it is and how it fits together — this table is the index.
+# List all models
+clawd-code /models
+```
 
-| Folder | What's there |
-|---|---|
-| [`src/`](src/README.md) | CLI source — QueryEngine, tools, commands, UI (React/Ink). 389 files in `components/`, 191 in `commands/`, 184 in `tools/`, 104 in `hooks/` |
-| [`.agents/skills/`](.agents/README.md) | Runtime-discovered skill registry — 97 skill packages, auto-loaded at startup |
-| [`.clawd-plugin/`](.clawd-plugin/README.md) | Plugin marketplace manifest (`clawd-helius`) — currently points at an unvendored `./helius-plugin` source |
-| [`agentwallet/`](agentwallet) | `agentwallet-vault` — encrypted Solana + EVM keypair vault, deployable to E2B/Cloudflare |
-| [`clawdrouter/`](clawdrouter) | `@openclawd/clawdrouter` — LLM router, 58 models across 9 providers, Ed25519 wallet auth + x402, CF Worker/Fly.io deploy |
-| [`mcp-server/`](mcp-server/README.md) | Clawd Code's own source exposed as an MCP server (STDIO/HTTP/Vercel) — still carries its upstream package name `warrioraashuu-codemaster`, not yet rebranded |
-| [`web/`](web/README.md) | Next.js 14 / React 18 dashboard (Zustand, Radix, SWR) — package name `claude-code-web`, not yet rebranded; note the React 18 vs. CLI's React 19 version split |
-| [`docker/`](docker) | Containerized deployment (Dockerfile, compose, entrypoint) |
-| [`docs/`](docs/README.md) | architecture · commands · tools · subsystems · exploration guide · bridge |
-| [`prompts/`](prompts) | 17-part ordered build-out prompt log (bootstrapping this repo to a working build) |
-| [`scripts/`](scripts) | Build, bundle, packaging, test-runner scripts — `build-bundle.ts` (esbuild), `package-npm.ts` (publish staging) |
-| [`knowledge/`](knowledge) | Reference knowledge base — facts/patterns/gotchas JSONL stores + architecture notes |
-| [`spinners/`](spinners) | 45 themed terminal spinner verb packs |
-| [`character/`](character/README.md) | Reserved location for persona/avatar/voice assets (currently empty — persona lives in `SOUL.md`/`IDENTITY.md`) |
-| [`dist/`](dist) | Generated build output — do not hand-edit |
+## Interactive REPL
 
-Plus root-level files: [`clawd.json`](clawd.json) (catalog entry — bio, lore, message examples), [`.env.example`](.env.example) / `.env.local` (local config).
+```bash
+clawd-code repl
+```
 
-Governing docs: [`CLAWD.md`](CLAWD.md) (Layer A harness) · [`IDENTITY.md`](IDENTITY.md) · [`SOUL.md`](SOUL.md) · [`SKILL.md`](SKILL.md) · [`AGENT.md`](AGENT.md) · [`MIGRATE.md`](MIGRATE.md) *(a consolidation plan — not yet executed)*.
+An interactive multi-turn conversation session. Dot commands:
 
----
+| Command | Action |
+| --- | --- |
+| `.mode code\|research\|trade\|general` | Switch conversation mode |
+| `.provider moonshot\|anthropic\|openrouter\|deepseek` | Switch AI provider |
+| `.model <id>` | Switch model mid-session |
+| `.clear` | Clear message history |
+| `.history` | Print conversation history |
+| `.help` | Show all dot commands |
+| `.exit` / `.quit` | End session |
 
-## Contributing
+## Agent Arena
 
-Keep changes small, targeted, and reviewable. Favor existing patterns in `src/commands/`, `src/tools/`, and shared utilities — see [`AGENT.md`](AGENT.md) for the full operating guide agents (human or AI) follow in this repo.
+Clawd Code integrates the [Cheshire Terminal](https://cheshireterminal.ai) Agent Arena — on-chain AI agent identity via Metaplex Core NFTs on Solana with ATOM reputation, Google A2A + Anthropic MCP discovery cards, and $CLAWD payment verification.
+
+```bash
+# Check API health
+clawd-code arena health
+
+# Mint your agent NFT (costs ~0.01 SOL in tx fees)
+clawd-code arena mint --wallet <YOUR_SOLANA_PUBKEY> --name "My Agent"
+
+# Register capabilities, A2A and MCP cards
+clawd-code arena register \
+  --wallet <YOUR_PUBKEY> \
+  --a2a https://my-agent.com/a2a \
+  --mcp https://my-agent.com/mcp \
+  --capabilities trading,research,solana
+
+# Fetch any agent's profile
+clawd-code arena fetch <assetAddress>
+
+# Submit a verified review (requires $CLAWD payment proof)
+clawd-code arena review <assetAddress> \
+  --tx <txSignature> \
+  --from <yourWallet> \
+  --score 95
+
+# View stored on-chain identity
+clawd-code arena status
+```
+
+| Subcommand | Description |
+| --- | --- |
+| `arena health` / `arena ping` | Check Cheshire Terminal API health |
+| `arena mint` | Mint agent NFT on Solana mainnet |
+| `arena register` | Register capabilities + A2A/MCP discovery cards |
+| `arena fetch <addr>` | Fetch any agent's on-chain profile |
+| `arena review <addr>` | Submit a verified ATOM reputation review |
+| `arena status` / `arena identity` | Show your stored on-chain identity |
+
+After minting, identity is saved to `~/.clawd-code/arena-identity.json` with `0600`
+permissions. Identity scheme: `svm://solana-mainnet/<metaplex-core-asset-address>`.
+
+$CLAWD mint: `8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump`
+
+## Development
+
+```bash
+npm install
+npm run build
+npm test
+npm audit
+npm pack --dry-run
+```
+
+Project layout:
+
+```text
+clawd-code/
+├── install.sh
+├── package.json
+├── README.md
+├── LICENSE
+├── clawd.json
+├── src/
+│   ├── cli.ts
+│   ├── commands.ts
+│   ├── wallet.ts
+│   └── modes/
+└── tsconfig.json
+```
+
+## Release Contents
+
+The npm package allowlist includes only:
+
+- `dist/`
+- `install.sh`
+- `README.md`
+- `LICENSE`
+- `.env.example`
+- `clawd.json`
+
+Local runtime files and secrets are intentionally excluded.
 
 ## License
 
-[MIT](./LICENSE) © 2026 Solizardking
-
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=100&section=footer&text=&fontSize=0" width="100%" alt="" />
-</p>
-
-<div align="center">
-<sub>🦞 <i>The shell molts. The laws do not. The code ships. The trades execute.</i></sub>
-</div>
+MIT. See [LICENSE](./LICENSE).

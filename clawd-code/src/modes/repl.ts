@@ -2,7 +2,7 @@
  * Clawd Code — REPL MODE
  * Interactive multi-turn conversation with persistent history.
  * Type a prompt and get a streamed response. Switch modes inline.
- * Default provider: xAI (Grok). Streams via SSE like Anthropic & OpenRouter.
+ * Default provider: Moonshot (Kimi). Streams via SSE like Anthropic & OpenRouter.
  * Commands: .exit .mode <mode> .model <id> .provider <name> .clear .help
  */
 
@@ -12,14 +12,13 @@ import { createDeepSeekClient } from '../deepseek.js';
 import { loadClawdEnv } from '../env.js';
 import {
   DEFAULT_MODEL,
-  isResponsesOnlyModel,
   normalizeModelId,
   resolveModelForMode,
-} from '../grok-models.js';
+} from '../model-registry.js';
 import { createOpenRouterClient } from '../openrouter.js';
-import { createXaiClient } from '../xai.js';
+import { createMoonshotClient } from '../moonshot.js';
 
-type ReplProvider = 'xai' | 'anthropic' | 'deepseek' | 'openrouter';
+type ReplProvider = 'moonshot' | 'anthropic' | 'deepseek' | 'openrouter';
 type SessionMode = 'code' | 'research' | 'trade' | 'general';
 
 interface Message {
@@ -31,7 +30,7 @@ interface ReplConfig {
   provider?: string;
   model?: string;
   stream?: boolean;
-  xaiApiKey?: string;
+  moonshotApiKey?: string;
   anthropicApiKey?: string;
   deepSeekApiKey?: string;
   deepSeekBaseUrl?: string;
@@ -119,21 +118,18 @@ export class ReplMode {
         if (arg) {
           const normalized = normalizeModelId(arg);
           this.model = resolveModelForMode(normalized, this.mode);
-          if (isResponsesOnlyModel(normalized) && this.mode !== 'research' && this.model !== normalized) {
-            console.log(`[REPL] ${normalized} is responses-only — using ${this.model} for ${this.mode} mode.`);
-          }
           if (isClaudeModel(normalized)) this.provider = 'anthropic';
           console.log(`[REPL] Model → ${this.model} (provider: ${this.provider})`);
         }
         break;
 
       case '.provider':
-        if (['xai', 'anthropic', 'openrouter', 'deepseek'].includes(arg)) {
+        if (['moonshot', 'anthropic', 'openrouter', 'deepseek'].includes(arg)) {
           this.provider = arg as ReplProvider;
           this.model = this.defaultModel();
           console.log(`[REPL] Provider → ${this.provider} | Model → ${this.model}`);
         } else {
-          console.log('[REPL] Providers: xai (default) | anthropic | openrouter | deepseek');
+          console.log('[REPL] Providers: moonshot (default) | anthropic | openrouter | deepseek');
         }
         break;
 
@@ -226,9 +222,9 @@ export class ReplMode {
       return response.content;
     }
 
-    // xAI (default) — stream via SSE
-    const client = createXaiClient(this.config.xaiApiKey);
-    if (!client) throw new Error('XAI_API_KEY not set');
+    // Moonshot (default) — stream via SSE
+    const client = createMoonshotClient(this.config.moonshotApiKey);
+    if (!client) throw new Error('MOONSHOT_API_KEY not set');
 
     for await (const chunk of client.streamChat({
       model: this.model,
@@ -245,11 +241,11 @@ export class ReplMode {
   }
 
   private resolveProvider(): ReplProvider {
-    const p = this.config.provider ?? 'xai';
+    const p = this.config.provider ?? 'moonshot';
     if (p === 'anthropic' || isClaudeModel(this.config.model ?? '')) return 'anthropic';
     if (p === 'deepseek') return 'deepseek';
     if (p === 'openrouter') return 'openrouter';
-    return 'xai';
+    return 'moonshot';
   }
 
   private defaultModel(): string {
@@ -285,8 +281,8 @@ export class ReplMode {
   .exit / .quit          End the session
   .clear                 Clear conversation history
   .mode <mode>           Switch mode: code | research | trade | general
-  .model <id>            Switch model (e.g. grok-4.3, grok-4.20-multi-agent, claude-sonnet-4-6)
-  .provider <name>       Switch provider: xai (default) | anthropic | openrouter | deepseek
+  .model <id>            Switch model (e.g. kimi-k2-thinking, kimi-k2-turbo-preview, claude-sonnet-4-6)
+  .provider <name>       Switch provider: moonshot (default) | anthropic | openrouter | deepseek
   .history               Show conversation history
   .help                  Show this help
 `);
