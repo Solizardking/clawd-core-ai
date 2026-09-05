@@ -66,8 +66,10 @@ export class OpenRouterClient {
       headers: {
         'Authorization': `Bearer ${this.apiKey}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://x402.wtf',
-        'X-Title': 'Clawd Code',
+        'HTTP-Referer': 'https://solanaclawd.com',
+        'X-OpenRouter-Title': 'solanaclawd',
+        'X-Title': 'solanaclawd',
+        'X-OpenRouter-Categories': 'personal-agent,cloud-agent',
       },
       body: JSON.stringify({ ...request, stream: false }),
     });
@@ -95,8 +97,10 @@ export class OpenRouterClient {
       headers: {
         'Authorization': `Bearer ${this.apiKey}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://x402.wtf',
-        'X-Title': 'Clawd Code',
+        'HTTP-Referer': 'https://solanaclawd.com',
+        'X-OpenRouter-Title': 'solanaclawd',
+        'X-Title': 'solanaclawd',
+        'X-OpenRouter-Categories': 'personal-agent,cloud-agent',
       },
       body: JSON.stringify({ ...request, stream: true }),
     });

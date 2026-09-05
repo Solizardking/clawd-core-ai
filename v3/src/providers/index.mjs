@@ -220,8 +220,10 @@ export function createOpenRouterClient(apiKey, model) {
     const BASE = 'https://openrouter.ai/api/v1';
     const AUTH = {
         Authorization: `Bearer ${apiKey}`,
-        'HTTP-Referer': 'https://open-clawd.local',
-        'X-Title': 'Open Clawd v3',
+        'HTTP-Referer': 'https://solanaclawd.com',
+        'X-OpenRouter-Title': 'solanaclawd',
+        'X-Title': 'solanaclawd',
+        'X-OpenRouter-Categories': 'personal-agent,cloud-agent',
     };
     const defaultModel = model || process.env.OPENROUTER_FREE_MODEL || DEFAULT_OPENROUTER_MODEL;
 
