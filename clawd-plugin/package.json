@@ -42,12 +42,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Solizardking/clawd-core-ai.git",
+    "url": "git+https://github.com/themusebook/clawd-core-ai.git",
     "directory": "core-ai/clawd-plugin"
   },
-  "homepage": "https://github.com/Solizardking/clawd-core-ai/tree/main/core-ai/clawd-plugin#readme",
+  "homepage": "https://github.com/themusebook/clawd-core-ai/tree/main/clawd-plugin#readme",
   "bugs": {
-    "url": "https://github.com/Solizardking/clawd-core-ai/issues"
+    "url": "https://github.com/themusebook/clawd-core-ai/issues"
   },
   "engines": {
     "node": ">=18.0.0"

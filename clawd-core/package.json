@@ -31,15 +31,15 @@
   "peerDependencies": {
     "zod": "^3.0.0"
   },
-  "homepage": "https://github.com/Solizardking/clawd-core-ai",
+  "homepage": "https://github.com/themusebook/clawd-core-ai",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Solizardking/clawd-core-ai.git",
+    "url": "git+https://github.com/themusebook/clawd-core-ai.git",
     "directory": "core-ai/clawd-core"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Solizardking/clawd-core-ai/issues"
+    "url": "https://github.com/themusebook/clawd-core-ai/issues"
   },
   "keywords": ["solana", "ai", "agents", "clawd", "tools", "wallet", "web3", "claude"]
 }

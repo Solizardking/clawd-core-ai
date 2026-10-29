@@ -20,7 +20,7 @@ Report leaked credentials by rotating them at the provider, then open a private 
 If you find a bug that can drain funds, bypass paper-mode gates, or exfiltrate keys:
 
 1. **Do not** open a public issue with a working exploit.
-2. Email the maintainer via GitHub ([@Solizardking](https://github.com/Solizardking)) or open a [private security advisory](https://github.com/Solizardking/clawd-core-ai/security/advisories/new) if enabled.
+2. Email the maintainer via GitHub ([@Solizardking](https://github.com/Solizardking)) or open a [private security advisory](https://github.com/themusebook/clawd-core-ai/security/advisories/new) if enabled.
 
 Please include impact, affected package path, and a minimal reproduction.
 

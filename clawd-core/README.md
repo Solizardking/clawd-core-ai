@@ -8,7 +8,7 @@
 
 [![npm](https://img.shields.io/npm/v/@onchainai/clawd-core?label=npm&color=cb3837&logo=npm&style=for-the-badge)](https://www.npmjs.com/package/@onchainai/clawd-core)
 [![npm downloads](https://img.shields.io/npm/dm/@onchainai/clawd-core?color=cb3837&logo=npm&style=for-the-badge&label=downloads)](https://www.npmjs.com/package/@onchainai/clawd-core)
-[![License](https://img.shields.io/github/license/Solizardking/clawd-core-ai?style=for-the-badge&color=8B5CF6)](https://github.com/Solizardking/clawd-core-ai)
+[![License](https://img.shields.io/github/license/themusebook/clawd-core-ai?style=for-the-badge&color=8B5CF6)](https://github.com/themusebook/clawd-core-ai)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9%2B-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Solana Native](https://img.shields.io/badge/Solana-Native-14F195?style=for-the-badge&logo=solana&logoColor=black)](https://solana.com)
 

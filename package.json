@@ -1,7 +1,7 @@
 {
   "name": "@onchainai/core-ai",
   "private": true,
-  "description": "Clawd Core AI — Helius-wrapped skills, MCP, plugin, and clawd-core toolkit. Sibling of clawd-code and clawd-connectors in the Clawd Cloud monorepo.",
+  "description": "Clawd Core AI — Solana-native AI agent stack: Clawd Code CLI, skills, MCP servers, plugin, router, and the clawd-core toolkit. Core AI flagship of the Musebook org (themusebook).",
   "scripts": {
     "compile-skills": "npx tsx scripts/compile-skills.ts",
     "plugin:doctor": "node clawd-plugin/cli.js doctor",

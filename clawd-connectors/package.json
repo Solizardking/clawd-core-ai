@@ -35,12 +35,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Solizardking/clawd-core-ai.git",
+    "url": "https://github.com/themusebook/clawd-core-ai.git",
     "directory": "clawd-connectors"
   },
   "homepage": "https://github.com/Solizardking/clawd-core-ai/tree/main/clawd-connectors#readme",
   "bugs": {
-    "url": "https://github.com/Solizardking/clawd-core-ai/issues"
+    "url": "https://github.com/themusebook/clawd-core-ai/issues"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",
