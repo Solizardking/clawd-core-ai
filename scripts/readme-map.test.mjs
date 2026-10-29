@@ -140,7 +140,7 @@ describe("README official map", () => {
     assert.match(README, /clawd-agents[\s\S]{0,40}Filled|not empty/i);
     assert.doesNotMatch(README, /character\/` are currently empty/);
     const zkKids = existsSync(join(ROOT, "zk-primitives"))
-      ? readdirSync(join(ROOT, "zk-primitives"))
+      ? readdirSync(join(ROOT, "zk-primitives")).filter((f) => f !== ".gitkeep")
       : [];
     assert.equal(zkKids.length, 0, "zk-primitives is supposed to be empty");
     assert.ok(!existsSync(join(ROOT, "character")));
@@ -160,10 +160,16 @@ describe("README official map", () => {
     assert.deepEqual(missing, [], `broken README links: ${missing.join(", ")}`);
   });
 
-  it("labels leftover marketplace sources as non-working", () => {
-    assert.match(README, /core-ai\/clawd-plugin/);
-    assert.match(README, /helius-plugin/);
-    assert.match(README, /do \*\*not\*\* match this checkout|do not exist here/i);
+  it("marketplace sources resolve to the in-tree plugin", () => {
+    for (const rel of [".claude-plugin/marketplace.json", ".clawd-plugin/marketplace.json"]) {
+      const market = JSON.parse(readFileSync(join(ROOT, rel), "utf8"));
+      for (const plugin of market.plugins ?? []) {
+        assert.ok(
+          existsSync(join(ROOT, plugin.source)),
+          `${rel} source ${plugin.source} missing on disk`
+        );
+      }
+    }
   });
 
   it("does not claim clawd-skills/helius* sources that are missing", () => {

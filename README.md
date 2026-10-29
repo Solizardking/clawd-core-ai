@@ -55,7 +55,7 @@ bash scripts/smoke.sh
 
 `.mcp.json` still launches `npx -y helius-mcp@latest`. The package in [`clawd-mcp/package.json`](./clawd-mcp/package.json) is **`@onchainai/clawd-mcp@1.3.0`** with bin **`helius-mcp`**. The unscoped `helius-mcp@2.1.0` still exists on npm (and a leftover copy lives under `clawd-code/clawd-mcp`). GitHub Actions in [`.github/workflows/mcp-publish.yml`](./.github/workflows/mcp-publish.yml) still publishes on tags named `helius-mcp@*`.
 
-Marketplace JSON sources `./core-ai/clawd-plugin` and `./helius-plugin` in [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json) / [`.clawd-plugin/marketplace.json`](./.clawd-plugin/marketplace.json) do **not** match this checkout — use `./clawd-plugin`.
+Marketplace JSON in [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json) / [`.clawd-plugin/marketplace.json`](./.clawd-plugin/marketplace.json) sources `./clawd-plugin` — the plugin package in this checkout.
 
 Root `npm run stack:doctor` points at `../scripts/stack-doctor.ts` (parent cloud repo). That file is **missing** when this directory is the workspace root.
 
@@ -65,7 +65,7 @@ Root `npm run stack:doctor` points at `../scripts/stack-doctor.ts` (parent cloud
 flowchart TB
   ROOT["clawd-core-ai<br/>@onchainai/core-ai private"]
   ROOT --> AGENTS[".agents/skills<br/>generated Clawd skills"]
-  ROOT --> PLUGINM[".claude-plugin + .clawd-plugin<br/>marketplace leftovers"]
+  ROOT --> PLUGINM[".claude-plugin + .clawd-plugin<br/>marketplace manifests"]
   ROOT --> GH[".github/workflows"]
   ROOT --> AG["clawd-agents"]
   AG --> RUST["agent/ Rust kit"]
@@ -123,8 +123,8 @@ Nested leftover copies (not the shipping path for this checkout):
 | Path | Purpose |
 |---|---|
 | [`.agents/`](./.agents) | Generated Clawd-native skill discovery tree. `.agents/skills/` is compiled from `clawd-skills/` by `scripts/compile-skills.ts`. |
-| [`.claude-plugin/`](./.claude-plugin) | Marketplace leftover (`marketplace.json` source `./core-ai/clawd-plugin` — wrong for this tree). |
-| [`.clawd-plugin/`](./.clawd-plugin) | Marketplace leftover (`marketplace.json` source `./helius-plugin` — that dir does not exist here). |
+| [`.claude-plugin/`](./.claude-plugin) | Marketplace manifest (`marketplace.json` sources `./clawd-plugin`). |
+| [`.clawd-plugin/`](./.clawd-plugin) | Marketplace manifest (`marketplace.json` sources `./clawd-plugin`). |
 | [`.github/`](./.github) | CI: `mcp-publish.yml` still tags `helius-mcp@*`, plus `mcp-release.yml`, `sync-check.yml`, `test.yml`, `verify-signed-commits.yml`. |
 | [`clawd-agents/`](./clawd-agents) | **Filled.** Rust `agent/` (`openclawd-solana-kit`), Bun `clawd-grok`, private `clawd-perps-agent`. |
 | [`clawd-code/`](./clawd-code) | Solana-native AI coding CLI (`@onchainai/clawd-code`) with modes code/trade/research/image/voice. |
@@ -186,7 +186,7 @@ Labeled so they are not treated as shipping products:
 - **Generated leftovers:** `outputs/clawd-code-*.ts`.
 - **Empty:** `zk-primitives/`.
 - **Source-only:** `clawd-wallet/` (no package manifest).
-- **Leftover identity:** `Dockerfile`, `Skill.md`, `server.json`, `clawd-code/mcp-server` (`warrioraashuu-codemaster`), marketplace JSON sources, `AGENTS.md` / `CLAWD.md` / `CLAUDE.md` / `CONTRIBUTING.md` Helius path names.
+- **Leftover identity:** `Dockerfile`, `Skill.md`, `server.json`, `clawd-code/mcp-server` (`warrioraashuu-codemaster`), `AGENTS.md` / `CLAWD.md` / `CLAUDE.md` / `CONTRIBUTING.md` Helius path names.
 - **Still-published unscoped name:** `helius-mcp@2.1.0` on npm. This tree's MCP package is `@onchainai/clawd-mcp@1.3.0`.
 - **Not present:** `helius-cli`, `helius-cursor`, `helius-skills`, `helius-plugin`, `character/`, `clawd-grok/` at repo root, `clawdrouter/` at repo root.
 
