@@ -70,8 +70,18 @@ v3/*.tsbuildinfo
 
 # Lockfiles (not needed for published packages)
 pnpm-lock.yaml
-!helius-cli/pnpm-lock.yaml
-!helius-mcp/pnpm-lock.yaml
 
 # Project docs - keep in git now (was: docs/)
 TG.md
+
+# Secrets — never commit keys (hardened 2026-10-29)
+.env.*
+!.env.example
+**/keypair.json
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+
+# Runtime session state
+.sessions/
