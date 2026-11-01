@@ -42,7 +42,7 @@
     "@types/node": "^20.0.0",
     "auto-changelog": "^2.5.0",
     "typescript": "^5.4.0",
-    "vitest": "^2.0.0"
+    "vitest": "^4.1.10"
   },
   "files": [
     "dist",
